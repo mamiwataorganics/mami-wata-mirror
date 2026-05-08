@@ -1,0 +1,8 @@
+{
+  "name": "mami-wata-mirror",
+  "version": "1.0.0",
+  "description": "Chart generator for Mami Wata's Mirror",
+  "dependencies": {
+    "circular-natal-horoscope-js": "^1.1.0"
+  }
+}
