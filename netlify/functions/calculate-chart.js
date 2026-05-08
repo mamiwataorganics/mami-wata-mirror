@@ -1,155 +1,283 @@
- // Mami Wata Mirror - full chart calculator
-// 10 planets, North/South Node, Chiron, Lilith, Part of Fortune, Vertex
-// Self-contained, no external libraries
-const DEG = Math.PI / 180;
-const RAD = 180 / Math.PI;
-const SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio"
-const SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mami Wata's Mirror</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, serif;
+    background: #0a1028;
+    color: #f0ead6;
+    padding: 24px 16px 60px;
+    min-height: 100vh;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 {
+    font-size: 32px; font-style: italic; text-align: center;
+    margin-bottom: 8px; color: #e0c077;
+  }
+  .subtitle {
+    text-align: center; color: #a8a08a; margin-bottom: 32px;
+    font-style: italic; font-size: 15px;
+  }
+  .form-card {
+    background: rgba(255,255,255,0.04); padding: 24px;
+    border: 1px solid rgba(224,192,119,0.3); margin-bottom: 24px;
+  }
+  label {
+    display: block; font-size: 12px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: #c9a961; margin-bottom: 6px;
+    margin-top: 14px;
+  }
+  label:first-child { margin-top: 0; }
+  input, select {
+    width: 100%; padding: 10px 12px; font-size: 15px;
+    background: rgba(0,0,0,0.3); color: #f0ead6;
+    border: 1px solid rgba(240,234,214,0.2);
+    font-family: Georgia, serif;
+  }
+  input:focus, select:focus { outline: none; border-color: #c9a961; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+  button {
+    width: 100%; margin-top: 20px; padding: 14px;
+    background: #c9a961; color: #0a1028; border: none;
+    font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; font-family: Georgia, serif;
+  }
+  button:hover { background: #e0c077; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .helper { font-size: 12px; color: #888; margin-top: 4px; font-style: italic; }
+  #result { margin-top: 32px; }
+  .chart-wrapper {
+    background: rgba(255,255,255,0.04); padding: 24px;
+    border: 1px solid rgba(224,192,119,0.3);
+  }
+  .chart-wrapper h2 {
+    font-size: 22px; font-style: italic; text-align: center;
+    color: #e0c077; margin-bottom: 16px;
+  }
+  svg.wheel { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .data-table {
+    width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px;
+  }
+  .data-table th {
+    text-align: left; font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: #c9a961; padding: 8px;
+    border-bottom: 1px solid rgba(240,234,214,0.2);
+  }
+  .data-table td {
+    padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.08);
+  }
+  .data-table .deg { color: #e0c077; font-weight: bold; }
+  .section-title {
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #c9a961; margin: 28px 0 12px;
+  }
+  .error {
+    background: rgba(196,69,54,0.15); border: 1px solid #c44536;
+    padding: 14px; color: #f0ead6; margin-top: 16px;
+  }
+  .loading { text-align: center; color: #c9a961; padding: 24px; font-style: italic; }
+  .location-results {
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(240,234,214,0.2);
+    border-top: none; max-height: 200px; overflow-y: auto;
+  }
+  .location-result {
+    padding: 10px 12px; cursor: pointer; border-bottom: 1px solid rgba(240,234,214,0.05);
+    font-size: 14px;
+  }
+  .location-result:hover { background: rgba(201,169,97,0.1); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mami Wata's Mirror</h1>
+    <p class="subtitle">Generate your natal chart with exact degrees</p>
+
+```
+<div class="form-card">
+  <div class="row">
+    <div>
+      <label>Birth Date</label>
+      <input type="date" id="birth-date" required>
+    </div>
+    <div>
+      <label>Birth Time</label>
+      <input type="time" id="birth-time" required>
+      <div class="helper">If unknown, use 12:00 (noon)</div>
+    </div>
+  </div>
+
+  <label>Birth Location</label>
+  <input type="text" id="location-search" placeholder="City, Country (e.g. Austin, USA)" autocomplete="off">
+  <div id="location-results"></div>
+  <input type="hidden" id="latitude">
+  <input type="hidden" id="longitude">
+  <div id="selected-location" class="helper" style="color:#e0c077;"></div>
+
+  <label>House System</label>
+  <select id="house-system">
+    <option value="placidus">Placidus (Porphyry)</option>
+    <option value="whole-sign">Whole Sign</option>
+  </select>
+
+  <button id="generate-btn">Generate Chart</button>
+</div>
+
+<div id="result"></div>
+```
+
+  </div>
+
+<script>
+// ============================================================
+// CHART CALCULATION ENGINE - runs entirely in the browser
+// ============================================================
+
+var DEG = Math.PI / 180;
+var RAD = 180 / Math.PI;
+
+var SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+var SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
+
 function norm360(x) { x = x % 360; return x < 0 ? x + 360 : x; }
+
 function julianDay(y, m, d, h, min) {
-  const dayFrac = (h + min/60) / 24;
+  var dayFrac = (h + min/60) / 24;
   if (m <= 2) { y -= 1; m += 12; }
-  const a = Math.floor(y / 100);
-  const b = 2 - a + Math.floor(a / 4);
-  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + dayFrac
+  var a = Math.floor(y / 100);
+  var b = 2 - a + Math.floor(a / 4);
+  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + dayFrac + b - 1524.5;
 }
+
 function splitDMS(lon) {
-  const norm = norm360(lon);
-  const sign = Math.floor(norm / 30);
-  const inSign = norm - sign * 30;
-  const deg = Math.floor(inSign);
-  const minF = (inSign - deg) * 60;
-  const min = Math.floor(minF);
-  const sec = Math.floor((minF - min) * 60);
-  return { sign, deg, min, sec };
+  var norm = norm360(lon);
+  var sign = Math.floor(norm / 30);
+  var inSign = norm - sign * 30;
+  var deg = Math.floor(inSign);
+  var minF = (inSign - deg) * 60;
+  var min = Math.floor(minF);
+  var sec = Math.floor((minF - min) * 60);
+  return { sign: sign, deg: deg, min: min, sec: sec };
 }
+
 function sunLongitude(T) {
-  const L0 = 280.46646 + 36000.76983*T + 0.0003032*T*T;
-  const M = 357.52911 + 35999.05029*T - 0.0001537*T*T;
-  const Mr = M * DEG;
-  const C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(Mr)
-          + (0.019993 - 0.000101*T)*Math.sin(2*Mr)
-          + 0.000289*Math.sin(3*Mr);
+  var L0 = 280.46646 + 36000.76983*T + 0.0003032*T*T;
+  var M = 357.52911 + 35999.05029*T - 0.0001537*T*T;
+  var Mr = M * DEG;
+  var C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(Mr)
+        + (0.019993 - 0.000101*T)*Math.sin(2*Mr)
+        + 0.000289*Math.sin(3*Mr);
   return norm360(L0 + C);
 }
-function moonLongitude(T) {
-  const Lp = 218.3164477 + 481267.88123421*T - 0.0015786*T*T;
-  const D  = 297.8501921 + 445267.1114034*T - 0.0018819*T*T;
-,"Sagit
-\u264F"
-+b-
 
- const M  = 357.5291092 + 35999.0502909*T;
-const Mp = 134.9633964 + 477198.8675055*T + 0.0087414*T*T;
-const F  = 93.2720950 + 483202.0175233*T - 0.0036539*T*T;
-const Dr = D*DEG, Mr = M*DEG, Mpr = Mp*DEG, Fr = F*DEG;
-let L = 6288774*Math.sin(Mpr)
-      + 1274027*Math.sin(2*Dr - Mpr)
-      +  658314*Math.sin(2*Dr)
-      +  213618*Math.sin(2*Mpr)
-      -  185116*Math.sin(Mr)
-      -  114332*Math.sin(2*Fr)
-      +   58793*Math.sin(2*Dr - 2*Mpr)
-      +   57066*Math.sin(2*Dr - Mr - Mpr)
-      +   53322*Math.sin(2*Dr + Mpr)
-      +   45758*Math.sin(2*Dr - Mr)
-      -   40923*Math.sin(Mr - Mpr)
-      -   34720*Math.sin(Dr)
-- + - + + + - -
-30383*Math.sin(Mr + Mpr)
-15327*Math.sin(2*Dr - 2*Fr)
-12528*Math.sin(Mpr + 2*Fr)
-10980*Math.sin(Mpr - 2*Fr)
-10675*Math.sin(4*Dr - Mpr)
- 8548*Math.sin(4*Dr - 2*Mpr)
- 7888*Math.sin(2*Dr + Mr - Mpr)
- 6766*Math.sin(2*Dr + Mr);
+function moonLongitude(T) {
+  var Lp = 218.3164477 + 481267.88123421*T - 0.0015786*T*T;
+  var Dm = 297.8501921 + 445267.1114034*T - 0.0018819*T*T;
+  var M  = 357.5291092 + 35999.0502909*T;
+  var Mp = 134.9633964 + 477198.8675055*T + 0.0087414*T*T;
+  var F  = 93.2720950 + 483202.0175233*T - 0.0036539*T*T;
+  var Dr = Dm*DEG, Mr = M*DEG, Mpr = Mp*DEG, Fr = F*DEG;
+  var L = 6288774*Math.sin(Mpr)
+        + 1274027*Math.sin(2*Dr - Mpr)
+        +  658314*Math.sin(2*Dr)
+        +  213618*Math.sin(2*Mpr)
+        -  185116*Math.sin(Mr)
+        -  114332*Math.sin(2*Fr)
+        +   58793*Math.sin(2*Dr - 2*Mpr)
+        +   57066*Math.sin(2*Dr - Mr - Mpr)
+        +   53322*Math.sin(2*Dr + Mpr)
+        +   45758*Math.sin(2*Dr - Mr)
+        -   40923*Math.sin(Mr - Mpr)
+        -   34720*Math.sin(Dr)
+        -   30383*Math.sin(Mr + Mpr)
+        +   15327*Math.sin(2*Dr - 2*Fr)
+        -   12528*Math.sin(Mpr + 2*Fr)
+        +   10980*Math.sin(Mpr - 2*Fr)
+        +   10675*Math.sin(4*Dr - Mpr)
+        +    8548*Math.sin(4*Dr - 2*Mpr)
+        -    7888*Math.sin(2*Dr + Mr - Mpr)
+        -    6766*Math.sin(2*Dr + Mr);
   return norm360(Lp + L / 1000000);
 }
-function planetLongitude(planet, T) {
-  const elements = {
-    mercury: { L: 252.250906, n: 149472.6746358, e: 0.20563593, M0: 174.7948, a: 0.387
-    venus:   { L: 181.979801, n:  58517.8156760, e: 0.00677672, M0:  50.4161, a: 0.723
-    earth:   { L: 100.466449, n:  35999.3728519, e: 0.01671022, M0: 357.5291, a: 1.000
-    mars:    { L: 355.433000, n:  19140.2993039, e: 0.09341233, M0:  19.3870, a: 1.523
-    jupiter: { L:  34.351519, n:   3034.9056606, e: 0.04839266, M0:  20.0202, a: 5.202
-    saturn:  { L:  50.077444, n:   1222.1138488, e: 0.05415060, M0: 317.0207, a: 9.554
-    uranus:  { L: 314.055005, n:    428.4669983, e: 0.04716771, M0: 141.0498, a: 19.21
-    neptune: { L: 304.348665, n:    218.4862002, e: 0.00858587, M0: 256.2250, a: 30.11
-    pluto:   { L: 238.92881,  n:    145.20780,   e: 0.24882730, M0:  14.882,  a: 39.48
-chiron:  { L: 207.224,    n:    50.49,
-e: 0.38,
-M0: 339.43,
-a: 13.70
-};
-const e = elements[planet];
-if (!e) return 0;
-const M = norm360(e.M0 + e.n * T);
-const Mr = M * DEG;
-let E = Mr;
-for (let i = 0; i < 8; i++) { E = Mr + e.e * Math.sin(E); }
-const v = 2 * Math.atan2(Math.sqrt(1+e.e)*Math.sin(E/2), Math.sqrt(1-e.e)*Math.cos(E
-098 }, 330 }, 000 }, 688 }, 561 }, 747 }, 8140 }, 0387 }, 2117 }, 8}
-/2));
 
-   const helio = norm360(e.L + v*RAD - M);
+var ORBITAL_ELEMENTS = {
+  mercury: { L: 252.250906, n: 149472.6746358, e: 0.20563593, M0: 174.7948, a: 0.387098 },
+  venus:   { L: 181.979801, n:  58517.8156760, e: 0.00677672, M0:  50.4161, a: 0.723330 },
+  earth:   { L: 100.466449, n:  35999.3728519, e: 0.01671022, M0: 357.5291, a: 1.000000 },
+  mars:    { L: 355.433000, n:  19140.2993039, e: 0.09341233, M0:  19.3870, a: 1.523688 },
+  jupiter: { L:  34.351519, n:   3034.9056606, e: 0.04839266, M0:  20.0202, a: 5.202561 },
+  saturn:  { L:  50.077444, n:   1222.1138488, e: 0.05415060, M0: 317.0207, a: 9.554747 },
+  uranus:  { L: 314.055005, n:    428.4669983, e: 0.04716771, M0: 141.0498, a: 19.218140 },
+  neptune: { L: 304.348665, n:    218.4862002, e: 0.00858587, M0: 256.2250, a: 30.110387 },
+  pluto:   { L: 238.92881,  n:    145.20780,   e: 0.24882730, M0:  14.882,  a: 39.482117 },
+  chiron:  { L: 207.224,    n:    50.49,       e: 0.38,       M0: 339.43,   a: 13.708 }
+};
+
+function planetLongitude(planet, T) {
+  var e = ORBITAL_ELEMENTS[planet];
+  if (!e) return 0;
+  var M = norm360(e.M0 + e.n * T);
+  var Mr = M * DEG;
+  var E = Mr;
+  for (var i = 0; i < 8; i++) { E = Mr + e.e * Math.sin(E); }
+  var v = 2 * Math.atan2(Math.sqrt(1+e.e)*Math.sin(E/2), Math.sqrt(1-e.e)*Math.cos(E/2));
+  var helio = norm360(e.L + v*RAD - M);
   if (planet === "earth") return helio;
-  const earthEl = elements.earth;
-  const earthM = norm360(earthEl.M0 + earthEl.n * T);
-  const earthMr = earthM * DEG;
-  let earthE = earthMr;
-  for (let i = 0; i < 6; i++) { earthE = earthMr + earthEl.e * Math.sin(earthE); }
-  const earthV = 2 * Math.atan2(Math.sqrt(1+earthEl.e)*Math.sin(earthE/2), Math.sqrt(1
-  const earthHelio = norm360(earthEl.L + earthV*RAD - earthM);
-  const earthR = earthEl.a * (1 - earthEl.e*Math.cos(earthE));
-  const r = e.a * (1 - e.e*Math.cos(E));
-  const xH = r * Math.cos(helio * DEG);
-  const yH = r * Math.sin(helio * DEG);
-  const xE = earthR * Math.cos(earthHelio * DEG);
-  const yE = earthR * Math.sin(earthHelio * DEG);
+  var earthEl = ORBITAL_ELEMENTS.earth;
+  var earthM = norm360(earthEl.M0 + earthEl.n * T);
+  var earthMr = earthM * DEG;
+  var earthE = earthMr;
+  for (var j = 0; j < 6; j++) { earthE = earthMr + earthEl.e * Math.sin(earthE); }
+  var earthV = 2 * Math.atan2(Math.sqrt(1+earthEl.e)*Math.sin(earthE/2), Math.sqrt(1-earthEl.e)*Math.cos(earthE/2));
+  var earthHelio = norm360(earthEl.L + earthV*RAD - earthM);
+  var earthR = earthEl.a * (1 - earthEl.e*Math.cos(earthE));
+  var r = e.a * (1 - e.e*Math.cos(E));
+  var xH = r * Math.cos(helio * DEG);
+  var yH = r * Math.sin(helio * DEG);
+  var xE = earthR * Math.cos(earthHelio * DEG);
+  var yE = earthR * Math.sin(earthHelio * DEG);
   return norm360(Math.atan2(yH - yE, xH - xE) * RAD);
 }
-function meanNorthNode(T) {
-  return norm360(125.04452 - 1934.136261*T + 0.0020708*T*T);
-}
-function meanLilith(T) {
-  return norm360(83.353 + 4069.0137 * T);
-}
-function obliquity(T) {
-  return 23.439291 - 0.0130042*T - 1.64e-7*T*T + 5.04e-7*T*T*T;
-}
+
+function meanNorthNode(T) { return norm360(125.04452 - 1934.136261*T + 0.0020708*T*T); }
+function meanLilith(T) { return norm360(83.353 + 4069.0137 * T); }
+function obliquity(T) { return 23.439291 - 0.0130042*T - 1.64e-7*T*T + 5.04e-7*T*T*T; }
+
 function localSiderealTime(JD, longitude) {
-  const T = (JD - 2451545.0) / 36525;
-  const GMST = 280.46061837 + 360.98564736629*(JD - 2451545.0) + 0.000387933*T*T;
+  var T = (JD - 2451545.0) / 36525;
+  var GMST = 280.46061837 + 360.98564736629*(JD - 2451545.0) + 0.000387933*T*T;
   return norm360(GMST + longitude);
 }
-function calcAngles(JD, latitude, longitude) {
-  const T = (JD - 2451545.0) / 36525;
-  const eps = obliquity(T) * DEG;
-  const LST = localSiderealTime(JD, longitude);
-  const ramc = LST * DEG;
-  const lat = latitude * DEG;
-  const mc = norm360(Math.atan2(Math.sin(ramc), Math.cos(ramc)*Math.cos(eps)) * RAD);
-  const ascRad = Math.atan2(-Math.cos(ramc), Math.sin(ramc)*Math.cos(eps) + Math.tan(l
-  const asc = norm360(ascRad * RAD);
-  const vxRad = Math.atan2(-Math.cos(ramc), Math.sin(eps)*Math.tan(-lat) + Math.cos(ep
-  const vertex = norm360(vxRad * RAD);
--earthE
-at)*Mat
-s)*Math
 
-   return { ascendant: asc, midheaven: mc, vertex: vertex };
+function calcAngles(JD, latitude, longitude) {
+  var T = (JD - 2451545.0) / 36525;
+  var eps = obliquity(T) * DEG;
+  var LST = localSiderealTime(JD, longitude);
+  var ramc = LST * DEG;
+  var lat = latitude * DEG;
+  var mc = norm360(Math.atan2(Math.sin(ramc), Math.cos(ramc)*Math.cos(eps)) * RAD);
+  var ascRad = Math.atan2(-Math.cos(ramc), Math.sin(ramc)*Math.cos(eps) + Math.tan(lat)*Math.sin(eps));
+  var asc = norm360(ascRad * RAD);
+  var vxRad = Math.atan2(-Math.cos(ramc), Math.sin(eps)*Math.tan(-lat) + Math.cos(eps)*Math.sin(ramc));
+  var vertex = norm360(vxRad * RAD);
+  return { ascendant: asc, midheaven: mc, vertex: vertex };
 }
+
 function porphyryHouses(angles) {
-  const ascendant = angles.ascendant;
-  const midheaven = angles.midheaven;
-  const cusps = new Array(12);
+  var ascendant = angles.ascendant;
+  var midheaven = angles.midheaven;
+  var cusps = new Array(12);
   cusps[0] = ascendant;
   cusps[9] = midheaven;
   cusps[3] = norm360(midheaven + 180);
   cusps[6] = norm360(ascendant + 180);
-  const arcMC_ASC = norm360(ascendant - midheaven);
-  const arcASC_IC = norm360(cusps[3] - ascendant);
+  var arcMC_ASC = norm360(ascendant - midheaven);
+  var arcASC_IC = norm360(cusps[3] - ascendant);
   cusps[10] = norm360(midheaven + arcMC_ASC / 3);
   cusps[11] = norm360(midheaven + 2 * arcMC_ASC / 3);
   cusps[1] = norm360(ascendant + arcASC_IC / 3);
@@ -160,235 +288,389 @@ function porphyryHouses(angles) {
   cusps[8] = norm360(cusps[6] + 2 * arcASC_IC / 3);
   return cusps;
 }
+
 function wholeSignHouses(ascendant) {
-  const ascSign = Math.floor(norm360(ascendant) / 30);
-  const cusps = new Array(12);
-  for (let i = 0; i < 12; i++) {
+  var ascSign = Math.floor(norm360(ascendant) / 30);
+  var cusps = new Array(12);
+  for (var i = 0; i < 12; i++) {
     cusps[i] = ((ascSign + i) % 12) * 30;
   }
   return cusps;
 }
+
 function houseOfPlanet(lon, cusps) {
-  for (let i = 0; i < 12; i++) {
-    const start = cusps[i];
-    const end = cusps[(i + 1) % 12];
+  for (var i = 0; i < 12; i++) {
+    var start = cusps[i];
+    var end = cusps[(i + 1) % 12];
     if (start <= end) {
       if (lon >= start && lon < end) return i + 1;
     } else {
       if (lon >= start || lon < end) return i + 1;
     }
-}
+  }
   return null;
 }
-function partOfFortune(sun, moon, asc, isDay) {
 
-   if (isDay) {
-    return norm360(asc + moon - sun);
-  } else {
-    return norm360(asc + sun - moon);
-} }
+function partOfFortune(sun, moon, asc, isDay) {
+  if (isDay) return norm360(asc + moon - sun);
+  return norm360(asc + sun - moon);
+}
+
 function isDayBirth(sunLon, ascLon) {
-  const diff = norm360(sunLon - ascLon);
+  var diff = norm360(sunLon - ascLon);
   return diff >= 180;
 }
-const ASPECTS = [
+
+var ASPECTS = [
   { type: "conjunction", angle: 0,   orb: 8 },
-{ type: "sextile",
-{ type: "square",
-{ type: "trine",
-{ type: "opposition",  angle: 180, orb: 6 }
-angle: 60,  orb: 4 },
-angle: 90,  orb: 6 },
-angle: 120, orb: 6 },
+  { type: "sextile",     angle: 60,  orb: 4 },
+  { type: "square",      angle: 90,  orb: 6 },
+  { type: "trine",       angle: 120, orb: 6 },
+  { type: "opposition",  angle: 180, orb: 6 }
 ];
+
 function calcAspects(points) {
-  const result = [];
-  for (let i = 0; i < points.length; i++) {
-    for (let j = i + 1; j < points.length; j++) {
-      let diff = Math.abs(points[i].longitude - points[j].longitude);
+  var result = [];
+  for (var i = 0; i < points.length; i++) {
+    for (var j = i + 1; j < points.length; j++) {
+      var diff = Math.abs(points[i].longitude - points[j].longitude);
       if (diff > 180) diff = 360 - diff;
-      for (const asp of ASPECTS) {
-        const orb = Math.abs(diff - asp.angle);
+      for (var k = 0; k < ASPECTS.length; k++) {
+        var asp = ASPECTS[k];
+        var orb = Math.abs(diff - asp.angle);
         if (orb <= asp.orb) {
           result.push({
             point1: points[i].name,
             point2: points[j].name,
             type: asp.type,
             orb: orb.toFixed(2)
-});
-break; }
-} }
-}
+          });
+          break;
+        }
+      }
+    }
+  }
   return result;
 }
-exports.handler = async (event) => {
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
 
-   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json"
-};
-if (event.httpMethod === "OPTIONS") {
-  return { statusCode: 200, headers, body: "" };
-}
-if (event.httpMethod !== "POST") {
-  return { statusCode: 405, headers, body: JSON.stringify({ error: "Method not allow
-}
-try {
-  const body = JSON.parse(event.body);
-  const year = parseInt(body.year);
-  const month = parseInt(body.month);
-  const day = parseInt(body.day);
-  const hour = parseInt(body.hour);
-  const minute = parseInt(body.minute);
-  const latitude = parseFloat(body.latitude);
-  const longitude = parseFloat(body.longitude);
-  const houseSystem = body.houseSystem || "placidus";
-  if ([year, month, day, hour, minute, latitude, longitude].some(v => isNaN(v))) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: "Missing or inv
-}
-  const JD = julianDay(year, month, day, hour, minute);
-  const T = (JD - 2451545.0) / 36525;
-  const sunLon = sunLongitude(T);
-  const moonLon = moonLongitude(T);
-  const northNodeLon = meanNorthNode(T);
-  const southNodeLon = norm360(northNodeLon + 180);
-  const lilithLon = meanLilith(T);
-  const angles = calcAngles(JD, latitude, longitude);
-  const isDay = isDayBirth(sunLon, angles.ascendant);
-  const fortuneLon = partOfFortune(sunLon, moonLon, angles.ascendant, isDay);
-const planetData = [
-  { name: "Sun",
-  { name: "Moon",
-  { name: "Mercury",
-  { name: "Venus",
-  { name: "Mars",
-  { name: "Jupiter",
-  { name: "Saturn",
-key: "sun",
-key: "moon",
-key: "mercury",
-key: "venus",
-key: "mars",
-key: "jupiter",
-key: "saturn",
-symbol: "\u2609", longitude: sunLon
-symbol: "\u263D", longitude: moonLon
-symbol: "\u263F", longitude: planetL
-symbol: "\u2640", longitude: planetL
-symbol: "\u2642", longitude: planetL
-symbol: "\u2643", longitude: planetL
-symbol: "\u2644", longitude: planetL
-ed" })
-alid fi
-}, },
-ongitud
-ongitud
-ongitud
-ongitud
-ongitud
+function generateChart(year, month, day, hour, minute, latitude, longitude, houseSystem) {
+  var JD = julianDay(year, month, day, hour, minute);
+  var T = (JD - 2451545.0) / 36525;
 
-   { name: "Uranus",
-  { name: "Neptune",
-  { name: "Pluto",
-  { name: "Chiron",
-  { name: "North Node",
-  { name: "South Node",
-  { name: "Lilith",
-  { name: "Part of Fortune",key: "fortune",
-  { name: "Vertex",         key: "vertex",
-const cusps = (houseSystem === "whole-sign")
-  ? wholeSignHouses(angles.ascendant)
-  : porphyryHouses(angles);
-const planets = planetData.map(p => {
-  const dms = splitDMS(p.longitude);
-  return {
-    name: p.name,
-    key: p.key,
-    symbol: p.symbol,
-    sign: SIGN_NAMES[dms.sign],
-    signSymbol: SIGN_SYMBOLS[dms.sign],
-    degreesInSign: dms.deg,
-    minutes: dms.min,
-    seconds: dms.sec,
-    eclipticLongitude: p.longitude,
-    house: houseOfPlanet(p.longitude, cusps),
-    retrograde: false
-}; });
-const ascDms = splitDMS(angles.ascendant);
-const mcDms = splitDMS(angles.midheaven);
-const houses = cusps.map((lon, i) => {
-  const dms = splitDMS(lon);
-  return {
-    number: i + 1,
-    sign: SIGN_NAMES[dms.sign],
-    signSymbol: SIGN_SYMBOLS[dms.sign],
-    degreesInSign: dms.deg,
-    minutes: dms.min,
-    eclipticLongitude: lon
-}; });
-symbol: "\u2645", longitude: planetL
-symbol: "\u2646", longitude: planetL
-symbol: "\u2647", longitude: planetL
-symbol: "\u26B7", longitude: planetL
-];
-key: "uranus",
-key: "neptune",
-key: "pluto",
-key: "chiron",
-key: "northnode", symbol: "\u260A", longitude: northNo
-key: "southnode", symbol: "\u260B", longitude: southNo
-key: "lilith",
-symbol: "\u26B8", longitude: lilithL
-symbol: "\u2297", longitude: fortune
-symbol: "Vx",
-longitude: angles.
-ongitud
-ongitud
-ongitud
-ongitud
-deLon }
-deLon }
-on },
-Lon },
-vertex
+  var sunLon = sunLongitude(T);
+  var moonLon = moonLongitude(T);
+  var northNodeLon = meanNorthNode(T);
+  var southNodeLon = norm360(northNodeLon + 180);
+  var lilithLon = meanLilith(T);
 
-     const aspectPoints = [
-      ...planetData.map(p => ({ name: p.name, longitude: p.longitude })),
-      { name: "Ascendant", longitude: angles.ascendant },
-      { name: "Midheaven", longitude: angles.midheaven }
-    ];
-    const aspects = calcAspects(aspectPoints);
+  var angles = calcAngles(JD, latitude, longitude);
+  var isDay = isDayBirth(sunLon, angles.ascendant);
+  var fortuneLon = partOfFortune(sunLon, moonLon, angles.ascendant, isDay);
+
+  var planetData = [
+    { name: "Sun",            key: "sun",       symbol: "\u2609", longitude: sunLon },
+    { name: "Moon",           key: "moon",      symbol: "\u263D", longitude: moonLon },
+    { name: "Mercury",        key: "mercury",   symbol: "\u263F", longitude: planetLongitude("mercury", T) },
+    { name: "Venus",          key: "venus",     symbol: "\u2640", longitude: planetLongitude("venus", T) },
+    { name: "Mars",           key: "mars",      symbol: "\u2642", longitude: planetLongitude("mars", T) },
+    { name: "Jupiter",        key: "jupiter",   symbol: "\u2643", longitude: planetLongitude("jupiter", T) },
+    { name: "Saturn",         key: "saturn",    symbol: "\u2644", longitude: planetLongitude("saturn", T) },
+    { name: "Uranus",         key: "uranus",    symbol: "\u2645", longitude: planetLongitude("uranus", T) },
+    { name: "Neptune",        key: "neptune",   symbol: "\u2646", longitude: planetLongitude("neptune", T) },
+    { name: "Pluto",          key: "pluto",     symbol: "\u2647", longitude: planetLongitude("pluto", T) },
+    { name: "Chiron",         key: "chiron",    symbol: "\u26B7", longitude: planetLongitude("chiron", T) },
+    { name: "North Node",     key: "northnode", symbol: "\u260A", longitude: northNodeLon },
+    { name: "South Node",     key: "southnode", symbol: "\u260B", longitude: southNodeLon },
+    { name: "Lilith",         key: "lilith",    symbol: "\u26B8", longitude: lilithLon },
+    { name: "Part of Fortune",key: "fortune",   symbol: "\u2297", longitude: fortuneLon },
+    { name: "Vertex",         key: "vertex",    symbol: "Vx",     longitude: angles.vertex }
+  ];
+
+  var cusps = (houseSystem === "whole-sign")
+    ? wholeSignHouses(angles.ascendant)
+    : porphyryHouses(angles);
+
+  var planets = planetData.map(function(p) {
+    var dms = splitDMS(p.longitude);
     return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        success: true,
-        planets,
-        angles: {
-          ascendant: {
-            sign: SIGN_NAMES[ascDms.sign],
-            signSymbol: SIGN_SYMBOLS[ascDms.sign],
-            degreesInSign: ascDms.deg,
-            minutes: ascDms.min,
-            eclipticLongitude: angles.ascendant
-          },
-          midheaven: {
-            sign: SIGN_NAMES[mcDms.sign],
-            signSymbol: SIGN_SYMBOLS[mcDms.sign],
-            degreesInSign: mcDms.deg,
-            minutes: mcDms.min,
-            eclipticLongitude: angles.midheaven
-} },
-houses,
-aspects })
+      name: p.name, key: p.key, symbol: p.symbol,
+      sign: SIGN_NAMES[dms.sign],
+      signSymbol: SIGN_SYMBOLS[dms.sign],
+      degreesInSign: dms.deg,
+      minutes: dms.min,
+      seconds: dms.sec,
+      eclipticLongitude: p.longitude,
+      house: houseOfPlanet(p.longitude, cusps)
     };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ error: "Calculation failed", message: err.message })
-}; }
-};
+  });
 
+  var ascDms = splitDMS(angles.ascendant);
+  var mcDms = splitDMS(angles.midheaven);
+
+  var houses = cusps.map(function(lon, i) {
+    var dms = splitDMS(lon);
+    return {
+      number: i + 1,
+      sign: SIGN_NAMES[dms.sign],
+      signSymbol: SIGN_SYMBOLS[dms.sign],
+      degreesInSign: dms.deg,
+      minutes: dms.min,
+      eclipticLongitude: lon
+    };
+  });
+
+  var aspectPoints = planetData.map(function(p) { return { name: p.name, longitude: p.longitude }; });
+  aspectPoints.push({ name: "Ascendant", longitude: angles.ascendant });
+  aspectPoints.push({ name: "Midheaven", longitude: angles.midheaven });
+  var aspects = calcAspects(aspectPoints);
+
+  return {
+    planets: planets,
+    angles: {
+      ascendant: {
+        sign: SIGN_NAMES[ascDms.sign],
+        signSymbol: SIGN_SYMBOLS[ascDms.sign],
+        degreesInSign: ascDms.deg,
+        minutes: ascDms.min,
+        eclipticLongitude: angles.ascendant
+      },
+      midheaven: {
+        sign: SIGN_NAMES[mcDms.sign],
+        signSymbol: SIGN_SYMBOLS[mcDms.sign],
+        degreesInSign: mcDms.deg,
+        minutes: mcDms.min,
+        eclipticLongitude: angles.midheaven
+      }
+    },
+    houses: houses,
+    aspects: aspects
+  };
+}
+
+// ============================================================
+// LOCATION SEARCH (uses free OpenStreetMap API)
+// ============================================================
+
+var locationInput = document.getElementById("location-search");
+var locationResults = document.getElementById("location-results");
+var latInput = document.getElementById("latitude");
+var lngInput = document.getElementById("longitude");
+var selectedLocation = document.getElementById("selected-location");
+var searchTimeout;
+
+locationInput.addEventListener("input", function() {
+  clearTimeout(searchTimeout);
+  var query = locationInput.value.trim();
+  if (query.length < 3) { locationResults.innerHTML = ""; return; }
+  searchTimeout = setTimeout(function() {
+    fetch("https://nominatim.openstreetmap.org/search?q=" + encodeURIComponent(query) + "&format=json&limit=5")
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        var html = '<div class="location-results">';
+        for (var i = 0; i < data.length; i++) {
+          var r = data[i];
+          html += '<div class="location-result" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-name="' + r.display_name.replace(/"/g, "&quot;") + '">' + r.display_name + '</div>';
+        }
+        html += '</div>';
+        locationResults.innerHTML = html;
+        var nodes = document.querySelectorAll(".location-result");
+        for (var k = 0; k < nodes.length; k++) {
+          nodes[k].addEventListener("click", function() {
+            latInput.value = this.dataset.lat;
+            lngInput.value = this.dataset.lon;
+            locationInput.value = this.dataset.name;
+            selectedLocation.textContent = "\u2713 " + this.dataset.name + " (" + parseFloat(this.dataset.lat).toFixed(2) + ", " + parseFloat(this.dataset.lon).toFixed(2) + ")";
+            locationResults.innerHTML = "";
+          });
+        }
+      });
+  }, 400);
+});
+
+// ============================================================
+// FORM HANDLING
+// ============================================================
+
+var btn = document.getElementById("generate-btn");
+var resultDiv = document.getElementById("result");
+
+btn.addEventListener("click", function() {
+  var dateVal = document.getElementById("birth-date").value;
+  var timeVal = document.getElementById("birth-time").value;
+  var lat = latInput.value;
+  var lng = lngInput.value;
+  var houseSystem = document.getElementById("house-system").value;
+
+  if (!dateVal || !timeVal || !lat || !lng) {
+    resultDiv.innerHTML = '<div class="error">Please fill in all fields and select a location from the dropdown.</div>';
+    return;
+  }
+
+  var dateParts = dateVal.split("-");
+  var timeParts = timeVal.split(":");
+  var year = parseInt(dateParts[0]);
+  var month = parseInt(dateParts[1]);
+  var day = parseInt(dateParts[2]);
+  var hour = parseInt(timeParts[0]);
+  var minute = parseInt(timeParts[1]);
+
+  resultDiv.innerHTML = '<div class="loading">Calculating your chart...</div>';
+
+  try {
+    var data = generateChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem);
+    renderChart(data);
+  } catch (err) {
+    resultDiv.innerHTML = '<div class="error">Error: ' + err.message + '</div>';
+  }
+});
+
+// ============================================================
+// CHART RENDERING (SVG wheel + tables)
+// ============================================================
+
+function renderChart(data) {
+  var ascLon = data.angles.ascendant.eclipticLongitude;
+
+  function eclToSvg(lon) { return 180 + (lon - ascLon); }
+  function polar(cx, cy, r, deg) {
+    var rad = (deg * Math.PI) / 180;
+    return { x: cx + r * Math.cos(rad), y: cy - r * Math.sin(rad) };
+  }
+
+  var cx = 300, cy = 300;
+  var planetsToShow = data.planets;
+
+  var svg = '<svg class="wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="280" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="250" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
+
+  for (var i = 0; i < 12; i++) {
+    var angle = eclToSvg(i * 30);
+    var p1 = polar(cx, cy, 250, angle);
+    var p2 = polar(cx, cy, 280, angle);
+    svg += '<line x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '" stroke="#c9a961" stroke-width="1" opacity="0.5"/>';
+  }
+
+  for (var d = 0; d < 360; d++) {
+    var a = eclToSvg(d);
+    var isMajor = d % 10 === 0;
+    var tickLen = isMajor ? 6 : (d % 5 === 0 ? 4 : 2);
+    var tp1 = polar(cx, cy, 280, a);
+    var tp2 = polar(cx, cy, 280 - tickLen, a);
+    svg += '<line x1="' + tp1.x + '" y1="' + tp1.y + '" x2="' + tp2.x + '" y2="' + tp2.y + '" stroke="#c9a961" stroke-width="' + (isMajor ? 1 : 0.5) + '" opacity="' + (isMajor ? 0.85 : 0.4) + '"/>';
+  }
+
+  for (var s = 0; s < 12; s++) {
+    var sa = eclToSvg(s * 30 + 15);
+    var spos = polar(cx, cy, 265, sa);
+    svg += '<text x="' + spos.x + '" y="' + spos.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="22" font-family="Georgia, serif">' + SIGN_SYMBOLS[s] + '</text>';
+  }
+
+  for (var hi = 0; hi < data.houses.length; hi++) {
+    var house = data.houses[hi];
+    var ha = eclToSvg(house.eclipticLongitude);
+    var hp1 = polar(cx, cy, 80, ha);
+    var hp2 = polar(cx, cy, 250, ha);
+    var isAngle = [0, 3, 6, 9].indexOf(hi) !== -1;
+    svg += '<line x1="' + hp1.x + '" y1="' + hp1.y + '" x2="' + hp2.x + '" y2="' + hp2.y + '" stroke="#e8e1cc" stroke-width="' + (isAngle ? 1 : 0.5) + '" opacity="' + (isAngle ? 0.6 : 0.3) + '"/>';
+
+    var nextHouse = data.houses[(hi + 1) % 12];
+    var midLon = (house.eclipticLongitude + nextHouse.eclipticLongitude) / 2;
+    if (nextHouse.eclipticLongitude < house.eclipticLongitude) midLon = ((house.eclipticLongitude + nextHouse.eclipticLongitude + 360) / 2) % 360;
+    var midAngle = eclToSvg(midLon);
+    var numPos = polar(cx, cy, 100, midAngle);
+    svg += '<text x="' + numPos.x + '" y="' + numPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#a8a08a" font-size="11" font-style="italic">' + house.number + '</text>';
+  }
+
+  var aspectColors = { conjunction: "#e0c077", opposition: "#c44536", trine: "#6b8e4e", square: "#c44536", sextile: "#4a6b8e" };
+  for (var ai = 0; ai < data.aspects.length; ai++) {
+    var asp = data.aspects[ai];
+    var pa1 = null, pa2 = null;
+    for (var pi = 0; pi < planetsToShow.length; pi++) {
+      if (planetsToShow[pi].name === asp.point1) pa1 = planetsToShow[pi];
+      if (planetsToShow[pi].name === asp.point2) pa2 = planetsToShow[pi];
+    }
+    if (asp.point1 === "Ascendant") pa1 = data.angles.ascendant;
+    if (asp.point1 === "Midheaven") pa1 = data.angles.midheaven;
+    if (asp.point2 === "Ascendant") pa2 = data.angles.ascendant;
+    if (asp.point2 === "Midheaven") pa2 = data.angles.midheaven;
+    if (!pa1 || !pa2) continue;
+    var aa1 = eclToSvg(pa1.eclipticLongitude);
+    var aa2 = eclToSvg(pa2.eclipticLongitude);
+    var ap1 = polar(cx, cy, 160, aa1);
+    var ap2 = polar(cx, cy, 160, aa2);
+    var color = aspectColors[asp.type] || "#888";
+    var dash = (asp.type === "square" || asp.type === "opposition") ? 'stroke-dasharray="2,3"' : "";
+    svg += '<line x1="' + ap1.x + '" y1="' + ap1.y + '" x2="' + ap2.x + '" y2="' + ap2.y + '" stroke="' + color + '" stroke-width="0.7" opacity="0.55" ' + dash + '/>';
+  }
+
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="80" fill="none" stroke="#c9a961" stroke-width="0.5" opacity="0.4"/>';
+
+  var ascAngle = eclToSvg(data.angles.ascendant.eclipticLongitude);
+  var mcAngle = eclToSvg(data.angles.midheaven.eclipticLongitude);
+  var ascLabel = polar(cx, cy, 298, ascAngle);
+  var mcLabel = polar(cx, cy, 298, mcAngle);
+  svg += '<text x="' + ascLabel.x + '" y="' + ascLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">ASC</text>';
+  svg += '<text x="' + mcLabel.x + '" y="' + mcLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">MC</text>';
+
+  // Position planets, nudging clusters outward
+  var sorted = [];
+  for (var pj = 0; pj < planetsToShow.length; pj++) sorted.push({ p: planetsToShow[pj], idx: pj });
+  sorted.sort(function(a, b) { return a.p.eclipticLongitude - b.p.eclipticLongitude; });
+  var nudges = new Array(planetsToShow.length);
+  for (var nz = 0; nz < nudges.length; nz++) nudges[nz] = 0;
+  for (var si = 1; si < sorted.length; si++) {
+    var diff = Math.abs(sorted[si].p.eclipticLongitude - sorted[si-1].p.eclipticLongitude);
+    if (diff > 180) diff = 360 - diff;
+    if (diff < 7) nudges[sorted[si].idx] = nudges[sorted[si-1].idx] + 18;
+  }
+
+  for (var pk = 0; pk < planetsToShow.length; pk++) {
+    var p = planetsToShow[pk];
+    var pAngle = eclToSvg(p.eclipticLongitude);
+    var adjR = 215 + nudges[pk];
+    var pos = polar(cx, cy, adjR, pAngle);
+    var tickStart = polar(cx, cy, 250, pAngle);
+    var tickEnd = polar(cx, cy, adjR + 12, pAngle);
+    svg += '<line x1="' + tickStart.x + '" y1="' + tickStart.y + '" x2="' + tickEnd.x + '" y2="' + tickEnd.y + '" stroke="#e0c077" stroke-width="0.5" opacity="0.45"/>';
+    svg += '<circle cx="' + pos.x + '" cy="' + pos.y + '" r="13" fill="#0a1028" stroke="#e0c077" stroke-width="0.7"/>';
+    svg += '<text x="' + pos.x + '" y="' + pos.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="14" font-family="Georgia, serif">' + p.symbol + '</text>';
+    var degPos = polar(cx, cy, adjR + 22, pAngle);
+    svg += '<text x="' + degPos.x + '" y="' + degPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#c9a961" font-size="9">' + p.degreesInSign + '\u00B0</text>';
+  }
+
+  svg += '</svg>';
+
+  var html = '<div class="chart-wrapper"><h2>Your Natal Chart</h2>' + svg;
+  html += '<div class="section-title">Planets and Points</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th><th>House</th></tr></thead><tbody>';
+  for (var ti = 0; ti < planetsToShow.length; ti++) {
+    var pt = planetsToShow[ti];
+    html += '<tr><td>' + pt.symbol + ' ' + pt.name + '</td><td>' + pt.signSymbol + ' ' + pt.sign + '</td><td><span class="deg">' + pt.degreesInSign + '\u00B0</span> ' + String(pt.minutes).padStart(2, "0") + "'" + String(pt.seconds).padStart(2, "0") + '"</td><td>' + (pt.house || "\u2014") + '</td></tr>';
+  }
+  html += '</tbody></table>';
+
+  html += '<div class="section-title">Houses</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp Position</th></tr></thead><tbody>';
+  for (var hj = 0; hj < data.houses.length; hj++) {
+    var hh = data.houses[hj];
+    html += '<tr><td>House ' + hh.number + '</td><td>' + hh.signSymbol + ' ' + hh.sign + '</td><td><span class="deg">' + hh.degreesInSign + '\u00B0</span> ' + String(hh.minutes).padStart(2, "0") + "'</td></tr>";
+  }
+  html += '</tbody></table>';
+
+  if (data.aspects && data.aspects.length) {
+    html += '<div class="section-title">Aspects</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';
+    var max = Math.min(40, data.aspects.length);
+    for (var aj = 0; aj < max; aj++) {
+      var aa = data.aspects[aj];
+      html += '<tr><td>' + aa.point1 + '</td><td>' + aa.type + '</td><td>' + aa.point2 + '</td><td>' + parseFloat(aa.orb).toFixed(2) + '\u00B0</td></tr>';
+    }
+    html += '</tbody></table>';
+  }
+
+  html += '</div>';
+  resultDiv.innerHTML = html;
+}
+</script>
+
+</body>
+</html>
