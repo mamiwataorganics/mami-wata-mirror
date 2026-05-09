@@ -1,3 +1,7 @@
+Gmail	MAMI WATA Organics <mamiwataorganics@gmail.com>
+(no subject)
+ashlee ray <ashleenray@gmail.com>	Sat, May 9, 2026 at 2:33 AM
+To: mamiwataorganics@gmail.com
 <!DOCTYPE html>
 
 <html lang="en">
@@ -1036,7 +1040,464 @@ function setupLocationSearch(iI,rI,laI,lnI,sI){
           });
         }
         return fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(q)+"&format=json&limit=5")
-          .then(functi
-...
+          .then(function(r){return r.json();})
+          .then(function(d2){
+            if(!d2||!d2.length)return [];
+            return d2.map(function(r){
+              var p=r.display_name.split(",").map(function(s){return s.trim();}),cl=p[0];
+              if(p.length>=2)cl+=", "+p[p.length-2];
+              if(p.length>=3)cl+=", "+p[p.length-1];
+              return {lat:parseFloat(r.lat),lon:parseFloat(r.lon),name:cl};
+            });
+          })
+          .catch(function(){return [];});
+      })
+      .catch(function(){return [];});
+  }
+  inp.addEventListener("input",function(){
+    clearTimeout(t);
+    var q=inp.value.trim();
+    if(q.length<2){res.innerHTML="";return;}
+    t=setTimeout(function(){
+      res.innerHTML='<div class="location-results"><div class="location-result" style="color:#888;font-style:italic;">Searching...</div></div>';
+      tryGeocode(q).then(function(results){
+        if(!results||!results.length){
+          res.innerHTML='<div class="location-results"><div class="location-result" style="color:#c44536;font-style:italic;">No results. Try a bigger nearby city or check spelling.</div></div>';
+          return;
+        }
+        var html='<div class="location-results">';
+        results.forEach(function(r){
+          html+='<div class="location-result" data-lat="'+r.lat+'" data-lon="'+r.lon+'" data-name="'+r.name.replace(/"/g,"&quot;")+'">'+r.name+'</div>';
+        });
+        html+='</div>';
+        res.innerHTML=html;
+        res.querySelectorAll(".location-result").forEach(function(n){
+          if(!n.dataset.lat)return;
+          n.addEventListener("click",function(){
+            laInp.value=this.dataset.lat;
+            lnInp.value=this.dataset.lon;
+            inp.value=this.dataset.name;
+            sel.textContent="\u2713 "+this.dataset.name;
+            res.innerHTML="";
+          });
+        });
+      });
+    },350);
+  });
+}
+setupLocationSearch("location-search","location-results","latitude","longitude","selected-location");
+setupLocationSearch("location-search-2","location-results-2","latitude-2","longitude-2","selected-location-2");
+setupLocationSearch("transit-location-search","transit-location-results","transit-latitude","transit-longitude","transit-selected-location");
 
-[Message clipped]  View entire message
+function getTimezoneOffset(y,m,d,la,ln){
+  return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(tz.hasDayLightSaving){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
+}
+
+/* ============================================================
+   MODAL SYSTEM
+   ============================================================ */
+var modalBackdrop=document.getElementById("modal-backdrop");
+var modalClose=document.getElementById("modal-close");
+var modalEyebrow=document.getElementById("modal-eyebrow");
+var modalTitle=document.getElementById("modal-title");
+var modalSubtitle=document.getElementById("modal-subtitle");
+var modalBody=document.getElementById("modal-body");
+function showModal(eyebrow,title,subtitle,bodyHtml){
+  modalEyebrow.textContent=eyebrow||"";
+  modalTitle.textContent=title||"";
+  modalSubtitle.innerHTML=subtitle||"";
+  modalBody.innerHTML=bodyHtml||"";
+  modalBackdrop.classList.add("open");
+  modalBackdrop.scrollTop=0;
+}
+function hideModal(){modalBackdrop.classList.remove("open");}
+modalClose.addEventListener("click",hideModal);
+modalBackdrop.addEventListener("click",function(e){if(e.target===modalBackdrop)hideModal();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")hideModal();});
+
+function fmtPos(p){return p.degreesInSign+"\u00B0 "+String(p.minutes).padStart(2,"0")+"\u2032 "+(p.seconds!==undefined?String(p.seconds).padStart(2,"0")+"\u2033 ":"")+(p.signSymbol||"")+" "+(p.sign||"");}
+function rowsHtml(rows){return rows.map(function(r){return '<div class="field-row"><span class="lbl">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>';}).join("");}
+
+function showPlanetInterp(p){
+  var pInfo=INTERP_PLANETS[p.name],sInfo=INTERP_SIGNS[p.sign];
+  var rows=[["Sign",p.signSymbol+" "+p.sign],["Position",p.degreesInSign+"\u00B0 "+String(p.minutes).padStart(2,"0")+"\u2032"]];
+  if(p.house)rows.push(["House",p.house]);
+  if(p.retrograde)rows.push(["Motion","Retrograde"]);
+  var body='';
+  body+='<p>'+(pInfo?pInfo.text:"")+'</p>';
+  body+='<div style="margin:14px 0;">'+rowsHtml(rows)+'</div>';
+  if(sInfo){body+='<p><strong>'+p.name+' in '+p.sign+':</strong> '+p.name+' takes on the qualities of '+p.sign+' \u2014 '+sInfo.text+'</p>';}
+  if(p.house&&INTERP_HOUSES[p.house]){var h=INTERP_HOUSES[p.house];body+='<p><strong>In your '+h.name+' ('+h.domain+'):</strong> '+h.text+'</p>';}
+  showModal(p.name,p.name+" in "+p.sign,p.degreesInSign+"\u00B0 "+p.sign+(p.house?" \u00B7 House "+p.house:""),body);
+}
+function showSignInterp(signName){
+  var s=INTERP_SIGNS[signName];if(!s)return;
+  var body='<p>'+s.text+'</p><div style="margin-top:14px;">'+rowsHtml([["Element",s.element],["Modality",s.modality],["Ruler",s.ruler]])+'</div>';
+  showModal("Zodiac Sign",signName,s.element+" \u00B7 "+s.modality,body);
+}
+function showHouseInterp(num){
+  var h=INTERP_HOUSES[num];if(!h)return;
+  showModal("House "+num,h.name,h.domain,'<p>'+h.text+'</p>');
+}
+function showAspectInterp(asp){
+  var a=INTERP_ASPECTS[asp.type];
+  var body='<p>'+(a?a.text:"")+'</p><div style="margin-top:14px;">'+rowsHtml([["From",asp.point1],["To",asp.point2],["Aspect",asp.type],["Orb",parseFloat(asp.orb).toFixed(2)+"\u00B0"]])+'</div>';
+  showModal("Aspect",asp.point1+" "+asp.type+" "+asp.point2,a?a.text.split(":")[0]:"",body);
+}
+function showGateInterp(gateNum,line,planetName,activation){
+  var g=INTERP_HD_GATES[gateNum];if(!g)return;
+  var center=HD_GATE_CENTERS[gateNum]||"";
+  var subtitle='Gate '+gateNum+(line?'.'+line:'')+(center?' \u00B7 '+center+' Center':'');
+  var body='<p>'+g.text+'</p>';
+  body+='<div style="margin:14px 0;">'+rowsHtml([["Gate",gateNum+(line?'.'+line:'')],["Theme",g.hex],["Center",center||"\u2014"],["Activation",activation||"\u2014"],planetName?["Body",planetName]:null].filter(Boolean))+'</div>';
+  showModal("Gate "+gateNum,g.name,subtitle,body);
+}
+function showCenterInterp(name,defined){
+  var c=INTERP_HD_CENTERS[name];if(!c)return;
+  showModal("Center",name+" Center",defined?"Defined":"Undefined / Open",'<p>'+c.text+'</p>');
+}
+function showChannelInterp(g1,g2){
+  var key=g1<g2?g1+"-"+g2:g2+"-"+g1;
+  var ch=INTERP_HD_CHANNELS[key];if(!ch)return;
+  var c1=HD_GATE_CENTERS[g1],c2=HD_GATE_CENTERS[g2];
+  showModal("Channel",ch.name,"Channel "+key+" \u00B7 "+c1+" \u2194 "+c2,'<p>'+ch.text+'</p>');
+}
+function showTypeInterp(type){var t=INTERP_HD_TYPE[type];if(!t)return;showModal("Type",type,"Strategy: "+t.strategy,'<p>'+t.text+'</p>');}
+function showAuthorityInterp(auth){var a=INTERP_HD_AUTHORITY[auth];if(!a)return;showModal("Authority",auth,"Inner Decision-Making",'<p>'+a.text+'</p>');}
+function showProfileInterp(prof){var p=INTERP_HD_PROFILE[prof];if(!p)return;showModal("Profile",prof,"Life Theme",'<p>'+p.text+'</p>');}
+function showDefinitionInterp(def){var d=INTERP_HD_DEFINITION[def];if(!d)return;showModal("Definition",def,"How Your Energy Flows",'<p>'+d.text+'</p>');}
+
+window._mami={showPlanetInterp:showPlanetInterp,showSignInterp:showSignInterp,showHouseInterp:showHouseInterp,showAspectInterp:showAspectInterp,showGateInterp:showGateInterp,showCenterInterp:showCenterInterp,showChannelInterp:showChannelInterp,showTypeInterp:showTypeInterp,showAuthorityInterp:showAuthorityInterp,showProfileInterp:showProfileInterp,showDefinitionInterp:showDefinitionInterp};
+
+/* ============================================================
+   FORM HANDLER
+   ============================================================ */
+var resultDiv=document.getElementById("result");
+btn.addEventListener("click",function(){
+  if(!sweReady){resultDiv.innerHTML='<div class="error">Engine still loading.</div>';return;}
+  var ct=chartTypeSelect.value;
+  var dV=document.getElementById("birth-date").value,tV=document.getElementById("birth-time").value;
+  var la=document.getElementById("latitude").value,ln=document.getElementById("longitude").value;
+  var hs=document.getElementById("house-system").value;
+  if(!dV||!tV||!la||!ln){resultDiv.innerHTML='<div class="error">Please complete every field and select a location from the dropdown.</div>';return;}
+  var dp=dV.split("-"),tp=tV.split(":"),y=parseInt(dp[0]),m=parseInt(dp[1]),d=parseInt(dp[2]),h=parseInt(tp[0]),mn=parseInt(tp[1]);
+  resultDiv.innerHTML='<div class="loading">Casting your chart \u2026</div>';
+  getTimezoneOffset(y,m,d,la,ln).then(function(tz){
+    try{
+      if(ct==="natal"){renderNatalChart(generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz));}
+      else if(ct==="human-design"){renderHumanDesign(generateHumanDesignChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),tz));}
+      else if(ct==="transit"){
+        var tD=document.getElementById("transit-date").value,tT=document.getElementById("transit-time").value||"12:00";
+        var tLa=document.getElementById("transit-latitude").value||la,tLn=document.getElementById("transit-longitude").value||ln;
+        if(!tD){var n=new Date();tD=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");}
+        var tdp=tD.split("-"),ttp=tT.split(":");
+        getTimezoneOffset(parseInt(tdp[0]),parseInt(tdp[1]),parseInt(tdp[2]),tLa,tLn).then(function(tT2){
+          renderTransitChart(generateTransitChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:parseInt(tdp[0]),month:parseInt(tdp[1]),day:parseInt(tdp[2]),hour:parseInt(ttp[0]),minute:parseInt(ttp[1]),tzOffsetHours:tT2}));
+        });
+      }
+      else if(ct==="synastry"){
+        var d2=document.getElementById("birth-date-2").value,t2=document.getElementById("birth-time-2").value;
+        var la2=document.getElementById("latitude-2").value,ln2=document.getElementById("longitude-2").value;
+        if(!d2||!t2||!la2||!ln2){resultDiv.innerHTML='<div class="error">Please complete the partner\u2019s birth information too.</div>';return;}
+        var dp2=d2.split("-"),tp2=t2.split(":"),y2=parseInt(dp2[0]),m2=parseInt(dp2[1]),day2=parseInt(dp2[2]),h2=parseInt(tp2[0]),mn2=parseInt(tp2[1]);
+        getTimezoneOffset(y2,m2,day2,la2,ln2).then(function(tz2){
+          renderSynastryChart(generateSynastryChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:y2,month:m2,day:day2,hour:h2,minute:mn2,lat:parseFloat(la2),lng:parseFloat(ln2),houseSystem:hs,tzOffsetHours:tz2}));
+        });
+      }
+    }catch(e){console.error(e);resultDiv.innerHTML='<div class="error">Error: '+e.message+'</div>';}
+  });
+});
+
+/* ============================================================
+   WHEEL RENDERING (clickable)
+   ============================================================ */
+function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt,wheelData){
+  opt=opt||{};
+  function eclToSvg(lon){return 180+(lon-ascLon);}
+  function polar(cx,cy,r,deg){var rad=(deg*Math.PI)/180;return{x:cx+r*Math.cos(rad),y:cy-r*Math.sin(rad)};}
+  var cx=300,cy=300;
+  var svg='<svg class="wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="280" fill="none" stroke="#d4b675" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="250" fill="none" stroke="#d4b675" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
+  for(var i=0;i<12;i++){var a=eclToSvg(i*30),p1=polar(cx,cy,250,a),p2=polar(cx,cy,280,a);svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#d4b675" stroke-width="1" opacity="0.5"/>';}
+  for(var d=0;d<360;d++){var a=eclToSvg(d),iM=d%10===0,tL=iM?6:(d%5===0?4:2),tp1=polar(cx,cy,280,a),tp2=polar(cx,cy,280-tL,a);svg+='<line x1="'+tp1.x+'" y1="'+tp1.y+'" x2="'+tp2.x+'" y2="'+tp2.y+'" stroke="#d4b675" stroke-width="'+(iM?1:0.5)+'" opacity="'+(iM?0.85:0.4)+'"/>';}
+  for(var s=0;s<12;s++){var sa=eclToSvg(s*30+15),sp=polar(cx,cy,265,sa),sn=SIGN_NAMES[s];svg+='<g class="interactive" onclick="window._mami.showSignInterp(\''+sn+'\')"><circle cx="'+sp.x+'" cy="'+sp.y+'" r="14" fill="transparent"/><text x="'+sp.x+'" y="'+sp.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="22" font-family="Cinzel, serif">'+SIGN_SYMBOLS[s]+'</text></g>';}
+  if(houses){for(var hi=0;hi<houses.length;hi++){var h=houses[hi],ha=eclToSvg(h.eclipticLongitude),hp1=polar(cx,cy,80,ha),hp2=polar(cx,cy,250,ha),iA=[0,3,6,9].indexOf(hi)!==-1;svg+='<line x1="'+hp1.x+'" y1="'+hp1.y+'" x2="'+hp2.x+'" y2="'+hp2.y+'" stroke="#e8e1cc" stroke-width="'+(iA?1:0.5)+'" opacity="'+(iA?0.6:0.3)+'"/>';var nh=houses[(hi+1)%12],ml=(h.eclipticLongitude+nh.eclipticLongitude)/2;if(nh.eclipticLongitude<h.eclipticLongitude)ml=((h.eclipticLongitude+nh.eclipticLongitude+360)/2)%360;var ma=eclToSvg(ml),np=polar(cx,cy,100,ma);svg+='<g class="interactive" onclick="window._mami.showHouseInterp('+h.number+')"><circle cx="'+np.x+'" cy="'+np.y+'" r="12" fill="transparent"/><text x="'+np.x+'" y="'+np.y+'" text-anchor="middle" dominant-baseline="central" fill="#b8b09a" font-size="13" font-style="italic" font-family="Cormorant Garamond, serif">'+h.number+'</text></g>';}}
+  if(aspects&&aspects.length){var aC={conjunction:"#e9cb8a",opposition:"#c44536",trine:"#6b8e4e",square:"#c44536",sextile:"#4a6b8e"};for(var ai=0;ai<aspects.length;ai++){var asp=aspects[ai],pa1=null,pa2=null;for(var pi=0;pi<planets.length;pi++){if(planets[pi].name===asp.point1)pa1=planets[pi];if(planets[pi].name===asp.point2)pa2=planets[pi];}if(asp.point1==="Ascendant")pa1={eclipticLongitude:ascLon};if(asp.point1==="Midheaven")pa1={eclipticLongitude:mcLon};if(asp.point2==="Ascendant")pa2={eclipticLongitude:ascLon};if(asp.point2==="Midheaven")pa2={eclipticLongitude:mcLon};if(!pa1||!pa2)continue;var aa1=eclToSvg(pa1.eclipticLongitude),aa2=eclToSvg(pa2.eclipticLongitude),ap1=polar(cx,cy,160,aa1),ap2=polar(cx,cy,160,aa2),co=aC[asp.type]||"#888",dh=(asp.type==="square"||asp.type==="opposition")?'stroke-dasharray="2,3"':"";svg+='<line x1="'+ap1.x+'" y1="'+ap1.y+'" x2="'+ap2.x+'" y2="'+ap2.y+'" stroke="'+co+'" stroke-width="0.7" opacity="0.55" '+dh+'/>';}}
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="80" fill="none" stroke="#d4b675" stroke-width="0.5" opacity="0.4"/>';
+  if(ascLon!==undefined){var aL=polar(cx,cy,298,eclToSvg(ascLon));svg+='<text x="'+aL.x+'" y="'+aL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="10" letter-spacing="2" font-family="Cinzel, serif">ASC</text>';}
+  if(mcLon!==undefined){var mL=polar(cx,cy,298,eclToSvg(mcLon));svg+='<text x="'+mL.x+'" y="'+mL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="10" letter-spacing="2" font-family="Cinzel, serif">MC</text>';}
+  var rR=opt.ringRadius||215,pCo=opt.planetColor||"#e9cb8a",pS=planets||[];
+  var sd=[];for(var pj=0;pj<pS.length;pj++)sd.push({p:pS[pj],idx:pj});
+  sd.sort(function(a,b){return a.p.eclipticLongitude-b.p.eclipticLongitude;});
+  var nu=new Array(pS.length);for(var nz=0;nz<nu.length;nz++)nu[nz]=0;
+  for(var si=1;si<sd.length;si++){var df=Math.abs(sd[si].p.eclipticLongitude-sd[si-1].p.eclipticLongitude);if(df>180)df=360-df;if(df<7)nu[sd[si].idx]=nu[sd[si-1].idx]+18;}
+  var planetsKey=opt.planetsKey||"_natalPlanets";
+  window[planetsKey]=pS;
+  for(var pk=0;pk<pS.length;pk++){var p=pS[pk],pA=eclToSvg(p.eclipticLongitude),aR=rR+nu[pk],po=polar(cx,cy,aR,pA),tS=polar(cx,cy,250,pA),tE=polar(cx,cy,aR+12,pA);svg+='<line x1="'+tS.x+'" y1="'+tS.y+'" x2="'+tE.x+'" y2="'+tE.y+'" stroke="'+pCo+'" stroke-width="0.5" opacity="0.45"/>';svg+='<g class="interactive" onclick="window._mami.showPlanetInterp(window.'+planetsKey+'['+pk+'])"><circle cx="'+po.x+'" cy="'+po.y+'" r="14" fill="#060914" stroke="'+pCo+'" stroke-width="0.7"/><text x="'+po.x+'" y="'+po.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="14" font-family="Cinzel, serif">'+p.symbol+'</text></g>';var dP=polar(cx,cy,aR+22,pA),rx=p.retrograde?'<tspan fill="#c44536" font-size="7"> R</tspan>':'';svg+='<text x="'+dP.x+'" y="'+dP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="9" font-family="Cinzel, serif">'+(p.degreesInSign!==undefined?p.degreesInSign+'\u00B0':'')+rx+'</text>';}
+  if(opt.overlayPlanets){var ov=opt.overlayPlanets,oC=opt.overlayColor||"#4a6b8e",oR=opt.overlayRingRadius||240,oKey=opt.overlayKey||"_overlayPlanets";window[oKey]=ov;for(var op=0;op<ov.length;op++){var o=ov[op],oA=eclToSvg(o.eclipticLongitude),oP=polar(cx,cy,oR,oA);svg+='<g class="interactive" onclick="window._mami.showPlanetInterp(window.'+oKey+'['+op+'])"><circle cx="'+oP.x+'" cy="'+oP.y+'" r="12" fill="#060914" stroke="'+oC+'" stroke-width="0.7"/><text x="'+oP.x+'" y="'+oP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+oC+'" font-size="12" font-family="Cinzel, serif">'+o.symbol+'</text></g>';}}
+  svg+='</svg>';return svg;
+}
+
+function tableOfPlanets(t,p,wH,clickKey){
+  window[clickKey]=p;
+  var h='<div class="section-title">'+t+'</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th>'+(wH?'<th>House</th>':'')+'</tr></thead><tbody>';
+  p.forEach(function(pt,i){var rx=pt.retrograde?' <span style="color:#c44536;font-size:11px;">\u211E</span>':'';h+='<tr class="clickable" onclick="window._mami.showPlanetInterp(window.'+clickKey+'['+i+'])"><td>'+pt.symbol+' '+pt.name+rx+'</td><td>'+pt.signSymbol+' '+pt.sign+'</td><td><span class="deg">'+pt.degreesInSign+'\u00B0</span> '+String(pt.minutes).padStart(2,"0")+"\u2032"+(pt.seconds!==undefined?String(pt.seconds).padStart(2,"0")+"\u2033":'')+'</td>'+(wH?'<td>'+(pt.house||"\u2014")+'</td>':'')+'</tr>';});
+  h+='</tbody></table>';return h;
+}
+function tableOfHouses(hs){
+  window._housesData=hs;
+  var h='<div class="section-title">Houses</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp</th></tr></thead><tbody>';
+  hs.forEach(function(x){h+='<tr class="clickable" onclick="window._mami.showHouseInterp('+x.number+')"><td>House '+x.number+'</td><td>'+x.signSymbol+' '+x.sign+'</td><td><span class="deg">'+x.degreesInSign+'\u00B0</span> '+String(x.minutes).padStart(2,"0")+"\u2032</td></tr>";});
+  h+='</tbody></table>';return h;
+}
+function tableOfAspects(t,a,clickKey){
+  if(!a||!a.length)return'';
+  window[clickKey]=a;
+  var h='<div class="section-title">'+t+'</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';
+  var mx=Math.min(60,a.length);
+  for(var i=0;i<mx;i++){var x=a[i];h+='<tr class="clickable" onclick="window._mami.showAspectInterp(window.'+clickKey+'['+i+'])"><td>'+x.point1+'</td><td>'+x.type+'</td><td>'+x.point2+'</td><td>'+parseFloat(x.orb).toFixed(2)+'\u00B0</td></tr>';}
+  h+='</tbody></table>';return h;
+}
+
+function renderNatalChart(d){
+  var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects,{planetsKey:"_natalP"});
+  var html='<div class="chart-wrapper"><h2>Your Natal Chart</h2><div class="chart-meta">'+d.engine+'</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+='<div class="section-title">Angles</div>';
+  window._ascData={name:"Ascendant",sign:d.angles.ascendant.sign,signSymbol:d.angles.ascendant.signSymbol,degreesInSign:d.angles.ascendant.degreesInSign,minutes:d.angles.ascendant.minutes};
+  window._mcData={name:"Midheaven",sign:d.angles.midheaven.sign,signSymbol:d.angles.midheaven.signSymbol,degreesInSign:d.angles.midheaven.degreesInSign,minutes:d.angles.midheaven.minutes};
+  html+='<table class="data-table"><tbody>';
+  html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.ascendant.sign+'\')"><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"\u2032</td></tr>";
+  html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.midheaven.sign+'\')"><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"\u2032</td></tr>";
+  html+='</tbody></table>';
+  html+=tableOfPlanets("Planets and Points",d.planets,true,"_natalTable")+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects,"_natalAspects")+'</div>';
+  resultDiv.innerHTML=html;
+}
+function renderTransitChart(d){
+  var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
+  var svg=buildWheelSVG(d.natal.planets,d.natal.houses,d.natal.angles.ascendant.eclipticLongitude,d.natal.angles.midheaven.eclipticLongitude,d.natal.aspects,{overlayPlanets:ov,overlayColor:"#4a6b8e",ringRadius:215,overlayRingRadius:240,planetsKey:"_transitNatal",overlayKey:"_transitOverlay"});
+  var html='<div class="chart-wrapper"><h2>Transit Chart</h2><div class="chart-meta">Transits for '+d.transitDate+' \u00B7 '+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Natal &nbsp; <span class="swatch" style="background:#4a6b8e;"></span>Outer: Transits</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+=tableOfPlanets("Natal Planets",d.natal.planets,true,"_tNatal")+tableOfPlanets("Transiting Planets",d.transitPlanets,true,"_tTransit")+tableOfAspects("Transit-to-Natal Aspects",d.interAspects,"_tAspects")+'</div>';
+  resultDiv.innerHTML=html;
+}
+function renderSynastryChart(d){
+  var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
+  var svg=buildWheelSVG(d.natalA.planets,d.natalA.houses,d.natalA.angles.ascendant.eclipticLongitude,d.natalA.angles.midheaven.eclipticLongitude,null,{overlayPlanets:ov,overlayColor:"#d4b675",ringRadius:215,overlayRingRadius:240,planetsKey:"_synA",overlayKey:"_synB"});
+  var html='<div class="chart-wrapper"><h2>Synastry Chart</h2><div class="chart-meta">'+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Person A &nbsp; <span class="swatch" style="background:#d4b675;"></span>Outer: Person B</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+=tableOfPlanets("Person A",d.natalA.planets,true,"_synAT")+tableOfPlanets("Person B",d.natalB.planets,true,"_synBT")+tableOfAspects("Inter-Chart Aspects (A to B)",d.interAspects,"_synAspects")+'</div>';
+  resultDiv.innerHTML=html;
+}
+
+/* ============================================================
+   BODYGRAPH - corrected gate positions on center perimeters
+   Each gate has its own (x,y) where the channel line connects.
+   ============================================================ */
+
+var BODYGRAPH_CENTERS = {
+  Head: { shape: "triangle-up", points: [[200,30],[260,120],[140,120]], cx: 200, cy: 90, color: "#f4d35e" },
+  Ajna: { shape: "triangle-down", points: [[140,140],[260,140],[200,230]], cx: 200, cy: 175, color: "#7cc05f" },
+  Throat: { shape: "rect", points: [[155,250],[245,250],[245,340],[155,340]], cx: 200, cy: 295, color: "#8a6a3f" },
+  G: { shape: "diamond", points: [[200,360],[260,420],[200,480],[140,420]], cx: 200, cy: 420, color: "#e9cb8a" },
+  Heart: { shape: "triangle-left", points: [[315,400],[315,460],[260,430]], cx: 290, cy: 430, color: "#c44536" },
+  Spleen: { shape: "triangle-right", points: [[55,460],[55,520],[110,490]], cx: 80, cy: 490, color: "#7a5da5" },
+  Sacral: { shape: "rect", points: [[155,500],[245,500],[245,590],[155,590]], cx: 200, cy: 545, color: "#c44536" },
+  Solar: { shape: "triangle-right", points: [[290,500],[290,560],[345,530]], cx: 315, cy: 530, color: "#c9a961" },
+  Root: { shape: "rect", points: [[155,610],[245,610],[245,700],[155,700]], cx: 200, cy: 655, color: "#8b4f3f" }
+};
+
+// Each gate's (x,y) on the perimeter of its center, positioned where the channel line enters
+var BODYGRAPH_GATE_POSITIONS = {
+  // HEAD
+  64: { x: 165, y: 110 },  // bottom-left
+  61: { x: 200, y: 122 },  // bottom-center
+  63: { x: 235, y: 110 },  // bottom-right
+  // AJNA
+  47: { x: 152, y: 152 },  // top-left
+  24: { x: 200, y: 142 },  // top-center
+  4:  { x: 248, y: 152 },  // top-right
+  17: { x: 168, y: 215 },  // bottom-left
+  43: { x: 200, y: 228 },  // bottom-center
+  11: { x: 232, y: 215 },  // bottom-right
+  // THROAT
+  62: { x: 158, y: 260 },  // top-left
+  23: { x: 158, y: 285 },  // mid-left
+  56: { x: 158, y: 310 },  // bottom-left
+  16: { x: 158, y: 332 },  // bottom-bottom-left
+  20: { x: 200, y: 252 },  // top-center
+  31: { x: 242, y: 260 },  // top-right
+  8:  { x: 242, y: 285 },  // mid-right
+  33: { x: 242, y: 310 },  // bottom-right
+  35: { x: 242, y: 332 },  // bottom-bottom-right
+  12: { x: 175, y: 338 },  // bottom-left
+  45: { x: 225, y: 338 },  // bottom-right
+  // G
+  1:  { x: 200, y: 365 },  // top
+  13: { x: 245, y: 405 },  // top-right
+  25: { x: 245, y: 435 },  // bottom-right
+  46: { x: 200, y: 475 },  // bottom
+  2:  { x: 155, y: 435 },  // bottom-left
+  15: { x: 155, y: 405 },  // top-left
+  10: { x: 175, y: 388 },  // top-left-inner
+  7:  { x: 225, y: 388 },  // top-right-inner
+  // HEART
+  21: { x: 285, y: 410 },  // top
+  40: { x: 312, y: 422 },  // right
+  26: { x: 312, y: 442 },  // right-bottom
+  51: { x: 285, y: 455 },  // bottom-left
+  // SPLEEN
+  48: { x: 60, y: 475 },   // top
+  57: { x: 60, y: 495 },   // mid
+  44: { x: 60, y: 515 },   // bottom
+  50: { x: 92, y: 478 },   // top-right
+  32: { x: 100, y: 490 },  // mid-right
+  28: { x: 92, y: 502 },   // bottom-right
+  18: { x: 78, y: 512 },   // bottom-mid
+  // SACRAL
+  34: { x: 158, y: 510 },  // top-left
+  5:  { x: 200, y: 503 },  // top-center
+  14: { x: 242, y: 510 },  // top-right
+  29: { x: 158, y: 545 },  // mid-left
+  59: { x: 200, y: 545 },  // mid-center
+  9:  { x: 242, y: 545 },  // mid-right
+  3:  { x: 158, y: 580 },  // bottom-left
+  42: { x: 200, y: 587 },  // bottom-center
+  27: { x: 242, y: 580 },  // bottom-right
+  // SOLAR
+  6:  { x: 295, y: 510 },  // top
+  37: { x: 320, y: 525 },  // right-top
+  22: { x: 340, y: 533 },  // far-right
+  36: { x: 320, y: 550 },  // right-bottom
+  30: { x: 295, y: 555 },  // bottom-left
+  55: { x: 308, y: 535 },  // mid
+  49: { x: 305, y: 545 },  // mid-bottom
+  // ROOT
+  53: { x: 158, y: 620 },  // top-left
+  60: { x: 200, y: 612 },  // top-center
+  52: { x: 242, y: 620 },  // top-right
+  19: { x: 158, y: 655 },  // mid-left
+  39: { x: 200, y: 655 },  // mid-center
+  41: { x: 242, y: 655 },  // mid-right
+  58: { x: 158, y: 690 },  // bottom-left
+  38: { x: 200, y: 697 },  // bottom-center
+  54: { x: 242, y: 690 }   // bottom-right
+};
+
+function renderHumanDesign(d){
+  var html='<div class="chart-wrapper"><h2>Human Design Bodygraph</h2><div class="chart-meta">'+d.engine+'</div>';
+  html+='<div class="hd-summary">';
+  html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Type</div><div class="value">'+d.hdType+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Strategy</div><div class="value">'+d.strategy+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showAuthorityInterp(\''+d.authority+'\')"><div class="label">Authority</div><div class="value">'+d.authority.split(" ")[0]+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showProfileInterp(\''+d.profile+'\')"><div class="label">Profile</div><div class="value">'+d.profile+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showDefinitionInterp(\''+d.definition+'\')"><div class="label">Definition</div><div class="value">'+d.definition.replace(" Definition","")+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Signature</div><div class="value">'+d.signature+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Not-Self</div><div class="value">'+d.notSelf+'</div></div>';
+  html+='</div>';
+  html+='<div class="tap-hint">Tap any element of the chart to read its meaning</div>';
+
+  // Build SVG
+  var svg='<svg class="bodygraph" viewBox="0 0 400 740" xmlns="http://www.w3.org/2000/svg">';
+
+  // Draw channels FIRST (under centers)
+  function gp(g){return BODYGRAPH_GATE_POSITIONS[g];}
+  d.definedChannels.forEach(function(ch){
+    var p1=gp(ch[0]),p2=gp(ch[1]);if(!p1||!p2)return;
+    var bP=d.personalityGates[ch[0]]&&d.personalityGates[ch[1]];
+    var bD=d.designGates[ch[0]]&&d.designGates[ch[1]];
+    var lc;
+    if(bP&&bD)lc="#e9cb8a";       // both = gold (defined fully)
+    else if(bP)lc="#0a1028";       // personality only = dark/black
+    else lc="#c44536";             // design only = red
+    svg+='<g class="interactive" onclick="window._mami.showChannelInterp('+ch[0]+','+ch[1]+')"><line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+lc+'" stroke-width="6" opacity="0.95" stroke-linecap="round"/></g>';
+  });
+
+  // Draw centers
+  Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){
+    var c=BODYGRAPH_CENTERS[cn];
+    var defined=d.definedCenters[cn];
+    var fl=defined?c.color:"transparent";
+    var pts=c.points.map(function(p){return p[0]+","+p[1];}).join(" ");
+    if(c.shape==="rect"){
+      var x=c.points[0][0],y=c.points[0][1],w=c.points[1][0]-c.points[0][0],h=c.points[2][1]-c.points[1][1];
+      svg+='<g class="interactive" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+fl+'" stroke="#d4b675" stroke-width="1.5"/></g>';
+    } else {
+      svg+='<g class="interactive" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><polygon points="'+pts+'" fill="'+fl+'" stroke="#d4b675" stroke-width="1.5"/></g>';
+    }
+    // Center name
+    var labelColor=defined?"#0a0a0a":"#b8b09a";
+    svg+='<text x="'+c.cx+'" y="'+c.cy+'" text-anchor="middle" dominant-baseline="central" fill="'+labelColor+'" font-size="10" font-family="Cinzel, serif" font-style="italic" pointer-events="none" letter-spacing="1">'+cn+'</text>';
+  });
+
+  // Draw gate numbers ON the centers, at proper positions
+  Object.keys(BODYGRAPH_GATE_POSITIONS).forEach(function(gateStr){
+    var g=parseInt(gateStr);
+    var pos=BODYGRAPH_GATE_POSITIONS[g];
+    var center=HD_GATE_CENTERS[g];
+    var centerDefined=d.definedCenters[center];
+    var bP=d.personalityGates[g],bD=d.designGates[g];
+    var activated=d.activatedGates[g];
+
+    // Background circle for readability
+    var bgFill,textColor;
+    if(activated){
+      if(bP&&bD){ bgFill="#e9cb8a"; textColor="#0a0a0a"; }
+      else if(bP){ bgFill="#0a0a0a"; textColor="#e9cb8a"; }
+      else { bgFill="#c44536"; textColor="#ffffff"; }
+    } else {
+      bgFill=centerDefined?"rgba(0,0,0,0.15)":"transparent";
+      textColor=centerDefined?"#3a3a3a":"#6b6451";
+    }
+
+    if(activated){
+      svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\''+(bP&&bD?"Both Personality & Design":bP?"Personality (Conscious)":"Design (Unconscious)")+'\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="9" fill="'+bgFill+'" stroke="#d4b675" stroke-width="0.8"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="9" font-weight="bold" font-family="Cinzel, serif" pointer-events="none">'+g+'</text></g>';
+    } else {
+      svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\'Not activated\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="8" fill="'+bgFill+'" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="8" font-family="Cinzel, serif" pointer-events="none" opacity="0.7">'+g+'</text></g>';
+    }
+  });
+
+  svg+='</svg>';
+  html+=svg;
+
+  // Legend
+  html+='<div class="legend" style="margin-top:8px;"><span class="swatch" style="background:#e9cb8a;"></span>Both &nbsp; <span class="swatch" style="background:#0a0a0a;border:1px solid #d4b675;"></span>Personality &nbsp; <span class="swatch" style="background:#c44536;"></span>Design</div>';
+
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+
+  // Personality activations table
+  window._hdPers=d.personalityPlanets;
+  html+='<div class="section-title">Personality (Conscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.personalityPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Personality (Conscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
+  html+='</tbody></table>';
+
+  // Design activations table
+  window._hdDes=d.designPlanets;
+  html+='<div class="section-title">Design (Unconscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.designPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Design (Unconscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg" style="color:#c44536;">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
+  html+='</tbody></table>';
+
+  // Channels table
+  html+='<div class="section-title">Defined Channels</div><div class="tap-hint">Tap any channel to read its meaning</div>';
+  if(d.definedChannels.length===0){
+    html+='<p style="color:#b8b09a;font-style:italic;text-align:center;padding:14px;">No defined channels.</p>';
+  } else {
+    html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';
+    d.definedChannels.forEach(function(c){html+='<tr class="clickable" onclick="window._mami.showChannelInterp('+c[0]+','+c[1]+')"><td><span class="deg">'+c[0]+'\u2014'+c[1]+'</span></td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});
+    html+='</tbody></table>';
+  }
+
+  // Centers table
+  html+='<div class="section-title">Centers</div><div class="tap-hint">Tap any center to read its meaning</div><table class="data-table"><thead><tr><th>Center</th><th>State</th></tr></thead><tbody>';
+  Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){var defined=d.definedCenters[cn];html+='<tr class="clickable" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><td>'+cn+'</td><td>'+(defined?'<span style="color:#e9cb8a;">Defined</span>':'<span style="color:#b8b09a;">Open</span>')+'</td></tr>';});
+  html+='</tbody></table>';
+
+  html+='<div class="section-title">Incarnation Cross</div><p style="color:#e9cb8a;font-style:italic;text-align:center;padding:14px 0;font-size:17px;">'+d.incarnationCross+'</p>';
+
+  html+='</div>';
+  resultDiv.innerHTML=html;
+}
+</script>
+
+</body>
+</html>
