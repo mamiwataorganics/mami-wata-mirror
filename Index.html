@@ -1,111 +1,863 @@
+Gmail	MAMI WATA Organics <mamiwataorganics@gmail.com>
+(no subject)
+ashlee ray <ashleenray@gmail.com>	Sat, May 9, 2026 at 12:30 AM
+To: mamiwataorganics@gmail.com
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mami Wata's Mirror</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg-deep: #060914;
+    --bg-card: #0d1226;
+    --bg-card-soft: rgba(255,255,255,0.03);
+    --ink: #f4ecd8;
+    --ink-soft: #b8b09a;
+    --ink-faint: #6b6451;
+    --gold: #d4b675;
+    --gold-bright: #e9cb8a;
+    --gold-deep: #9a7d3f;
+    --pearl: #e8e1cc;
+    --accent-rose: #c44536;
+    --accent-sage: #6b8e4e;
+    --accent-blue: #4a6b8e;
+    --line: rgba(212,182,117,0.25);
+    --line-faint: rgba(212,182,117,0.12);
+  }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: #0a1028; color: #f0ead6; padding: 24px 16px 60px; min-height: 100vh; }
-  .container { max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 32px; font-style: italic; text-align: center; margin-bottom: 8px; color: #e0c077; }
-  .subtitle { text-align: center; color: #a8a08a; margin-bottom: 24px; font-style: italic; font-size: 15px; }
-  .form-card { background: rgba(255,255,255,0.04); padding: 24px; border: 1px solid rgba(224,192,119,0.3); margin-bottom: 24px; }
-  .form-section { border-top: 1px dashed rgba(224,192,119,0.2); padding-top: 18px; margin-top: 18px; }
-  .form-section.first { border-top: none; padding-top: 0; margin-top: 0; }
-  .form-section h3 { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #e0c077; margin-bottom: 12px; font-style: italic; }
-  label { display: block; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a961; margin-bottom: 6px; margin-top: 14px; }
-  label:first-child { margin-top: 0; }
-  input, select { width: 100%; padding: 10px 12px; font-size: 15px; background: rgba(0,0,0,0.3); color: #f0ead6; border: 1px solid rgba(240,234,214,0.2); font-family: Georgia, serif; }
-  input:focus, select:focus { outline: none; border-color: #c9a961; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
-  button { width: 100%; margin-top: 20px; padding: 14px; background: #c9a961; color: #0a1028; border: none; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-family: Georgia, serif; }
-  button:hover { background: #e0c077; }
-  button:disabled { opacity: 0.5; cursor: not-allowed; }
-  .helper { font-size: 12px; color: #888; margin-top: 4px; font-style: italic; }
-  #result { margin-top: 32px; }
-  .chart-wrapper { background: rgba(255,255,255,0.04); padding: 24px; border: 1px solid rgba(224,192,119,0.3); }
-  .chart-wrapper h2 { font-size: 22px; font-style: italic; text-align: center; color: #e0c077; margin-bottom: 8px; }
-  svg.wheel, svg.bodygraph { display: block; margin: 0 auto; max-width: 100%; height: auto; }
-  .data-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; }
-  .data-table th { text-align: left; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a961; padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.2); }
-  .data-table td { padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.08); }
-  .data-table .deg { color: #e0c077; font-weight: bold; }
-  .section-title { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #c9a961; margin: 28px 0 12px; }
-  .error { background: rgba(196,69,54,0.15); border: 1px solid #c44536; padding: 14px; color: #f0ead6; margin-top: 16px; }
-  .loading { text-align: center; color: #c9a961; padding: 24px; font-style: italic; }
-  .location-results { background: rgba(0,0,0,0.5); border: 1px solid rgba(240,234,214,0.2); border-top: none; max-height: 200px; overflow-y: auto; }
-  .location-result { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid rgba(240,234,214,0.05); font-size: 14px; }
-  .location-result:hover { background: rgba(201,169,97,0.1); }
-  .engine-status { text-align: center; font-size: 11px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
-  .engine-status.ready { color: #6b8e4e; }
-  .hd-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 20px 0; }
-  .hd-summary-item { background: rgba(0,0,0,0.3); padding: 12px; text-align: center; border: 1px solid rgba(224,192,119,0.2); }
-  .hd-summary-item .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c9a961; margin-bottom: 4px; }
-  .hd-summary-item .value { font-size: 16px; color: #e0c077; font-style: italic; }
-  .hidden { display: none; }
+  html, body { background: var(--bg-deep); }
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 32px 16px 80px;
+    line-height: 1.5;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(74,107,142,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(212,182,117,0.08) 0%, transparent 60%),
+      radial-gradient(circle at 50% 50%, #0a0f24 0%, #060914 100%);
+    background-attachment: fixed;
+  }
+  /* Subtle starfield */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 14% 22%, rgba(255,255,255,0.5) 50%, transparent 100%),
+      radial-gradient(1px 1px at 78% 14%, rgba(255,255,255,0.4) 50%, transparent 100%),
+      radial-gradient(1px 1px at 33% 67%, rgba(255,255,255,0.55) 50%, transparent 100%),
+      radial-gradient(1px 1px at 88% 80%, rgba(255,255,255,0.35) 50%, transparent 100%),
+      radial-gradient(1px 1px at 55% 36%, rgba(255,255,255,0.5) 50%, transparent 100%),
+      radial-gradient(1px 1px at 5% 88%, rgba(255,255,255,0.4) 50%, transparent 100%),
+      radial-gradient(1px 1px at 95% 45%, rgba(255,255,255,0.45) 50%, transparent 100%),
+      radial-gradient(1px 1px at 42% 8%, rgba(255,255,255,0.3) 50%, transparent 100%),
+      radial-gradient(1px 1px at 67% 92%, rgba(255,255,255,0.5) 50%, transparent 100%);
+    z-index: 0;
+  }
+  .container { max-width: 920px; margin: 0 auto; position: relative; z-index: 1; }
+  .masthead { text-align: center; margin-bottom: 28px; }
+  .masthead h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 6vw, 44px);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .masthead .ornament {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    margin: 10px 0 4px;
+  }
+  .masthead .tagline {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 16px;
+    letter-spacing: 0.05em;
+  }
+  .ornament-divider {
+    text-align: center;
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 0.6em;
+    margin: 18px 0;
+    opacity: 0.7;
+  }
+  .engine-status {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    font-family: 'Cinzel', serif;
+  }
+  .engine-status.ready { color: var(--accent-sage); }
+  .engine-status.error { color: var(--accent-rose); }
+
+/* Form card */
+.form-card {
+background: linear-gradient(180deg, rgba(13,18,38,0.85) 0%, rgba(6,9,20,0.85) 100%);
+backdrop-filter: blur(8px);
+border: 1px solid var(–line);
+padding: 28px 22px;
+margin-bottom: 28px;
+box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,182,117,0.08);
+position: relative;
+}
+.form-card::before, .form-card::after {
+content: ‘\2756’;
+position: absolute;
+color: var(–gold);
+font-size: 11px;
+opacity: 0.6;
+}
+.form-card::before { top: 8px; left: 12px; }
+.form-card::after { bottom: 8px; right: 12px; }
+
+.form-section {
+border-top: 1px solid var(–line-faint);
+padding-top: 18px;
+margin-top: 18px;
+}
+.form-section.first { border-top: none; padding-top: 0; margin-top: 0; }
+.form-section h3 {
+font-family: ‘Cinzel’, serif;
+font-size: 12px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold-bright);
+margin-bottom: 14px;
+font-weight: 500;
+}
+label {
+display: block;
+font-family: ‘Cinzel’, serif;
+font-size: 10px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 6px;
+margin-top: 14px;
+font-weight: 500;
+}
+label:first-child { margin-top: 0; }
+input, select {
+width: 100%;
+padding: 12px 14px;
+font-size: 16px;
+background: rgba(0,0,0,0.4);
+color: var(–ink);
+border: 1px solid var(–line);
+font-family: ‘Cormorant Garamond’, Georgia, serif;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+outline: none;
+border-color: var(–gold);
+box-shadow: 0 0 0 3px rgba(212,182,117,0.1);
+}
+select {
+appearance: none;
+-webkit-appearance: none;
+background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%23d4b675'><path d='M6 8L0 0h12z'/></svg>”);
+background-repeat: no-repeat;
+background-position: right 14px center;
+background-size: 10px;
+padding-right: 36px;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+.helper {
+font-size: 13px;
+color: var(–ink-faint);
+margin-top: 6px;
+font-style: italic;
+font-family: ‘Cormorant Garamond’, serif;
+}
+.selected-loc {
+color: var(–gold-bright);
+font-style: italic;
+font-size: 14px;
+margin-top: 8px;
+}
+button.primary {
+width: 100%;
+margin-top: 24px;
+padding: 16px;
+background: linear-gradient(180deg, var(–gold-bright) 0%, var(–gold-deep) 100%);
+color: var(–bg-deep);
+border: none;
+font-family: ‘Cinzel’, serif;
+font-size: 13px;
+font-weight: 500;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s;
+box-shadow: 0 8px 24px -8px rgba(212,182,117,0.4);
+}
+button.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -10px rgba(212,182,117,0.5); }
+button.primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Location autocomplete */
+.location-results {
+background: rgba(6,9,20,0.95);
+border: 1px solid var(–line);
+border-top: none;
+max-height: 220px;
+overflow-y: auto;
+}
+.location-result {
+padding: 11px 14px;
+cursor: pointer;
+border-bottom: 1px solid rgba(212,182,117,0.08);
+font-size: 14px;
+color: var(–ink);
+}
+.location-result:hover { background: rgba(212,182,117,0.1); color: var(–gold-bright); }
+.location-result:last-child { border-bottom: none; }
+
+.hidden { display: none !important; }
+
+/* Result */
+#result { margin-top: 32px; }
+.chart-wrapper {
+background: linear-gradient(180deg, rgba(13,18,38,0.7) 0%, rgba(6,9,20,0.7) 100%);
+backdrop-filter: blur(8px);
+padding: 28px 22px;
+border: 1px solid var(–line);
+box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+position: relative;
+}
+.chart-wrapper::before, .chart-wrapper::after {
+content: ‘\2756’;
+position: absolute;
+color: var(–gold);
+font-size: 11px;
+opacity: 0.6;
+}
+.chart-wrapper::before { top: 8px; left: 12px; }
+.chart-wrapper::after { bottom: 8px; right: 12px; }
+.chart-wrapper h2 {
+font-family: ‘Cinzel’, serif;
+font-size: 22px;
+font-weight: 500;
+letter-spacing: 0.15em;
+text-align: center;
+color: var(–gold-bright);
+margin-bottom: 4px;
+}
+.chart-meta {
+text-align: center;
+font-size: 13px;
+color: var(–ink-faint);
+margin-bottom: 16px;
+font-style: italic;
+}
+svg.wheel, svg.bodygraph {
+display: block;
+margin: 0 auto;
+max-width: 100%;
+height: auto;
+}
+svg.wheel .interactive, svg.bodygraph .interactive { cursor: pointer; }
+svg.wheel .interactive:hover, svg.bodygraph .interactive:hover { filter: brightness(1.3); }
+
+.data-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 16px;
+font-size: 15px;
+}
+.data-table th {
+text-align: left;
+font-family: ‘Cinzel’, serif;
+font-size: 10px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+padding: 10px 8px;
+border-bottom: 1px solid var(–line);
+font-weight: 500;
+}
+.data-table td {
+padding: 10px 8px;
+border-bottom: 1px solid var(–line-faint);
+}
+.data-table tr.clickable { cursor: pointer; transition: background 0.15s; }
+.data-table tr.clickable:hover { background: rgba(212,182,117,0.06); }
+.data-table tr.clickable td:first-child { color: var(–gold-bright); }
+.data-table .deg { color: var(–gold-bright); font-weight: 500; }
+.section-title {
+font-family: ‘Cinzel’, serif;
+font-size: 11px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+margin: 28px 0 4px;
+text-align: center;
+font-weight: 500;
+}
+.section-title::before, .section-title::after {
+content: ‘\2756’;
+margin: 0 12px;
+opacity: 0.5;
+font-size: 9px;
+}
+.section-sub {
+text-align: center;
+font-size: 13px;
+color: var(–ink-soft);
+font-style: italic;
+margin-bottom: 14px;
+}
+.error {
+background: rgba(196,69,54,0.12);
+border: 1px solid var(–accent-rose);
+padding: 16px;
+color: var(–ink);
+margin-top: 16px;
+font-style: italic;
+}
+.loading {
+text-align: center;
+color: var(–gold);
+padding: 32px;
+font-style: italic;
+font-size: 17px;
+letter-spacing: 0.05em;
+}
+.loading::before {
+content: ‘\2756’;
+display: block;
+font-size: 14px;
+margin-bottom: 8px;
+animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+/* HD summary cards */
+.hd-summary {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+gap: 10px;
+margin: 18px 0 20px;
+}
+.hd-summary-item {
+background: rgba(0,0,0,0.35);
+padding: 14px 10px;
+text-align: center;
+border: 1px solid var(–line-faint);
+cursor: pointer;
+transition: border-color 0.2s, transform 0.15s;
+}
+.hd-summary-item:hover { border-color: var(–gold); transform: translateY(-2px); }
+.hd-summary-item .label {
+font-family: ‘Cinzel’, serif;
+font-size: 9px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 6px;
+font-weight: 500;
+}
+.hd-summary-item .value {
+font-size: 16px;
+color: var(–ink);
+font-style: italic;
+line-height: 1.2;
+}
+.legend {
+text-align: center;
+font-size: 13px;
+color: var(–ink-soft);
+margin-bottom: 12px;
+font-style: italic;
+}
+.legend .swatch {
+display: inline-block;
+width: 10px;
+height: 10px;
+border-radius: 50%;
+margin-right: 4px;
+vertical-align: middle;
+}
+
+/* Modal for interpretations */
+.modal-backdrop {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.75);
+backdrop-filter: blur(6px);
+z-index: 100;
+display: none;
+align-items: flex-end;
+justify-content: center;
+padding: 0;
+}
+@media (min-width: 700px) { .modal-backdrop { align-items: center; padding: 32px; } }
+.modal-backdrop.open { display: flex; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+background: linear-gradient(180deg, #0d1226 0%, #060914 100%);
+border: 1px solid var(–gold);
+box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,182,117,0.15);
+max-width: 560px;
+width: 100%;
+max-height: 88vh;
+overflow-y: auto;
+padding: 24px 22px 28px;
+position: relative;
+animation: slideUp 0.25s ease;
+}
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.modal::before, .modal::after {
+content: ‘\2756’;
+position: absolute;
+color: var(–gold);
+font-size: 11px;
+opacity: 0.7;
+}
+.modal::before { top: 10px; left: 14px; }
+.modal::after { bottom: 10px; right: 14px; }
+.modal-close {
+position: absolute;
+top: 8px;
+right: 8px;
+background: transparent;
+border: none;
+color: var(–ink-soft);
+font-size: 24px;
+cursor: pointer;
+width: 36px;
+height: 36px;
+line-height: 1;
+padding: 0;
+margin: 0;
+letter-spacing: 0;
+}
+.modal-close:hover { color: var(–gold-bright); }
+.modal-eyebrow {
+font-family: ‘Cinzel’, serif;
+font-size: 10px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–gold);
+text-align: center;
+margin-bottom: 6px;
+margin-top: 4px;
+}
+.modal-title {
+font-family: ‘Cinzel’, serif;
+font-size: 22px;
+font-weight: 500;
+letter-spacing: 0.1em;
+color: var(–gold-bright);
+text-align: center;
+margin-bottom: 4px;
+}
+.modal-subtitle {
+text-align: center;
+color: var(–ink-soft);
+font-style: italic;
+font-size: 15px;
+margin-bottom: 16px;
+}
+.modal-divider {
+text-align: center;
+color: var(–gold);
+margin: 14px 0 16px;
+letter-spacing: 0.5em;
+font-size: 11px;
+opacity: 0.6;
+}
+.modal-body {
+color: var(–ink);
+font-size: 16px;
+line-height: 1.65;
+}
+.modal-body p { margin-bottom: 12px; }
+.modal-body strong {
+color: var(–gold-bright);
+font-weight: 500;
+letter-spacing: 0.03em;
+}
+.modal-body .field-row {
+display: flex;
+justify-content: space-between;
+padding: 8px 0;
+border-bottom: 1px solid var(–line-faint);
+font-size: 14px;
+}
+.modal-body .field-row:last-child { border-bottom: none; }
+.modal-body .field-row .lbl {
+font-family: ‘Cinzel’, serif;
+font-size: 10px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–gold);
+}
+.modal-body .field-row .val { color: var(–ink); font-style: italic; }
+
+.tap-hint {
+text-align: center;
+font-size: 12px;
+color: var(–ink-faint);
+font-style: italic;
+margin: 8px 0 14px;
+letter-spacing: 0.05em;
+}
+.tap-hint::before { content: ’\261D ’; opacity: 0.7; }
 </style>
+
 </head>
 <body>
   <div class="container">
-    <h1>Mami Wata's Mirror</h1>
-    <p class="subtitle">Generate your chart with exact degrees</p>
-    <div id="engine-status" class="engine-status">Loading Swiss Ephemeris engine...</div>
-    <div class="form-card">
-      <div class="form-section first">
-        <label>Chart Type</label>
-        <select id="chart-type">
-          <option value="natal">Western Natal Chart</option>
-          <option value="transit">Transit Chart (current planets)</option>
-          <option value="synastry">Synastry / Compatibility</option>
-          <option value="human-design">Human Design Bodygraph</option>
-        </select>
-      </div>
-      <div class="form-section" id="primary-section">
-        <h3 id="primary-heading">Birth Information</h3>
-        <div class="row">
-          <div><label>Birth Date</label><input type="date" id="birth-date" required></div>
-          <div><label>Birth Time</label><input type="time" id="birth-time" required><div class="helper">If unknown, use 12:00 (noon)</div></div>
-        </div>
-        <label>Birth Location</label>
-        <input type="text" id="location-search" placeholder="City, Country" autocomplete="off">
-        <div id="location-results"></div>
-        <input type="hidden" id="latitude"><input type="hidden" id="longitude">
-        <div id="selected-location" class="helper" style="color:#e0c077;"></div>
-        <label>House System</label>
-        <select id="house-system"><option value="placidus">Placidus</option><option value="whole-sign">Whole Sign</option></select>
-      </div>
-      <div class="form-section hidden" id="transit-section">
-        <h3>Transit Date</h3>
-        <div class="row">
-          <div><label>Transit Date</label><input type="date" id="transit-date"><div class="helper">Default: today</div></div>
-          <div><label>Transit Time</label><input type="time" id="transit-time" value="12:00"></div>
-        </div>
-        <label>Transit Location (where you are now)</label>
-        <input type="text" id="transit-location-search" placeholder="City, Country" autocomplete="off">
-        <div id="transit-location-results"></div>
-        <input type="hidden" id="transit-latitude"><input type="hidden" id="transit-longitude">
-        <div id="transit-selected-location" class="helper" style="color:#e0c077;"></div>
-      </div>
-      <div class="form-section hidden" id="synastry-section">
-        <h3>Partner's Birth Information</h3>
-        <div class="row">
-          <div><label>Birth Date</label><input type="date" id="birth-date-2"></div>
-          <div><label>Birth Time</label><input type="time" id="birth-time-2"></div>
-        </div>
-        <label>Birth Location</label>
-        <input type="text" id="location-search-2" placeholder="City, Country" autocomplete="off">
-        <div id="location-results-2"></div>
-        <input type="hidden" id="latitude-2"><input type="hidden" id="longitude-2">
-        <div id="selected-location-2" class="helper" style="color:#e0c077;"></div>
-      </div>
-      <button id="generate-btn" disabled>Generate Chart</button>
-    </div>
-    <div id="result"></div>
+    <header class="masthead">
+      <div class="ornament">&#10070; &#10086; &#10070;</div>
+      <h1>Mami Wata's Mirror</h1>
+      <p class="tagline">See yourself clearly.</p>
+    </header>
+
+```
+<div id="engine-status" class="engine-status">Awakening the ephemeris &hellip;</div>
+
+<div class="form-card">
+  <div class="form-section first">
+    <label>Chart Type</label>
+    <select id="chart-type">
+      <option value="natal">Western Natal Chart</option>
+      <option value="transit">Transit Chart (current planets)</option>
+      <option value="synastry">Synastry / Compatibility</option>
+      <option value="human-design">Human Design Bodygraph</option>
+    </select>
   </div>
+
+  <div class="form-section" id="primary-section">
+    <h3>Birth Information</h3>
+    <div class="row">
+      <div>
+        <label>Birth Date</label>
+        <input type="date" id="birth-date" required>
+      </div>
+      <div>
+        <label>Birth Time</label>
+        <input type="time" id="birth-time" required>
+        <div class="helper">If unknown, use 12:00 (noon)</div>
+      </div>
+    </div>
+    <label>Birth Location</label>
+    <input type="text" id="location-search" placeholder="City, Country" autocomplete="off">
+    <div id="location-results"></div>
+    <input type="hidden" id="latitude">
+    <input type="hidden" id="longitude">
+    <div id="selected-location" class="selected-loc"></div>
+    <label>House System</label>
+    <select id="house-system">
+      <option value="placidus">Placidus</option>
+      <option value="whole-sign">Whole Sign</option>
+    </select>
+  </div>
+
+  <div class="form-section hidden" id="transit-section">
+    <h3>Transit Date</h3>
+    <div class="row">
+      <div>
+        <label>Transit Date</label>
+        <input type="date" id="transit-date">
+        <div class="helper">Default: today</div>
+      </div>
+      <div>
+        <label>Transit Time</label>
+        <input type="time" id="transit-time" value="12:00">
+      </div>
+    </div>
+    <label>Transit Location (where you are now)</label>
+    <input type="text" id="transit-location-search" placeholder="City, Country" autocomplete="off">
+    <div id="transit-location-results"></div>
+    <input type="hidden" id="transit-latitude">
+    <input type="hidden" id="transit-longitude">
+    <div id="transit-selected-location" class="selected-loc"></div>
+  </div>
+
+  <div class="form-section hidden" id="synastry-section">
+    <h3>Partner's Birth Information</h3>
+    <div class="row">
+      <div>
+        <label>Birth Date</label>
+        <input type="date" id="birth-date-2">
+      </div>
+      <div>
+        <label>Birth Time</label>
+        <input type="time" id="birth-time-2">
+      </div>
+    </div>
+    <label>Birth Location</label>
+    <input type="text" id="location-search-2" placeholder="City, Country" autocomplete="off">
+    <div id="location-results-2"></div>
+    <input type="hidden" id="latitude-2">
+    <input type="hidden" id="longitude-2">
+    <div id="selected-location-2" class="selected-loc"></div>
+  </div>
+
+  <button id="generate-btn" class="primary" disabled>Generate Chart</button>
+</div>
+
+<div id="result"></div>
+```
+
+  </div>
+
+  <!-- Interpretation modal -->
+
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-eyebrow" id="modal-eyebrow"></div>
+      <h3 class="modal-title" id="modal-title"></h3>
+      <p class="modal-subtitle" id="modal-subtitle"></p>
+      <div class="modal-divider">&#10070; &#10086; &#10070;</div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
 <script type="module">
 import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@main/src/swisseph.js';
+
+/* ============================================================
+   INTERPRETATION DATA (inlined here)
+   ============================================================ */
+// ============================================================
+// INTERPRETATION LIBRARY - Standard meanings
+// ============================================================
+
+var INTERP_SIGNS = {
+  Aries: { element: "Fire", modality: "Cardinal", ruler: "Mars", text: "The first spark. Aries is initiation, will, and the courage to begin without knowing what comes next. It rules the head and acts on instinct, leading from the front. Strengths: courage, directness, vitality, pioneering drive. Shadows: impulsiveness, impatience, anger, acting before thinking. Aries energy wants to start things, not finish them." },
+  Taurus: { element: "Earth", modality: "Fixed", ruler: "Venus", text: "The fertile field. Taurus is rootedness, sensual pleasure, value, and the slow accumulation of what lasts. It rules the senses and finds meaning through what can be touched, tasted, and held. Strengths: steadiness, loyalty, patience, embodied presence. Shadows: stubbornness, possessiveness, resistance to change, materialism. Taurus needs comfort and security to flourish." },
+  Gemini: { element: "Air", modality: "Mutable", ruler: "Mercury", text: "The messenger. Gemini is curiosity, language, connection, and the play of ideas. It thrives on variety, conversation, and the cross-pollination of perspectives. Strengths: wit, adaptability, intelligence, social fluency. Shadows: scattered focus, superficiality, restlessness, indecision. Gemini learns by talking and changes its mind as new information arrives." },
+  Cancer: { element: "Water", modality: "Cardinal", ruler: "Moon", text: "The home and the womb. Cancer is feeling, memory, ancestry, and the protective shell. It rules emotional security, family, and the inner world. Strengths: empathy, nurturing, intuition, deep loyalty to chosen kin. Shadows: moodiness, clinginess, defensiveness, holding old wounds. Cancer needs a sense of safety to open up." },
+  Leo: { element: "Fire", modality: "Fixed", ruler: "Sun", text: "The sovereign heart. Leo is creative self-expression, dignity, and the radiance of personality. It rules play, performance, romance, and what brings joy for its own sake. Strengths: warmth, generosity, leadership, creative confidence. Shadows: pride, vanity, need for approval, dramatic excess. Leo wants to be seen as itself, fully." },
+  Virgo: { element: "Earth", modality: "Mutable", ruler: "Mercury", text: "The discerning servant. Virgo is craft, refinement, useful work, and the love of a thing done well. It rules health, daily routines, and the small precise improvements that compound. Strengths: precision, devotion, intelligence, practical skill. Shadows: criticism, perfectionism, anxiety, self-deprecation. Virgo serves through mastery." },
+  Libra: { element: "Air", modality: "Cardinal", ruler: "Venus", text: "The scales. Libra is relationship, beauty, fairness, and the art of meeting another as equal. It rules partnership, aesthetics, diplomacy, and the search for harmony. Strengths: charm, fairness, refinement, the gift of mediation. Shadows: indecision, people-pleasing, conflict avoidance, vanity. Libra finds itself in the mirror of the other." },
+  Scorpio: { element: "Water", modality: "Fixed", ruler: "Pluto / Mars", text: "The depths. Scorpio is intimacy, transformation, power, and what lies beneath the surface. It rules sex, death, shared resources, and the secrets that change us. Strengths: depth, loyalty, perception, regenerative power. Shadows: jealousy, control, suspicion, vengefulness. Scorpio doesn't do shallow." },
+  Sagittarius: { element: "Fire", modality: "Mutable", ruler: "Jupiter", text: "The arrow. Sagittarius is meaning, truth-seeking, expansion, and the horizon line. It rules philosophy, travel, higher learning, and the quest for the bigger picture. Strengths: optimism, vision, faith, freedom-loving honesty. Shadows: tactlessness, restlessness, dogmatism, overpromising. Sagittarius is always en route somewhere." },
+  Capricorn: { element: "Earth", modality: "Cardinal", ruler: "Saturn", text: "The mountain. Capricorn is mastery, structure, achievement, and the long climb. It rules career, public legacy, and the discipline that turns time into accomplishment. Strengths: ambition, integrity, endurance, executive capacity. Shadows: coldness, workaholism, status anxiety, emotional reserve. Capricorn ages backward, getting freer over time." },
+  Aquarius: { element: "Air", modality: "Fixed", ruler: "Uranus / Saturn", text: "The water-bearer. Aquarius is the future, the collective, the outsider's view, and the systems that connect us. It rules friendships, communities, technology, and the genius of what's coming next. Strengths: originality, vision, humanitarianism, intellectual independence. Shadows: detachment, contrarianism, rigidity around ideas, emotional aloofness. Aquarius belongs to everyone and no one." },
+  Pisces: { element: "Water", modality: "Mutable", ruler: "Neptune / Jupiter", text: "The ocean. Pisces is dissolution, mysticism, compassion, and the unity beneath the appearance of separateness. It rules dreams, art, the unconscious, and what cannot be measured. Strengths: empathy, imagination, spiritual sensitivity, surrender. Shadows: escapism, victimhood, boundary loss, addiction. Pisces feels what others won't." }
+};
+
+var INTERP_PLANETS = {
+  Sun: { text: "Your Sun is your essential self, the conscious identity you grow into. It is what you radiate, the energy that animates everything else in the chart, and the principle of your becoming. The Sun's sign shows the style of selfhood you are here to embody; its house shows the area of life where that selfhood is forged. To live your Sun is to be most fully yourself." },
+  Moon: { text: "Your Moon is your emotional body, your nervous system, the inner child and the inner mother. It rules what you need to feel safe, how you respond before thought, and the rhythms of your private life. The Moon's sign shows how you process feeling; its house shows where your emotional life is most active. Tending the Moon is self-care at the deepest level." },
+  Mercury: { text: "Mercury is your mind in motion: how you think, learn, speak, listen, and connect ideas. It rules the messages you send and receive, your style of conversation, and the way you make sense of the world. Mercury's sign colors your thought patterns; its house shows where you most love to think and communicate." },
+  Venus: { text: "Venus is your capacity for love, pleasure, and beauty. It rules your values, what you find attractive, how you relate, and what brings you joy for its own sake. Venus's sign shows your love language and aesthetic; its house shows where you seek harmony and where pleasure lives in your life." },
+  Mars: { text: "Mars is your drive, desire, and the warrior in you. It rules anger, sex, ambition, and the courage to pursue what you want. Mars's sign shows how you fight and chase; its house shows where you most need to assert yourself. A well-lived Mars is healthy aggression in service of your Sun." },
+  Jupiter: { text: "Jupiter is expansion, faith, meaning, and grace. It rules your philosophy of life, what you believe is possible, and the areas where opportunity tends to find you. Jupiter's sign shows the flavor of your optimism; its house shows where you grow, teach, and receive abundance." },
+  Saturn: { text: "Saturn is structure, time, mastery, and limitation. It rules your responsibilities, your fears, and the areas where you must build slowly through discipline. Saturn's sign shows the lessons you came to learn; its house shows where life will hand you the long climb. Mastered Saturn becomes authority." },
+  Uranus: { text: "Uranus is awakening, disruption, originality, and the future. It rules sudden change, genius, rebellion, and the lightning bolt that breaks open what has gone stale. Uranus's sign and house show where you are here to innovate, electrify, and refuse convention." },
+  Neptune: { text: "Neptune is dissolution, dream, mysticism, and longing. It rules imagination, spiritual life, art, illusion, and the places you escape or transcend. Neptune's sign and house show where you experience union with the larger field, and where you must be careful of confusion or self-deception." },
+  Pluto: { text: "Pluto is power, death, rebirth, and the underworld. It rules transformation that strips you to the bone, what is shared in intimacy, and the slow regeneration of self over years. Pluto's sign describes a generation; its house shows where you personally are remade." },
+  Chiron: { text: "Chiron is the wound that becomes the gift. It marks where you carry an old hurt that cannot be fully healed yet teaches profound compassion and skill. Chiron's sign shows the texture of the wound; its house shows where it lives in your life, and where you eventually become a healer for others." },
+  "North Node": { text: "Your North Node is your soul's growing edge in this lifetime, the direction of evolution. Its qualities feel unfamiliar and slightly uncomfortable, and yet leaning toward them brings the deepest meaning. The Node's sign shows what you are learning; its house shows the arena where the lesson plays out." },
+  "South Node": { text: "Your South Node is what you bring with you, the gifts and patterns that come easily because you have done them many times. They feel like home but cannot grow you further. The South Node is what to release in service of the North Node, not deny but rebalance." },
+  Lilith: { text: "Black Moon Lilith marks the place of your untamed feminine, your refusal to be domesticated, your sacred rage and exiled power. Her sign and house show where you have been told to make yourself smaller, and where reclaiming your own authority becomes liberation." },
+  "Part of Fortune": { text: "The Part of Fortune is a calculated point where Sun, Moon, and Ascendant meet in harmony. It marks an area of natural ease, joy, and good fortune in your chart, the place where being yourself simply works. Its house shows where to plant for joy." },
+  Vertex: { text: "The Vertex is sometimes called the point of fated encounter, the place where you meet what you did not choose and yet were always going to meet. It often activates through significant relationships and turning-point events that feel destined." }
+};
+
+var INTERP_HOUSES = {
+  1: { name: "First House", domain: "Self & Identity", text: "The First House is the body you arrive in, the face you show the world, the way you walk into a room. It governs your physical appearance, your immediate manner, and the project of becoming yourself. Planets here are vivid and personal, coloring your whole presentation." },
+  2: { name: "Second House", domain: "Resources & Values", text: "The Second House is what you own and what you are worth, both literally and inwardly. It governs money, possessions, talents, and the values you build your life on. Planets here shape your relationship to material life and to your own self-worth." },
+  3: { name: "Third House", domain: "Mind & Communication", text: "The Third House is the local world: siblings, neighbors, daily errands, early education, the way you speak and listen. It governs the mind in motion and the network of close ties around you. Planets here color how you think and exchange." },
+  4: { name: "Fourth House", domain: "Home & Roots", text: "The Fourth House is your foundation: home, family, lineage, the inner emotional life. It governs your roots, your sense of belonging, and the private self that lives behind closed doors. Planets here shape your soil." },
+  5: { name: "Fifth House", domain: "Creativity & Joy", text: "The Fifth House is play, romance, children, creative expression, and what you do for delight. It governs the heart's overflow, the pleasure of making something for its own sake. Planets here show where joy and self-expression live." },
+  6: { name: "Sixth House", domain: "Work & Health", text: "The Sixth House is daily life: work, health, routines, service, and the body's care. It governs the small habits that compound, the craft you devote yourself to, and the relationship between body and mind. Planets here show where the daily grind meets meaning." },
+  7: { name: "Seventh House", domain: "Partnership & Relationship", text: "The Seventh House is the other: marriage, business partners, close adversaries, anyone who meets you face to face as equal. It governs your style of partnership and the qualities you draw to yourself in relationship. Planets here describe whom you meet across the table." },
+  8: { name: "Eighth House", domain: "Intimacy & Transformation", text: "The Eighth House is the place of merging: deep intimacy, shared resources, sex, death, inheritance, and psychological transformation. It governs everything taboo and powerful that changes you at the root. Planets here are where you go down and come back different." },
+  9: { name: "Ninth House", domain: "Meaning & Horizon", text: "The Ninth House is the search: higher education, philosophy, religion, foreign travel, the bigger picture. It governs what gives life meaning, the truth you keep reaching for, the horizons you cross. Planets here shape your worldview." },
+  10: { name: "Tenth House", domain: "Career & Legacy", text: "The Tenth House is your public face: career, reputation, vocation, the contribution you make to the world. It governs authority, achievement, and what you are remembered for. Planets here are visible to others and shape your standing." },
+  11: { name: "Eleventh House", domain: "Community & Vision", text: "The Eleventh House is the wider circle: friendships, groups, networks, hopes, ideals, and the future. It governs the people who walk alongside you and the visions you build toward together. Planets here shape your tribe." },
+  12: { name: "Twelfth House", domain: "Soul & Hidden Realms", text: "The Twelfth House is the unseen: the unconscious, dreams, mysticism, retreat, what is hidden from view. It governs the soul's quiet life, places of confinement and transcendence, and the gifts that come from solitude. Planets here are deep waters." }
+};
+
+var INTERP_ASPECTS = {
+  conjunction: { text: "Conjunction (0\u00B0): two energies fused. The planets work as one, blending their natures so completely they cannot be separated. Powerful, intensifying, sometimes blinding. Whatever the conjunction touches becomes a defining theme." },
+  sextile: { text: "Sextile (60\u00B0): an opportunity. The planets harmonize easily but require some effort to activate. A talent that develops when you choose to use it. Gentle, creative, supportive flow." },
+  square: { text: "Square (90\u00B0): tension that demands action. The two energies pull against each other and force you to grow. Squares are uncomfortable but productive, the friction that builds skill and character." },
+  trine: { text: "Trine (120\u00B0): natural grace. The planets flow together effortlessly, a gift that comes without much striving. The shadow is taking it for granted; trines bless what they touch." },
+  opposition: { text: "Opposition (180\u00B0): the mirror. The two energies sit across from each other and ask you to integrate them. Often projected onto other people first, oppositions teach balance through relationship." }
+};
+var INTERP_HD_TYPE = {
+  "Manifestor": { strategy: "Inform Before Acting", text: "Manifestors are the initiators, roughly 9% of the population. You are designed to begin things, to spark movement that others then pick up and carry. Your energy is not sustained like a Generator's; it comes in bursts and then needs rest. Your core challenge is the impact of your actions on others. When you initiate without informing, you create chaos and resistance. When you inform first, you clear the way and people get out of the path. Your signature is peace. Your not-self is anger." },
+  "Generator": { strategy: "Wait to Respond", text: "Generators are the life-force builders, roughly 37% of the population. You have a defined Sacral Center, a sustainable engine that powers you when you are doing work that lights you up. You are not designed to initiate from the mind; you are designed to respond to what life puts in front of you. The body knows before the mind does, through gut sounds and yes/no signals. When you respond from the Sacral, you build mastery and satisfaction. When you push or initiate from the mind, you burn out and grow frustrated. Your signature is satisfaction. Your not-self is frustration." },
+  "Manifesting Generator": { strategy: "Wait to Respond, then Inform", text: "Manifesting Generators are the multi-passionate ones, roughly 33% of the population. You combine the Generator's sustainable life-force with the Manifestor's capacity to initiate. You are fast, skip steps that others need, and often work on several things at once. Your strategy is to wait for a response from the Sacral, then inform those who will be affected before you act. Your shortcuts are a gift, not a flaw. Your signature is satisfaction and peace. Your not-self is frustration and anger." },
+  "Projector": { strategy: "Wait for the Invitation", text: "Projectors are the guides, roughly 20% of the population. You see others clearly, often more clearly than they see themselves, and your gift is to recognize and direct energy. You do not have sustainable energy of your own; you are designed to manage and guide the energy of others. You must be invited into the big things, career, relationship, residence, because invitation gives you the energetic permission to engage fully. Without invitation, your wisdom is rejected and you grow bitter. With it, you are deeply successful. Your signature is success. Your not-self is bitterness." },
+  "Reflector": { strategy: "Wait a Lunar Cycle", text: "Reflectors are the rare mirrors of the collective, roughly 1% of the population. You have no defined centers and you sample the energy of everyone around you, reflecting the health of your community back to it. You are designed to wait a full lunar cycle, about 28 days, before making major decisions, because you need to feel the choice through every transit of the moon. Your environment matters more for you than for any other type. Your signature is surprise and delight. Your not-self is disappointment." }
+};
+
+var INTERP_HD_AUTHORITY = {
+  "Emotional (Solar Plexus)": { text: "Your truth comes through the emotional wave. There is no immediate clarity; you must ride the wave through its highs and lows, and decide from a place of calm in the middle. Sleep on it. Wait until you have felt the full spectrum. Anything decided in the heat of feeling, high or low, is unreliable. Patience is your superpower." },
+  "Sacral": { text: "Your truth comes through the gut response, the uh-huh and uh-uh that arises before thought. The Sacral knows immediately whether something has life-force in it for you. Listen to the sounds your body makes when asked yes/no questions. The mind will argue, but the body has already answered." },
+  "Splenic": { text: "Your truth comes through a quiet, instantaneous knowing in the now. The Spleen speaks once, softly, and does not repeat itself. You must be present and listening. Splenic authority is intuition, the body's survival intelligence, and it is always about this moment, not the future." },
+  "Ego (Heart)": { text: "Your truth comes through what your willpower wants. The Heart speaks through the language of will, commitment, and what you are willing to put your reputation behind. Ask yourself: do I want this for me? Will I follow through? Ego authority requires honesty about your own desire." },
+  "Self-Projected (G Center)": { text: "Your truth comes through the sound of your own voice. You need to talk things out, often with a sounding board who simply listens, and hear what comes out of your mouth. The clarity is in the speaking, not in the thinking. Trust what you hear yourself say." },
+  "Mental (Outer Authority)": { text: "As a Projector without inner authority, your clarity comes through talking with the right people in the right environments over time. You must be invited, you must speak with trusted others, and you must give it time. Your mind is for others, not for your own decisions; the answer arrives through the conversation, not the conclusion." },
+  "Lunar": { text: "As a Reflector, your authority is the lunar cycle. You sample the energy of each transit over 28 days, and only then do you have the full picture. Major decisions must wait. You are designed to take your time, talk with many trusted people, and let clarity emerge through the moon's full passage." },
+  "None": { text: "Without a clearly defined inner authority, you are designed to take time and gather input from your environment and trusted others before making major decisions. Patience and discernment about whom you listen to are essential." }
+};
+
+var INTERP_HD_PROFILE = {
+  "1/3": { text: "Investigator / Martyr. You go deep through study and trial-and-error. The 1 needs solid foundations of knowledge; the 3 learns by experimenting and bumping into what does not work. You are here to discover what is true through both research and lived experience, including failure as data." },
+  "1/4": { text: "Investigator / Opportunist. You go deep through study, and your life moves through your network. The 1 needs to know the foundation; the 4 builds influence through personal connections, friend by friend. Opportunities come through whom you know." },
+  "2/4": { text: "Hermit / Opportunist. You have natural gifts that arise easily when you are alone, and a network that calls you out of solitude when the timing is right. The 2 needs retreat to download; the 4 needs the right friendships to share what comes through." },
+  "2/5": { text: "Hermit / Heretic. You carry natural genius and a public role of providing practical solutions. The 2 retreats; the 5 is called to project answers onto the collective. Others see you as a savior or fraud depending on whether your solution works. You must guard your time." },
+  "3/5": { text: "Martyr / Heretic. You learn through trial and error and are pulled into roles where others expect you to deliver universal answers. The 3 experiments; the 5 attracts projection. A potent and challenging combination, you are here to discover what does not work and report it back to the collective." },
+  "3/6": { text: "Martyr / Role Model. You spend the first part of life learning through experimentation and mistakes, and grow into a role-model who has lived enough to teach with authority. The 6 has three life phases: trial-and-error until 30, withdrawal and observation 30 to 50, then embodied wisdom." },
+  "4/6": { text: "Opportunist / Role Model. Your life moves through your closest network, and you grow into a role-model whose life itself is the teaching. Friends and bonds are the channel of your influence." },
+  "4/1": { text: "Opportunist / Investigator. You build influence through your network and need a strong foundation of knowledge to share. A self-contained profile, you tend to be confident in what you know, with friends close to you." },
+  "5/1": { text: "Heretic / Investigator. You carry the role of providing solutions to the collective, supported by deep study. Universal in projection, you must know your subject thoroughly because others will look to you for answers." },
+  "5/2": { text: "Heretic / Hermit. You are projected upon as a savior or solution provider, and you have natural gifts that emerge in solitude. You must protect your retreat time fiercely or burn out under the projections." },
+  "6/2": { text: "Role Model / Hermit. You grow into role-model wisdom and have natural gifts that emerge in solitude. Your life moves through three phases, and your authority comes from being called rather than chasing." },
+  "6/3": { text: "Role Model / Martyr. You grow into a role-model whose authority is hard-won, and you learn through experimentation and trial. A profile of profound life lessons that become teaching by the time you embody them." }
+};
+
+var INTERP_HD_CENTERS = {
+  Head: { text: "The Head Center is pressure to think, the source of inspiration and questions. Defined: you have consistent mental pressure and ideas. Undefined: you absorb others' questions and can mistake them for your own; learn to discern which thoughts actually belong to you." },
+  Ajna: { text: "The Ajna is conceptualization, how the mind organizes information into patterns and certainty. Defined: you have a fixed way of processing. Undefined: you are open to all ways of thinking and wise about the relativity of mental certainty." },
+  Throat: { text: "The Throat is manifestation, communication, and action. Defined: you can express and act consistently. Undefined: you wait for the right moment and the right invitation to speak; pushing to be heard exhausts you." },
+  G: { text: "The G Center is identity, love, and direction. Defined: you have a fixed sense of who you are and where you are going. Undefined: your identity shifts with environment and company; you are wise about love and direction without owning a fixed version." },
+  Heart: { text: "The Heart Center is willpower, ego, value, and material world. Defined (only about 35% of people): you have consistent willpower and can make and keep promises with energy to spare. Undefined: you cannot consistently force yourself; respect your real capacity rather than trying to prove yourself." },
+  Spleen: { text: "The Spleen is the immune system, instinct, and survival intelligence. Defined: you have consistent intuition and a steady relationship to wellness. Undefined: your intuition comes through others; you can hold on to things and people that are no longer healthy because letting go is harder for you." },
+  Sacral: { text: "The Sacral is life-force, sexuality, and sustainable energy. Defined (Generators and MGs): you have a battery for work that lights you up. Undefined (non-Sacral types): you have access to bursts of Sacral energy through others but it is not your own; learn when enough is enough." },
+  Solar: { text: "The Solar Plexus is emotion, feeling, sensitivity. Defined: you have an emotional wave you must ride before clarity arrives. Undefined: you amplify the emotions of others and can mistake them for your own; learn to leave emotionally charged rooms." },
+  Root: { text: "The Root Center is pressure to do, drive, and stress. Defined: you have a steady pressure that fuels action. Undefined: you absorb pressure from your environment and rush to relieve it; learn that pressure is not the same as urgency." }
+};
+
+var INTERP_HD_DEFINITION = {
+  "Single Definition": { text: "All your defined centers are connected in one continuous flow. You feel internally whole and self-sufficient. Information moves through you without gaps." },
+  "Split Definition": { text: "Your defined centers are in two separate groups, with no channel bridging them. You feel a gap between two parts of yourself and often look for the bridge through other people, books, or experiences." },
+  "Triple-Split Definition": { text: "Three separate areas of definition. You take longer to feel resolved and benefit from many influences and connections. Process tends to be slower and more layered." },
+  "Quadruple-Split Definition": { text: "Four separate areas of definition. Rare. You are incredibly multifaceted and benefit from environments that hold many threads at once." },
+  "None (Reflector)": { text: "No defined centers. Reflectors mirror the energy around them and require time, environment, and the lunar cycle to find clarity." }
+};
+
+var INTERP_HD_CHANNELS = {
+  "1-8": { name: "Inspiration", text: "The Channel of Inspiration. A creative role model. You are here to express something original in a way that influences others. The 1 carries creative direction; the 8 brings it to the world." },
+  "2-14": { name: "The Beat", text: "The Channel of the Beat. The keeper of keys. A direction that emerges through resources and is followed through hard work. You are here to use what you have been given to move in your true direction." },
+  "3-60": { name: "Mutation", text: "The Channel of Mutation. Energy for change that operates in pulses. Mutation is unpredictable and cannot be forced; it asks you to wait for the right moment to evolve." },
+  "4-63": { name: "Logic", text: "The Channel of Logic. A mind that questions and finds patterns over time. You are designed to doubt, test, and verify, then share what holds up." },
+  "5-15": { name: "Rhythm", text: "The Channel of Rhythm. Being in the flow. You have a fixed rhythm and a love of variety in life. Honoring your rhythm is central to your wellbeing." },
+  "6-59": { name: "Mating", text: "The Channel of Mating. Intimacy and reproduction. You have a magnetic capacity to break through the defenses of others and form intimate bonds. Powerful sexuality and creativity." },
+  "7-31": { name: "The Alpha", text: "The Channel of the Alpha. Leadership for the collective. You have a voice that others will follow if it is invited, not seized. The democratic leader." },
+  "9-52": { name: "Concentration", text: "The Channel of Concentration. Focused determination. You can sit and concentrate on a single thing in a way most cannot. A gift for any sustained creative work." },
+  "10-20": { name: "Awakening", text: "The Channel of Awakening. Commitment to higher principles. Living your truth in the now. A channel of integrity in action." },
+  "10-34": { name: "Exploration", text: "The Channel of Exploration. Following your own convictions. You must do what feels true to you, regardless of approval." },
+  "10-57": { name: "Perfected Form", text: "The Channel of Perfected Form. Survival through intuition. Awareness of the body and what it needs in the moment." },
+  "11-56": { name: "Curiosity", text: "The Channel of Curiosity. The seeker. A storyteller who collects ideas and translates experience into meaning." },
+  "12-22": { name: "Openness", text: "The Channel of Openness. A social being. Emotional expression that opens doors at the right moment, closes them at others." },
+  "13-33": { name: "The Prodigal", text: "The Channel of the Prodigal. The witness. You collect the stories of your life and the lives of others, and you become wise through reflection." },
+  "16-48": { name: "Talent", text: "The Channel of Talent. Mastery through repetition. You are here to refine a skill until it becomes art." },
+  "17-62": { name: "Acceptance", text: "The Channel of Acceptance. The organizational being. A logical mind that arranges details into useful structure." },
+  "18-58": { name: "Judgment", text: "The Channel of Judgment. Insatiable appetite for life and a critical eye that improves what is broken. Joy is your fuel." },
+  "19-49": { name: "Synthesis", text: "The Channel of Synthesis. Sensitivity to need. You feel what is missing and what is required, in food, shelter, and intimacy." },
+  "20-34": { name: "Charisma", text: "The Channel of Charisma. Where thoughts must become deeds. A pure manifesting channel; you act in the now on what you believe." },
+  "20-57": { name: "The Brain Wave", text: "The Channel of the Brain Wave. Penetrating awareness. Intuition expressed in the moment with great clarity." },
+  "21-45": { name: "Money", text: "The Channel of Money. Material world mastery. The will to provide and to lead the tribe in matters of resource." },
+  "23-43": { name: "Structuring", text: "The Channel of Structuring. From individual to fixed. Genius that translates inner knowing into external knowing, when timed right." },
+  "24-61": { name: "Awareness", text: "The Channel of Awareness. The thinker. An inner knowing that arrives through silence and presence." },
+  "25-51": { name: "Initiation", text: "The Channel of Initiation. The wound that becomes the warrior. You are here to be initiated by shock, and through it become courageous and free." },
+  "26-44": { name: "Surrender", text: "The Channel of Surrender. The transmitter. You can sell anything you believe in, and you carry the memory of the tribe in your bones." },
+  "27-50": { name: "Preservation", text: "The Channel of Preservation. The custodian. Care of others through values and right action. A channel of nurturing and ethics." },
+  "28-38": { name: "Struggle", text: "The Channel of Struggle. The stubborn. You fight for what is meaningful and refuse what is not, even at great cost." },
+  "29-46": { name: "Discovery", text: "The Channel of Discovery. Saying yes to life. You leap into experience and find yourself blessed with serendipity when you commit." },
+  "30-41": { name: "Recognition", text: "The Channel of Recognition. A focused energy for fantasy and feeling. The dreamer who imagines the future." },
+  "32-54": { name: "Transformation", text: "The Channel of Transformation. Drive and ambition for the long climb. The will to be recognized through achievement." },
+  "34-57": { name: "Power", text: "The Channel of Power. Archetypal power. Survival intelligence that knows when to act and when to wait." },
+  "35-36": { name: "Transitoriness", text: "The Channel of Transitoriness. Jack of all trades. You crave new experiences and grow through change and crisis." },
+  "37-40": { name: "Community", text: "The Channel of Community. Bargains made and bargains kept. The tribe is held together through agreements you negotiate." },
+  "39-55": { name: "Emoting", text: "The Channel of Emoting. The provocateur. You move others emotionally, often by refusing to perform what they expect." },
+  "42-53": { name: "Maturation", text: "The Channel of Maturation. Cycles begun and completed. You bring things to fullness over time, even when you would rather skip ahead." },
+  "47-64": { name: "Abstraction", text: "The Channel of Abstraction. The mind that makes sense of past experience. You replay and replay until pattern emerges." }
+};
+var INTERP_HD_GATES = {
+  1: { name: "The Creative", hex: "Self-Expression", text: "The gate of creative direction and original self-expression. You have a fixed inner identity that wants to create from a place of depth and singularity. Your gift is the unique angle no one else could offer. Shadow: feeling unseen, melancholy when not creating." },
+  2: { name: "The Receptive", hex: "Higher Knowing", text: "The gate of direction. A keeper of the keys to where life is going. You know which way to move and have a magnetic relationship with resources. Your direction comes through receptivity, not chasing." },
+  3: { name: "Difficulty at the Beginning", hex: "Ordering", text: "The gate of ordering through chaos. You bring innovation by mutating what already exists. New things take time to find their form. Patience with the messy beginning is essential." },
+  4: { name: "Youthful Folly", hex: "Formulization", text: "The gate of answers. A logical mind that holds possible solutions, but answers are hypotheses that must be tested over time. Avoid pretending certainty before time has proven you right." },
+  5: { name: "Waiting", hex: "Fixed Rhythms", text: "The gate of fixed rhythms. Your life works when you keep your patterns: sleep, food, exercise, ritual. Disruption to your rhythm shows up as instability everywhere else." },
+  6: { name: "Conflict", hex: "Friction", text: "The gate of intimacy through friction. You set the emotional tone of relationships, opening and closing the door to closeness. Your sensitivity is the membrane through which intimacy is regulated." },
+  7: { name: "The Army", hex: "The Role of the Self", text: "The gate of the leader. You are designed to guide the collective in the right direction, but only when invited. The democratic leader, not the authoritarian one." },
+  8: { name: "Holding Together", hex: "Contribution", text: "The gate of contribution. You have something original to share, and you carry the role of bringing creative work into form for others to see and use." },
+  9: { name: "The Taming Power of the Small", hex: "Focus", text: "The gate of focus on the details. You can give sustained attention to small things and find truth in the particular. A gift for any work that requires precision." },
+  10: { name: "Treading", hex: "Behavior of the Self", text: "The gate of self-love and behavior. You are here to live your truth in the now, behaving in a way that aligns with who you actually are. The gate of integrity." },
+  11: { name: "Peace", hex: "Ideas", text: "The gate of ideas. Your mind generates concepts and pictures that may or may not be for you to act on. Ideas are for sharing, not always for executing. Hold them lightly." },
+  12: { name: "Standstill", hex: "Caution", text: "The gate of caution and articulation. You speak best when the mood is right, with eloquence that arrives in the moment. The poet who waits for the wave." },
+  13: { name: "The Fellowship of Man", hex: "The Listener", text: "The gate of the listener. You are the one others tell their secrets to. You hold the stories of the past and the wisdom that arises from witnessing." },
+  14: { name: "Possession in Great Measure", hex: "Power Skills", text: "The gate of power and skills. You have the capacity to work hard at what you love and accumulate resources through that devotion. Money flows when you follow what lights you up." },
+  15: { name: "Modesty", hex: "Extremes", text: "The gate of extremes. Your rhythm includes wide swings; you are not designed for one steady pace. The rhythm of love and humanity moves through you." },
+  16: { name: "Enthusiasm", hex: "Skills", text: "The gate of mastery and enthusiasm. You commit to perfecting a craft and your passion is contagious. The skill must be true; pretended enthusiasm reveals itself." },
+  17: { name: "Following", hex: "Opinions", text: "The gate of opinions. You see patterns and form views about how things should be ordered. Your opinions inform structure but should be tested before broadcast." },
+  18: { name: "Work on What Has Been Spoiled", hex: "Correction", text: "The gate of correction. You see what is broken and can improve it. Critical insight in service of perfection. Use the gift carefully; it can hurt without intention." },
+  19: { name: "Approach", hex: "Wanting", text: "The gate of wanting and approach. You sense what is needed for community survival, food and shelter and intimacy. The bringer of resources to the tribe." },
+  20: { name: "Contemplation", hex: "The Now", text: "The gate of the now. You have a voice that speaks the truth of this moment. Presence is your power. Speaking what is true now, not what was true yesterday." },
+  21: { name: "Biting Through", hex: "The Hunter", text: "The gate of control. You are designed to control your domain, your money, your work, your space. Without control of what is yours, you grow restless." },
+  22: { name: "Grace", hex: "Openness", text: "The gate of grace. You bring social grace and emotional openness to the right moment. The grace gate also carries the not-do; sometimes the most graceful move is to refuse." },
+  23: { name: "Splitting Apart", hex: "Assimilation", text: "The gate of assimilation. You translate new knowing into language others can understand, but only when timing is right. Speak before invited and you sound like a freak; speak when invited and you sound like a genius." },
+  24: { name: "Returning", hex: "Rationalization", text: "The gate of returning. The mind that returns to the same question until insight arrives. Inspired knowing comes through silence and patient sitting with the unknown." },
+  25: { name: "Innocence", hex: "The Spirit of the Self", text: "The gate of the spirit of the self. Universal love, the love of life itself, beyond the personal. You are here to be initiated by shock and emerge with innocent love intact." },
+  26: { name: "The Taming Power of the Great", hex: "The Egoist", text: "The gate of the egoist. The salesperson and trickster. You can sell what you believe in with great effectiveness. Honesty about what you are selling is the moral edge." },
+  27: { name: "Nourishment", hex: "Caring", text: "The gate of nourishment. You care for others through values, food, education, ethics. The tribal caretaker who tends what is precious." },
+  28: { name: "Preponderance of the Great", hex: "The Game Player", text: "The gate of the game player. You are willing to risk for meaning. The gate of struggle and the search for purpose, even through difficulty." },
+  29: { name: "The Abysmal", hex: "Saying Yes", text: "The gate of saying yes. Devotion to whatever you commit to. Be careful what you say yes to; the commitment will be deep and the energy will follow through completely." },
+  30: { name: "The Clinging Fire", hex: "Feelings", text: "The gate of feelings and desire. You burn with longing for experience and intensity. Desire is the fuel; learn to recognize when desire is mistaken for direction." },
+  31: { name: "Influence", hex: "The Leader", text: "The gate of leadership through influence. You speak for the collective in a way that resonates. The voice of We. Wait to be invited into leadership; do not seize it." },
+  32: { name: "Duration", hex: "Continuity", text: "The gate of continuity. You sense what will last and what will not. The instinct for sustainable transformation; the keeper of what endures." },
+  33: { name: "Retreat", hex: "Privacy", text: "The gate of retreat and privacy. You need solitude to integrate experience, and you tell stories from the perspective of one who has stepped back to see clearly." },
+  34: { name: "The Power of the Great", hex: "Power", text: "The gate of power. Pure life-force in service of conviction. You are powerful when you are following your own response; you are tyrannical when you push against it." },
+  35: { name: "Progress", hex: "Change", text: "The gate of progress through experience. You crave the new and grow through variety. A jack of all trades who learns by trying everything once." },
+  36: { name: "The Darkening of the Light", hex: "Crisis", text: "The gate of crisis. You move through emotional crisis to growth. Drama is the catalyst, not the destination. Learn to ride the wave without becoming it." },
+  37: { name: "The Family", hex: "Friendship", text: "The gate of the family. Bargains made and kept hold the tribe together. You sense the agreements that bond people and feel deeply when they are broken." },
+  38: { name: "Opposition", hex: "The Fighter", text: "The gate of the fighter. You stand up for what gives life meaning and refuse what does not. Stubborn purpose; fight only the fights that matter." },
+  39: { name: "Obstruction", hex: "Provocation", text: "The gate of provocation. You move people emotionally, sometimes by refusing to give them what they expect. The provocateur who unsticks stuck feeling." },
+  40: { name: "Deliverance", hex: "Aloneness", text: "The gate of aloneness. The will to do for the tribe in exchange for love. You give and you withdraw; the rhythm of work and retreat is essential to your wellbeing." },
+  41: { name: "Decrease", hex: "Contraction", text: "The gate of fantasy and the start of new feeling. The kindling of imagination, the dream of what could be. You begin emotional cycles for yourself and others." },
+  42: { name: "Increase", hex: "Growth", text: "The gate of completion. You are designed to bring cycles to their end, to finish what was begun. Resist the urge to skip ahead; honor the full arc." },
+  43: { name: "Breakthrough", hex: "Insight", text: "The gate of insight. The mind that knows in flashes, often beyond words. Wait for the right moment to translate; explain too soon and you sound like a freak." },
+  44: { name: "Coming to Meet", hex: "Alertness", text: "The gate of alertness. You sense the patterns of others and remember the past. Useful in any work that requires understanding people's history." },
+  45: { name: "Gathering Together", hex: "The King", text: "The gate of the king. You gather and direct the resources of the tribe. A natural authority around money, education, and material life." },
+  46: { name: "Pushing Upward", hex: "The Body", text: "The gate of love of the body. You are here to be in your body and discover what serendipity arises when you commit fully to embodied experience. The gate of being in the right place at the right time." },
+  47: { name: "Oppression", hex: "Realization", text: "The gate of realization. The mind that makes sense of the past. You replay events until pattern emerges; the realization comes in its own time and cannot be forced." },
+  48: { name: "The Well", hex: "Depth", text: "The gate of depth. The well of knowing that runs deep, fed by lifetimes of experience. You have access to wisdom you did not earn in this life." },
+  49: { name: "Revolution", hex: "Principles", text: "The gate of principles. The capacity to break with what no longer serves and lead the tribe through transformation. A revolutionary by principle, not by chaos." },
+  50: { name: "The Cauldron", hex: "Values", text: "The gate of values. You hold the laws and ethics that protect the tribe. The historian of what matters, the keeper of culture's deeper rules." },
+  51: { name: "The Arousing", hex: "Shock", text: "The gate of shock. You are here to shock yourself awake and sometimes others too. The warrior who is initiated by sudden disruption and emerges braver." },
+  52: { name: "Keeping Still", hex: "Stillness", text: "The gate of stillness. The mountain. You can sit in concentrated stillness and hold focus longer than most. Energy through stillness, not motion." },
+  53: { name: "Development", hex: "Beginnings", text: "The gate of beginnings. You start things, and not everything you start needs to be finished. The starter energy is the contribution; completion belongs to others." },
+  54: { name: "The Marrying Maiden", hex: "Drive", text: "The gate of drive. The ambition to rise, to be recognized, to climb from below to above. Powerful fuel; needs a worthy direction or it eats itself." },
+  55: { name: "Abundance", hex: "Spirit", text: "The gate of spirit. The emotional gate of faith and despair. Spirit comes and goes; you are designed to feel both ends of the wave. A gate of profound emotional depth." },
+  56: { name: "The Wanderer", hex: "Stimulation", text: "The gate of stimulation. The storyteller. You weave experience into narrative and stimulate others through the telling. A gift for any work involving language." },
+  57: { name: "The Gentle", hex: "Intuition", text: "The gate of intuition. The clearest splenic intuition, a quiet voice in the now that speaks once. You must be still to hear it." },
+  58: { name: "The Joyous", hex: "Vitality", text: "The gate of vitality. Joy as the fuel for life. You have a deep wellspring of aliveness when you are doing what is truly yours." },
+  59: { name: "Dispersion", hex: "Sexuality", text: "The gate of intimacy and sexuality. You have a gift for breaking through defenses and creating bonds. Powerful magnetism in matters of mating, partnership, and the dispersion of barriers between people." },
+  60: { name: "Limitation", hex: "Acceptance", text: "The gate of acceptance. Working within limitation. The shifts of mutation arise from accepting the constraints of the present and finding the small movement that becomes the breakthrough." },
+  61: { name: "Inner Truth", hex: "Mystery", text: "The gate of mystery. The pressure to know what cannot be known. Inspiration arises from sitting with the unknowable and not collapsing into easy answers." },
+  62: { name: "The Preponderance of the Small", hex: "Detail", text: "The gate of detail. Mastery of the small particulars and the precise word. The organizer who arranges information into clear order." },
+  63: { name: "After Completion", hex: "Doubt", text: "The gate of doubt. The healthy mind that questions before believing. Doubt fuels logic; the answer emerges through the testing." },
+  64: { name: "Before Completion", hex: "Confusion", text: "The gate of confusion. The mind that holds the unresolved. The pressure to make sense of past experience that has not yet arranged itself into pattern. Trust the process." }
+};
+
 
 var SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 var SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
@@ -122,7 +874,7 @@ var HD_CHANNELS = [[1,8,"Inspiration"],[2,14,"The Beat"],[3,60,"Mutation"],[4,63
 var swe=null,sweReady=false;
 var statusEl=document.getElementById("engine-status");
 var btn=document.getElementById("generate-btn");
-(async function(){try{swe=new SwissEph();await swe.initSwissEph();sweReady=true;statusEl.textContent="\u2713 Engine ready";statusEl.classList.add("ready");btn.disabled=false;}catch(e){console.error(e);statusEl.textContent="\u26A0 Engine failed to load. Reload.";statusEl.style.color="#c44536";}})();
+(async function(){try{swe=new SwissEph();await swe.initSwissEph();sweReady=true;statusEl.textContent="\u2756 Engine ready \u2756";statusEl.classList.add("ready");btn.disabled=false;}catch(e){console.error(e);statusEl.textContent="\u26A0 Engine failed to load. Reload the page.";statusEl.classList.add("error");}})();
 
 var chartTypeSelect=document.getElementById("chart-type");
 chartTypeSelect.addEventListener("change",function(){
@@ -256,6 +1008,9 @@ function generateHumanDesignChart(y,m,d,h,mn,la,ln,tz){
   return{type:"human-design",engine:mosh?"Moshier":"Swiss Ephemeris",personalityPlanets:pers,designPlanets:des,activatedGates:aG,personalityGates:pG,designGates:dG,definedChannels:dCh,definedCenters:dC,hdType:hT,strategy:st,authority:auth,profile:prof,definition:def,signature:sg,notSelf:ns,incarnationCross:cross};
 }
 
+/* ============================================================
+   LOCATION SEARCH & TIMEZONE
+   ============================================================ */
 function setupLocationSearch(iI,rI,laI,lnI,sI){
   var inp=document.getElementById(iI),res=document.getElementById(rI),laInp=document.getElementById(laI),lnInp=document.getElementById(lnI),sel=document.getElementById(sI),t;
   inp.addEventListener("input",function(){clearTimeout(t);var q=inp.value.trim();if(q.length<3){res.innerHTML="";return;}t=setTimeout(function(){fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(q)+"&format=json&limit=5").then(function(r){return r.json();}).then(function(data){var html='<div class="location-results">';data.forEach(function(r){var p=r.display_name.split(",").map(function(s){return s.trim();}),cl=p[0];if(p.length>=2)cl+=", "+p[p.length-2];if(p.length>=3)cl+=", "+p[p.length-1];html+='<div class="location-result" data-lat="'+r.lat+'" data-lon="'+r.lon+'" data-name="'+cl.replace(/"/g,"&quot;")+'">'+cl+'</div>';});html+='</div>';res.innerHTML=html;res.querySelectorAll(".location-result").forEach(function(n){n.addEventListener("click",function(){laInp.value=this.dataset.lat;lnInp.value=this.dataset.lon;inp.value=this.dataset.name;sel.textContent="\u2713 "+this.dataset.name;res.innerHTML="";});});});},400);});
@@ -268,6 +1023,85 @@ function getTimezoneOffset(y,m,d,la,ln){
   return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(tz.hasDayLightSaving){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
 }
 
+/* ============================================================
+   MODAL SYSTEM
+   ============================================================ */
+var modalBackdrop=document.getElementById("modal-backdrop");
+var modalClose=document.getElementById("modal-close");
+var modalEyebrow=document.getElementById("modal-eyebrow");
+var modalTitle=document.getElementById("modal-title");
+var modalSubtitle=document.getElementById("modal-subtitle");
+var modalBody=document.getElementById("modal-body");
+function showModal(eyebrow,title,subtitle,bodyHtml){
+  modalEyebrow.textContent=eyebrow||"";
+  modalTitle.textContent=title||"";
+  modalSubtitle.innerHTML=subtitle||"";
+  modalBody.innerHTML=bodyHtml||"";
+  modalBackdrop.classList.add("open");
+  modalBackdrop.scrollTop=0;
+}
+function hideModal(){modalBackdrop.classList.remove("open");}
+modalClose.addEventListener("click",hideModal);
+modalBackdrop.addEventListener("click",function(e){if(e.target===modalBackdrop)hideModal();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")hideModal();});
+
+function fmtPos(p){return p.degreesInSign+"\u00B0 "+String(p.minutes).padStart(2,"0")+"\u2032 "+(p.seconds!==undefined?String(p.seconds).padStart(2,"0")+"\u2033 ":"")+(p.signSymbol||"")+" "+(p.sign||"");}
+function rowsHtml(rows){return rows.map(function(r){return '<div class="field-row"><span class="lbl">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>';}).join("");}
+
+function showPlanetInterp(p){
+  var pInfo=INTERP_PLANETS[p.name],sInfo=INTERP_SIGNS[p.sign];
+  var rows=[["Sign",p.signSymbol+" "+p.sign],["Position",p.degreesInSign+"\u00B0 "+String(p.minutes).padStart(2,"0")+"\u2032"]];
+  if(p.house)rows.push(["House",p.house]);
+  if(p.retrograde)rows.push(["Motion","Retrograde"]);
+  var body='';
+  body+='<p>'+(pInfo?pInfo.text:"")+'</p>';
+  body+='<div style="margin:14px 0;">'+rowsHtml(rows)+'</div>';
+  if(sInfo){body+='<p><strong>'+p.name+' in '+p.sign+':</strong> '+p.name+' takes on the qualities of '+p.sign+' \u2014 '+sInfo.text+'</p>';}
+  if(p.house&&INTERP_HOUSES[p.house]){var h=INTERP_HOUSES[p.house];body+='<p><strong>In your '+h.name+' ('+h.domain+'):</strong> '+h.text+'</p>';}
+  showModal(p.name,p.name+" in "+p.sign,p.degreesInSign+"\u00B0 "+p.sign+(p.house?" \u00B7 House "+p.house:""),body);
+}
+function showSignInterp(signName){
+  var s=INTERP_SIGNS[signName];if(!s)return;
+  var body='<p>'+s.text+'</p><div style="margin-top:14px;">'+rowsHtml([["Element",s.element],["Modality",s.modality],["Ruler",s.ruler]])+'</div>';
+  showModal("Zodiac Sign",signName,s.element+" \u00B7 "+s.modality,body);
+}
+function showHouseInterp(num){
+  var h=INTERP_HOUSES[num];if(!h)return;
+  showModal("House "+num,h.name,h.domain,'<p>'+h.text+'</p>');
+}
+function showAspectInterp(asp){
+  var a=INTERP_ASPECTS[asp.type];
+  var body='<p>'+(a?a.text:"")+'</p><div style="margin-top:14px;">'+rowsHtml([["From",asp.point1],["To",asp.point2],["Aspect",asp.type],["Orb",parseFloat(asp.orb).toFixed(2)+"\u00B0"]])+'</div>';
+  showModal("Aspect",asp.point1+" "+asp.type+" "+asp.point2,a?a.text.split(":")[0]:"",body);
+}
+function showGateInterp(gateNum,line,planetName,activation){
+  var g=INTERP_HD_GATES[gateNum];if(!g)return;
+  var center=HD_GATE_CENTERS[gateNum]||"";
+  var subtitle='Gate '+gateNum+(line?'.'+line:'')+(center?' \u00B7 '+center+' Center':'');
+  var body='<p>'+g.text+'</p>';
+  body+='<div style="margin:14px 0;">'+rowsHtml([["Gate",gateNum+(line?'.'+line:'')],["Theme",g.hex],["Center",center||"\u2014"],["Activation",activation||"\u2014"],planetName?["Body",planetName]:null].filter(Boolean))+'</div>';
+  showModal("Gate "+gateNum,g.name,subtitle,body);
+}
+function showCenterInterp(name,defined){
+  var c=INTERP_HD_CENTERS[name];if(!c)return;
+  showModal("Center",name+" Center",defined?"Defined":"Undefined / Open",'<p>'+c.text+'</p>');
+}
+function showChannelInterp(g1,g2){
+  var key=g1<g2?g1+"-"+g2:g2+"-"+g1;
+  var ch=INTERP_HD_CHANNELS[key];if(!ch)return;
+  var c1=HD_GATE_CENTERS[g1],c2=HD_GATE_CENTERS[g2];
+  showModal("Channel",ch.name,"Channel "+key+" \u00B7 "+c1+" \u2194 "+c2,'<p>'+ch.text+'</p>');
+}
+function showTypeInterp(type){var t=INTERP_HD_TYPE[type];if(!t)return;showModal("Type",type,"Strategy: "+t.strategy,'<p>'+t.text+'</p>');}
+function showAuthorityInterp(auth){var a=INTERP_HD_AUTHORITY[auth];if(!a)return;showModal("Authority",auth,"Inner Decision-Making",'<p>'+a.text+'</p>');}
+function showProfileInterp(prof){var p=INTERP_HD_PROFILE[prof];if(!p)return;showModal("Profile",prof,"Life Theme",'<p>'+p.text+'</p>');}
+function showDefinitionInterp(def){var d=INTERP_HD_DEFINITION[def];if(!d)return;showModal("Definition",def,"How Your Energy Flows",'<p>'+d.text+'</p>');}
+
+window._mami={showPlanetInterp:showPlanetInterp,showSignInterp:showSignInterp,showHouseInterp:showHouseInterp,showAspectInterp:showAspectInterp,showGateInterp:showGateInterp,showCenterInterp:showCenterInterp,showChannelInterp:showChannelInterp,showTypeInterp:showTypeInterp,showAuthorityInterp:showAuthorityInterp,showProfileInterp:showProfileInterp,showDefinitionInterp:showDefinitionInterp};
+
+/* ============================================================
+   FORM HANDLER
+   ============================================================ */
 var resultDiv=document.getElementById("result");
 btn.addEventListener("click",function(){
   if(!sweReady){resultDiv.innerHTML='<div class="error">Engine still loading.</div>';return;}
@@ -275,9 +1109,9 @@ btn.addEventListener("click",function(){
   var dV=document.getElementById("birth-date").value,tV=document.getElementById("birth-time").value;
   var la=document.getElementById("latitude").value,ln=document.getElementById("longitude").value;
   var hs=document.getElementById("house-system").value;
-  if(!dV||!tV||!la||!ln){resultDiv.innerHTML='<div class="error">Fill in all fields and pick a location.</div>';return;}
+  if(!dV||!tV||!la||!ln){resultDiv.innerHTML='<div class="error">Please complete every field and select a location from the dropdown.</div>';return;}
   var dp=dV.split("-"),tp=tV.split(":"),y=parseInt(dp[0]),m=parseInt(dp[1]),d=parseInt(dp[2]),h=parseInt(tp[0]),mn=parseInt(tp[1]);
-  resultDiv.innerHTML='<div class="loading">Calculating your chart...</div>';
+  resultDiv.innerHTML='<div class="loading">Casting your chart \u2026</div>';
   getTimezoneOffset(y,m,d,la,ln).then(function(tz){
     try{
       if(ct==="natal"){renderNatalChart(generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz));}
@@ -294,7 +1128,7 @@ btn.addEventListener("click",function(){
       else if(ct==="synastry"){
         var d2=document.getElementById("birth-date-2").value,t2=document.getElementById("birth-time-2").value;
         var la2=document.getElementById("latitude-2").value,ln2=document.getElementById("longitude-2").value;
-        if(!d2||!t2||!la2||!ln2){resultDiv.innerHTML='<div class="error">Fill in partner info too.</div>';return;}
+        if(!d2||!t2||!la2||!ln2){resultDiv.innerHTML='<div class="error">Please complete the partner\u2019s birth information too.</div>';return;}
         var dp2=d2.split("-"),tp2=t2.split(":"),y2=parseInt(dp2[0]),m2=parseInt(dp2[1]),day2=parseInt(dp2[2]),h2=parseInt(tp2[0]),mn2=parseInt(tp2[1]);
         getTimezoneOffset(y2,m2,day2,la2,ln2).then(function(tz2){
           renderSynastryChart(generateSynastryChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:y2,month:m2,day:day2,hour:h2,minute:mn2,lat:parseFloat(la2),lng:parseFloat(ln2),houseSystem:hs,tzOffsetHours:tz2}));
@@ -304,96 +1138,296 @@ btn.addEventListener("click",function(){
   });
 });
 
-function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt){
+/* ============================================================
+   WHEEL RENDERING (clickable)
+   ============================================================ */
+function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt,wheelData){
   opt=opt||{};
   function eclToSvg(lon){return 180+(lon-ascLon);}
   function polar(cx,cy,r,deg){var rad=(deg*Math.PI)/180;return{x:cx+r*Math.cos(rad),y:cy-r*Math.sin(rad)};}
   var cx=300,cy=300;
   var svg='<svg class="wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
-  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="280" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="250" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
-  for(var i=0;i<12;i++){var a=eclToSvg(i*30),p1=polar(cx,cy,250,a),p2=polar(cx,cy,280,a);svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#c9a961" stroke-width="1" opacity="0.5"/>';}
-  for(var d=0;d<360;d++){var a=eclToSvg(d),iM=d%10===0,tL=iM?6:(d%5===0?4:2),tp1=polar(cx,cy,280,a),tp2=polar(cx,cy,280-tL,a);svg+='<line x1="'+tp1.x+'" y1="'+tp1.y+'" x2="'+tp2.x+'" y2="'+tp2.y+'" stroke="#c9a961" stroke-width="'+(iM?1:0.5)+'" opacity="'+(iM?0.85:0.4)+'"/>';}
-  for(var s=0;s<12;s++){var sa=eclToSvg(s*30+15),sp=polar(cx,cy,265,sa);svg+='<text x="'+sp.x+'" y="'+sp.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="22" font-family="Georgia, serif">'+SIGN_SYMBOLS[s]+'</text>';}
-  if(houses){for(var hi=0;hi<houses.length;hi++){var h=houses[hi],ha=eclToSvg(h.eclipticLongitude),hp1=polar(cx,cy,80,ha),hp2=polar(cx,cy,250,ha),iA=[0,3,6,9].indexOf(hi)!==-1;svg+='<line x1="'+hp1.x+'" y1="'+hp1.y+'" x2="'+hp2.x+'" y2="'+hp2.y+'" stroke="#e8e1cc" stroke-width="'+(iA?1:0.5)+'" opacity="'+(iA?0.6:0.3)+'"/>';var nh=houses[(hi+1)%12],ml=(h.eclipticLongitude+nh.eclipticLongitude)/2;if(nh.eclipticLongitude<h.eclipticLongitude)ml=((h.eclipticLongitude+nh.eclipticLongitude+360)/2)%360;var ma=eclToSvg(ml),np=polar(cx,cy,100,ma);svg+='<text x="'+np.x+'" y="'+np.y+'" text-anchor="middle" dominant-baseline="central" fill="#a8a08a" font-size="11" font-style="italic">'+h.number+'</text>';}}
-  if(aspects&&aspects.length){var aC={conjunction:"#e0c077",opposition:"#c44536",trine:"#6b8e4e",square:"#c44536",sextile:"#4a6b8e"};for(var ai=0;ai<aspects.length;ai++){var asp=aspects[ai],pa1=null,pa2=null;for(var pi=0;pi<planets.length;pi++){if(planets[pi].name===asp.point1)pa1=planets[pi];if(planets[pi].name===asp.point2)pa2=planets[pi];}if(asp.point1==="Ascendant")pa1={eclipticLongitude:ascLon};if(asp.point1==="Midheaven")pa1={eclipticLongitude:mcLon};if(asp.point2==="Ascendant")pa2={eclipticLongitude:ascLon};if(asp.point2==="Midheaven")pa2={eclipticLongitude:mcLon};if(!pa1||!pa2)continue;var aa1=eclToSvg(pa1.eclipticLongitude),aa2=eclToSvg(pa2.eclipticLongitude),ap1=polar(cx,cy,160,aa1),ap2=polar(cx,cy,160,aa2),co=aC[asp.type]||"#888",dh=(asp.type==="square"||asp.type==="opposition")?'stroke-dasharray="2,3"':"";svg+='<line x1="'+ap1.x+'" y1="'+ap1.y+'" x2="'+ap2.x+'" y2="'+ap2.y+'" stroke="'+co+'" stroke-width="0.7" opacity="0.55" '+dh+'/>';}}
-  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="80" fill="none" stroke="#c9a961" stroke-width="0.5" opacity="0.4"/>';
-  if(ascLon!==undefined){var aL=polar(cx,cy,298,eclToSvg(ascLon));svg+='<text x="'+aL.x+'" y="'+aL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">ASC</text>';}
-  if(mcLon!==undefined){var mL=polar(cx,cy,298,eclToSvg(mcLon));svg+='<text x="'+mL.x+'" y="'+mL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">MC</text>';}
-  var rR=opt.ringRadius||215,pCo=opt.planetColor||"#e0c077",pS=planets||[];
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="280" fill="none" stroke="#d4b675" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="250" fill="none" stroke="#d4b675" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
+  for(var i=0;i<12;i++){var a=eclToSvg(i*30),p1=polar(cx,cy,250,a),p2=polar(cx,cy,280,a);svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#d4b675" stroke-width="1" opacity="0.5"/>';}
+  for(var d=0;d<360;d++){var a=eclToSvg(d),iM=d%10===0,tL=iM?6:(d%5===0?4:2),tp1=polar(cx,cy,280,a),tp2=polar(cx,cy,280-tL,a);svg+='<line x1="'+tp1.x+'" y1="'+tp1.y+'" x2="'+tp2.x+'" y2="'+tp2.y+'" stroke="#d4b675" stroke-width="'+(iM?1:0.5)+'" opacity="'+(iM?0.85:0.4)+'"/>';}
+  for(var s=0;s<12;s++){var sa=eclToSvg(s*30+15),sp=polar(cx,cy,265,sa),sn=SIGN_NAMES[s];svg+='<g class="interactive" onclick="window._mami.showSignInterp(\''+sn+'\')"><circle cx="'+sp.x+'" cy="'+sp.y+'" r="14" fill="transparent"/><text x="'+sp.x+'" y="'+sp.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="22" font-family="Cinzel, serif">'+SIGN_SYMBOLS[s]+'</text></g>';}
+  if(houses){for(var hi=0;hi<houses.length;hi++){var h=houses[hi],ha=eclToSvg(h.eclipticLongitude),hp1=polar(cx,cy,80,ha),hp2=polar(cx,cy,250,ha),iA=[0,3,6,9].indexOf(hi)!==-1;svg+='<line x1="'+hp1.x+'" y1="'+hp1.y+'" x2="'+hp2.x+'" y2="'+hp2.y+'" stroke="#e8e1cc" stroke-width="'+(iA?1:0.5)+'" opacity="'+(iA?0.6:0.3)+'"/>';var nh=houses[(hi+1)%12],ml=(h.eclipticLongitude+nh.eclipticLongitude)/2;if(nh.eclipticLongitude<h.eclipticLongitude)ml=((h.eclipticLongitude+nh.eclipticLongitude+360)/2)%360;var ma=eclToSvg(ml),np=polar(cx,cy,100,ma);svg+='<g class="interactive" onclick="window._mami.showHouseInterp('+h.number+')"><circle cx="'+np.x+'" cy="'+np.y+'" r="12" fill="transparent"/><text x="'+np.x+'" y="'+np.y+'" text-anchor="middle" dominant-baseline="central" fill="#b8b09a" font-size="13" font-style="italic" font-family="Cormorant Garamond, serif">'+h.number+'</text></g>';}}
+  if(aspects&&aspects.length){var aC={conjunction:"#e9cb8a",opposition:"#c44536",trine:"#6b8e4e",square:"#c44536",sextile:"#4a6b8e"};for(var ai=0;ai<aspects.length;ai++){var asp=aspects[ai],pa1=null,pa2=null;for(var pi=0;pi<planets.length;pi++){if(planets[pi].name===asp.point1)pa1=planets[pi];if(planets[pi].name===asp.point2)pa2=planets[pi];}if(asp.point1==="Ascendant")pa1={eclipticLongitude:ascLon};if(asp.point1==="Midheaven")pa1={eclipticLongitude:mcLon};if(asp.point2==="Ascendant")pa2={eclipticLongitude:ascLon};if(asp.point2==="Midheaven")pa2={eclipticLongitude:mcLon};if(!pa1||!pa2)continue;var aa1=eclToSvg(pa1.eclipticLongitude),aa2=eclToSvg(pa2.eclipticLongitude),ap1=polar(cx,cy,160,aa1),ap2=polar(cx,cy,160,aa2),co=aC[asp.type]||"#888",dh=(asp.type==="square"||asp.type==="opposition")?'stroke-dasharray="2,3"':"";svg+='<line x1="'+ap1.x+'" y1="'+ap1.y+'" x2="'+ap2.x+'" y2="'+ap2.y+'" stroke="'+co+'" stroke-width="0.7" opacity="0.55" '+dh+'/>';}}
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="80" fill="none" stroke="#d4b675" stroke-width="0.5" opacity="0.4"/>';
+  if(ascLon!==undefined){var aL=polar(cx,cy,298,eclToSvg(ascLon));svg+='<text x="'+aL.x+'" y="'+aL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="10" letter-spacing="2" font-family="Cinzel, serif">ASC</text>';}
+  if(mcLon!==undefined){var mL=polar(cx,cy,298,eclToSvg(mcLon));svg+='<text x="'+mL.x+'" y="'+mL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e9cb8a" font-size="10" letter-spacing="2" font-family="Cinzel, serif">MC</text>';}
+  var rR=opt.ringRadius||215,pCo=opt.planetColor||"#e9cb8a",pS=planets||[];
   var sd=[];for(var pj=0;pj<pS.length;pj++)sd.push({p:pS[pj],idx:pj});
   sd.sort(function(a,b){return a.p.eclipticLongitude-b.p.eclipticLongitude;});
   var nu=new Array(pS.length);for(var nz=0;nz<nu.length;nz++)nu[nz]=0;
   for(var si=1;si<sd.length;si++){var df=Math.abs(sd[si].p.eclipticLongitude-sd[si-1].p.eclipticLongitude);if(df>180)df=360-df;if(df<7)nu[sd[si].idx]=nu[sd[si-1].idx]+18;}
-  for(var pk=0;pk<pS.length;pk++){var p=pS[pk],pA=eclToSvg(p.eclipticLongitude),aR=rR+nu[pk],po=polar(cx,cy,aR,pA),tS=polar(cx,cy,250,pA),tE=polar(cx,cy,aR+12,pA);svg+='<line x1="'+tS.x+'" y1="'+tS.y+'" x2="'+tE.x+'" y2="'+tE.y+'" stroke="'+pCo+'" stroke-width="0.5" opacity="0.45"/><circle cx="'+po.x+'" cy="'+po.y+'" r="13" fill="#0a1028" stroke="'+pCo+'" stroke-width="0.7"/><text x="'+po.x+'" y="'+po.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="14" font-family="Georgia, serif">'+p.symbol+'</text>';var dP=polar(cx,cy,aR+22,pA),rx=p.retrograde?'<tspan fill="#c44536" font-size="7"> R</tspan>':'';svg+='<text x="'+dP.x+'" y="'+dP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="9">'+(p.degreesInSign!==undefined?p.degreesInSign+'\u00B0':'')+rx+'</text>';}
-  if(opt.overlayPlanets){var ov=opt.overlayPlanets,oC=opt.overlayColor||"#4a6b8e",oR=opt.overlayRingRadius||240;for(var op=0;op<ov.length;op++){var o=ov[op],oA=eclToSvg(o.eclipticLongitude),oP=polar(cx,cy,oR,oA);svg+='<circle cx="'+oP.x+'" cy="'+oP.y+'" r="11" fill="#0a1028" stroke="'+oC+'" stroke-width="0.7"/><text x="'+oP.x+'" y="'+oP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+oC+'" font-size="12" font-family="Georgia, serif">'+o.symbol+'</text>';}}
+  var planetsKey=opt.planetsKey||"_natalPlanets";
+  window[planetsKey]=pS;
+  for(var pk=0;pk<pS.length;pk++){var p=pS[pk],pA=eclToSvg(p.eclipticLongitude),aR=rR+nu[pk],po=polar(cx,cy,aR,pA),tS=polar(cx,cy,250,pA),tE=polar(cx,cy,aR+12,pA);svg+='<line x1="'+tS.x+'" y1="'+tS.y+'" x2="'+tE.x+'" y2="'+tE.y+'" stroke="'+pCo+'" stroke-width="0.5" opacity="0.45"/>';svg+='<g class="interactive" onclick="window._mami.showPlanetInterp(window.'+planetsKey+'['+pk+'])"><circle cx="'+po.x+'" cy="'+po.y+'" r="14" fill="#060914" stroke="'+pCo+'" stroke-width="0.7"/><text x="'+po.x+'" y="'+po.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="14" font-family="Cinzel, serif">'+p.symbol+'</text></g>';var dP=polar(cx,cy,aR+22,pA),rx=p.retrograde?'<tspan fill="#c44536" font-size="7"> R</tspan>':'';svg+='<text x="'+dP.x+'" y="'+dP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="9" font-family="Cinzel, serif">'+(p.degreesInSign!==undefined?p.degreesInSign+'\u00B0':'')+rx+'</text>';}
+  if(opt.overlayPlanets){var ov=opt.overlayPlanets,oC=opt.overlayColor||"#4a6b8e",oR=opt.overlayRingRadius||240,oKey=opt.overlayKey||"_overlayPlanets";window[oKey]=ov;for(var op=0;op<ov.length;op++){var o=ov[op],oA=eclToSvg(o.eclipticLongitude),oP=polar(cx,cy,oR,oA);svg+='<g class="interactive" onclick="window._mami.showPlanetInterp(window.'+oKey+'['+op+'])"><circle cx="'+oP.x+'" cy="'+oP.y+'" r="12" fill="#060914" stroke="'+oC+'" stroke-width="0.7"/><text x="'+oP.x+'" y="'+oP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+oC+'" font-size="12" font-family="Cinzel, serif">'+o.symbol+'</text></g>';}}
   svg+='</svg>';return svg;
 }
 
-function tableOfPlanets(t,p,wH){var h='<div class="section-title">'+t+'</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th>'+(wH?'<th>House</th>':'')+'</tr></thead><tbody>';p.forEach(function(pt){var rx=pt.retrograde?' <span style="color:#c44536;font-size:11px;">\u211E</span>':'';h+='<tr><td>'+pt.symbol+' '+pt.name+rx+'</td><td>'+pt.signSymbol+' '+pt.sign+'</td><td><span class="deg">'+pt.degreesInSign+'\u00B0</span> '+String(pt.minutes).padStart(2,"0")+"'"+(pt.seconds!==undefined?String(pt.seconds).padStart(2,"0")+'"':'')+'</td>'+(wH?'<td>'+(pt.house||"\u2014")+'</td>':'')+'</tr>';});h+='</tbody></table>';return h;}
-function tableOfHouses(hs){var h='<div class="section-title">Houses</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp</th></tr></thead><tbody>';hs.forEach(function(x){h+='<tr><td>House '+x.number+'</td><td>'+x.signSymbol+' '+x.sign+'</td><td><span class="deg">'+x.degreesInSign+'\u00B0</span> '+String(x.minutes).padStart(2,"0")+"'</td></tr>";});h+='</tbody></table>';return h;}
-function tableOfAspects(t,a){if(!a||!a.length)return'';var h='<div class="section-title">'+t+'</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';var mx=Math.min(60,a.length);for(var i=0;i<mx;i++){var x=a[i];h+='<tr><td>'+x.point1+'</td><td>'+x.type+'</td><td>'+x.point2+'</td><td>'+parseFloat(x.orb).toFixed(2)+'\u00B0</td></tr>';}h+='</tbody></table>';return h;}
+function tableOfPlanets(t,p,wH,clickKey){
+  window[clickKey]=p;
+  var h='<div class="section-title">'+t+'</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th>'+(wH?'<th>House</th>':'')+'</tr></thead><tbody>';
+  p.forEach(function(pt,i){var rx=pt.retrograde?' <span style="color:#c44536;font-size:11px;">\u211E</span>':'';h+='<tr class="clickable" onclick="window._mami.showPlanetInterp(window.'+clickKey+'['+i+'])"><td>'+pt.symbol+' '+pt.name+rx+'</td><td>'+pt.signSymbol+' '+pt.sign+'</td><td><span class="deg">'+pt.degreesInSign+'\u00B0</span> '+String(pt.minutes).padStart(2,"0")+"\u2032"+(pt.seconds!==undefined?String(pt.seconds).padStart(2,"0")+"\u2033":'')+'</td>'+(wH?'<td>'+(pt.house||"\u2014")+'</td>':'')+'</tr>';});
+  h+='</tbody></table>';return h;
+}
+function tableOfHouses(hs){
+  window._housesData=hs;
+  var h='<div class="section-title">Houses</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp</th></tr></thead><tbody>';
+  hs.forEach(function(x){h+='<tr class="clickable" onclick="window._mami.showHouseInterp('+x.number+')"><td>House '+x.number+'</td><td>'+x.signSymbol+' '+x.sign+'</td><td><span class="deg">'+x.degreesInSign+'\u00B0</span> '+String(x.minutes).padStart(2,"0")+"\u2032</td></tr>";});
+  h+='</tbody></table>';return h;
+}
+function tableOfAspects(t,a,clickKey){
+  if(!a||!a.length)return'';
+  window[clickKey]=a;
+  var h='<div class="section-title">'+t+'</div><div class="tap-hint">Tap any row to read its meaning</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';
+  var mx=Math.min(60,a.length);
+  for(var i=0;i<mx;i++){var x=a[i];h+='<tr class="clickable" onclick="window._mami.showAspectInterp(window.'+clickKey+'['+i+'])"><td>'+x.point1+'</td><td>'+x.type+'</td><td>'+x.point2+'</td><td>'+parseFloat(x.orb).toFixed(2)+'\u00B0</td></tr>';}
+  h+='</tbody></table>';return h;
+}
 
 function renderNatalChart(d){
-  var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects);
-  var html='<div class="chart-wrapper"><h2>Your Natal Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div>'+svg;
-  html+='<div class="section-title">Angles</div><table class="data-table"><tbody>';
-  html+='<tr><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"'</td></tr>";
-  html+='<tr><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"'</td></tr>";
-  html+='</tbody></table>'+tableOfPlanets("Planets and Points",d.planets,true)+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects)+'</div>';
+  var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects,{planetsKey:"_natalP"});
+  var html='<div class="chart-wrapper"><h2>Your Natal Chart</h2><div class="chart-meta">'+d.engine+'</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+='<div class="section-title">Angles</div>';
+  window._ascData={name:"Ascendant",sign:d.angles.ascendant.sign,signSymbol:d.angles.ascendant.signSymbol,degreesInSign:d.angles.ascendant.degreesInSign,minutes:d.angles.ascendant.minutes};
+  window._mcData={name:"Midheaven",sign:d.angles.midheaven.sign,signSymbol:d.angles.midheaven.signSymbol,degreesInSign:d.angles.midheaven.degreesInSign,minutes:d.angles.midheaven.minutes};
+  html+='<table class="data-table"><tbody>';
+  html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.ascendant.sign+'\')"><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"\u2032</td></tr>";
+  html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.midheaven.sign+'\')"><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"\u2032</td></tr>";
+  html+='</tbody></table>';
+  html+=tableOfPlanets("Planets and Points",d.planets,true,"_natalTable")+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects,"_natalAspects")+'</div>';
   resultDiv.innerHTML=html;
 }
 function renderTransitChart(d){
-  var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude};});
-  var svg=buildWheelSVG(d.natal.planets,d.natal.houses,d.natal.angles.ascendant.eclipticLongitude,d.natal.angles.midheaven.eclipticLongitude,d.natal.aspects,{overlayPlanets:ov,overlayColor:"#4a6b8e",ringRadius:215,overlayRingRadius:240});
-  var html='<div class="chart-wrapper"><h2>Transit Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">Transits for '+d.transitDate+' | '+d.engine+'</div><div style="text-align:center;font-size:11px;color:#a8a08a;margin-bottom:14px;"><span style="color:#e0c077;">Inner: Natal</span> &nbsp; \u00B7 &nbsp; <span style="color:#4a6b8e;">Outer: Transits</span></div>'+svg+tableOfPlanets("Natal Planets",d.natal.planets,true)+tableOfPlanets("Transiting Planets",d.transitPlanets,true)+tableOfAspects("Transit-to-Natal Aspects",d.interAspects)+'</div>';
+  var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
+  var svg=buildWheelSVG(d.natal.planets,d.natal.houses,d.natal.angles.ascendant.eclipticLongitude,d.natal.angles.midheaven.eclipticLongitude,d.natal.aspects,{overlayPlanets:ov,overlayColor:"#4a6b8e",ringRadius:215,overlayRingRadius:240,planetsKey:"_transitNatal",overlayKey:"_transitOverlay"});
+  var html='<div class="chart-wrapper"><h2>Transit Chart</h2><div class="chart-meta">Transits for '+d.transitDate+' \u00B7 '+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Natal &nbsp; <span class="swatch" style="background:#4a6b8e;"></span>Outer: Transits</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+=tableOfPlanets("Natal Planets",d.natal.planets,true,"_tNatal")+tableOfPlanets("Transiting Planets",d.transitPlanets,true,"_tTransit")+tableOfAspects("Transit-to-Natal Aspects",d.interAspects,"_tAspects")+'</div>';
   resultDiv.innerHTML=html;
 }
 function renderSynastryChart(d){
-  var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude};});
-  var svg=buildWheelSVG(d.natalA.planets,d.natalA.houses,d.natalA.angles.ascendant.eclipticLongitude,d.natalA.angles.midheaven.eclipticLongitude,null,{overlayPlanets:ov,overlayColor:"#c9a961",ringRadius:215,overlayRingRadius:240});
-  var html='<div class="chart-wrapper"><h2>Synastry Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div><div style="text-align:center;font-size:11px;color:#a8a08a;margin-bottom:14px;"><span style="color:#e0c077;">Inner: Person A</span> &nbsp; \u00B7 &nbsp; <span style="color:#c9a961;">Outer: Person B</span></div>'+svg+tableOfPlanets("Person A Planets",d.natalA.planets,true)+tableOfPlanets("Person B Planets",d.natalB.planets,true)+tableOfAspects("Inter-Chart Aspects (A to B)",d.interAspects)+'</div>';
+  var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
+  var svg=buildWheelSVG(d.natalA.planets,d.natalA.houses,d.natalA.angles.ascendant.eclipticLongitude,d.natalA.angles.midheaven.eclipticLongitude,null,{overlayPlanets:ov,overlayColor:"#d4b675",ringRadius:215,overlayRingRadius:240,planetsKey:"_synA",overlayKey:"_synB"});
+  var html='<div class="chart-wrapper"><h2>Synastry Chart</h2><div class="chart-meta">'+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Person A &nbsp; <span class="swatch" style="background:#d4b675;"></span>Outer: Person B</div>'+svg;
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+  html+=tableOfPlanets("Person A",d.natalA.planets,true,"_synAT")+tableOfPlanets("Person B",d.natalB.planets,true,"_synBT")+tableOfAspects("Inter-Chart Aspects (A to B)",d.interAspects,"_synAspects")+'</div>';
   resultDiv.innerHTML=html;
 }
 
-var CENTER_LAYOUT={Head:{x:160,y:30,w:80,h:70,shape:"triangle-up"},Ajna:{x:160,y:120,w:80,h:70,shape:"triangle-down"},Throat:{x:160,y:215,w:80,h:70,shape:"rect"},G:{x:160,y:315,w:80,h:80,shape:"diamond"},Heart:{x:255,y:330,w:60,h:60,shape:"triangle-left"},Spleen:{x:50,y:400,w:70,h:70,shape:"triangle-right"},Sacral:{x:160,y:435,w:80,h:80,shape:"rect"},Solar:{x:265,y:455,w:70,h:70,shape:"triangle-right"},Root:{x:160,y:550,w:80,h:80,shape:"rect"}};
-var CENTER_COLORS={Head:"#f7d917",Ajna:"#5cb85c",Throat:"#8b6f47",G:"#e8c547",Heart:"#d9534f",Spleen:"#a06ec5",Sacral:"#d9534f",Solar:"#c9a961",Root:"#8b4f3f"};
+/* ============================================================
+   BODYGRAPH - corrected gate positions on center perimeters
+   Each gate has its own (x,y) where the channel line connects.
+   ============================================================ */
+
+var BODYGRAPH_CENTERS = {
+  Head: { shape: "triangle-up", points: [[200,30],[260,120],[140,120]], cx: 200, cy: 90, color: "#f4d35e" },
+  Ajna: { shape: "triangle-down", points: [[140,140],[260,140],[200,230]], cx: 200, cy: 175, color: "#7cc05f" },
+  Throat: { shape: "rect", points: [[155,250],[245,250],[245,340],[155,340]], cx: 200, cy: 295, color: "#8a6a3f" },
+  G: { shape: "diamond", points: [[200,360],[260,420],[200,480],[140,420]], cx: 200, cy: 420, color: "#e9cb8a" },
+  Heart: { shape: "triangle-left", points: [[315,400],[315,460],[260,430]], cx: 290, cy: 430, color: "#c44536" },
+  Spleen: { shape: "triangle-right", points: [[55,460],[55,520],[110,490]], cx: 80, cy: 490, color: "#7a5da5" },
+  Sacral: { shape: "rect", points: [[155,500],[245,500],[245,590],[155,590]], cx: 200, cy: 545, color: "#c44536" },
+  Solar: { shape: "triangle-right", points: [[290,500],[290,560],[345,530]], cx: 315, cy: 530, color: "#c9a961" },
+  Root: { shape: "rect", points: [[155,610],[245,610],[245,700],[155,700]], cx: 200, cy: 655, color: "#8b4f3f" }
+};
+
+// Each gate's (x,y) on the perimeter of its center, positioned where the channel line enters
+var BODYGRAPH_GATE_POSITIONS = {
+  // HEAD
+  64: { x: 165, y: 110 },  // bottom-left
+  61: { x: 200, y: 122 },  // bottom-center
+  63: { x: 235, y: 110 },  // bottom-right
+  // AJNA
+  47: { x: 152, y: 152 },  // top-left
+  24: { x: 200, y: 142 },  // top-center
+  4:  { x: 248, y: 152 },  // top-right
+  17: { x: 168, y: 215 },  // bottom-left
+  43: { x: 200, y: 228 },  // bottom-center
+  11: { x: 232, y: 215 },  // bottom-right
+  // THROAT
+  62: { x: 158, y: 260 },  // top-left
+  23: { x: 158, y: 285 },  // mid-left
+  56: { x: 158, y: 310 },  // bottom-left
+  16: { x: 158, y: 332 },  // bottom-bottom-left
+  20: { x: 200, y: 252 },  // top-center
+  31: { x: 242, y: 260 },  // top-right
+  8:  { x: 242, y: 285 },  // mid-right
+  33: { x: 242, y: 310 },  // bottom-right
+  35: { x: 242, y: 332 },  // bottom-bottom-right
+  12: { x: 175, y: 338 },  // bottom-left
+  45: { x: 225, y: 338 },  // bottom-right
+  // G
+  1:  { x: 200, y: 365 },  // top
+  13: { x: 245, y: 405 },  // top-right
+  25: { x: 245, y: 435 },  // bottom-right
+  46: { x: 200, y: 475 },  // bottom
+  2:  { x: 155, y: 435 },  // bottom-left
+  15: { x: 155, y: 405 },  // top-left
+  10: { x: 175, y: 388 },  // top-left-inner
+  7:  { x: 225, y: 388 },  // top-right-inner
+  // HEART
+  21: { x: 285, y: 410 },  // top
+  40: { x: 312, y: 422 },  // right
+  26: { x: 312, y: 442 },  // right-bottom
+  51: { x: 285, y: 455 },  // bottom-left
+  // SPLEEN
+  48: { x: 60, y: 475 },   // top
+  57: { x: 60, y: 495 },   // mid
+  44: { x: 60, y: 515 },   // bottom
+  50: { x: 92, y: 478 },   // top-right
+  32: { x: 100, y: 490 },  // mid-right
+  28: { x: 92, y: 502 },   // bottom-right
+  18: { x: 78, y: 512 },   // bottom-mid
+  // SACRAL
+  34: { x: 158, y: 510 },  // top-left
+  5:  { x: 200, y: 503 },  // top-center
+  14: { x: 242, y: 510 },  // top-right
+  29: { x: 158, y: 545 },  // mid-left
+  59: { x: 200, y: 545 },  // mid-center
+  9:  { x: 242, y: 545 },  // mid-right
+  3:  { x: 158, y: 580 },  // bottom-left
+  42: { x: 200, y: 587 },  // bottom-center
+  27: { x: 242, y: 580 },  // bottom-right
+  // SOLAR
+  6:  { x: 295, y: 510 },  // top
+  37: { x: 320, y: 525 },  // right-top
+  22: { x: 340, y: 533 },  // far-right
+  36: { x: 320, y: 550 },  // right-bottom
+  30: { x: 295, y: 555 },  // bottom-left
+  55: { x: 308, y: 535 },  // mid
+  49: { x: 305, y: 545 },  // mid-bottom
+  // ROOT
+  53: { x: 158, y: 620 },  // top-left
+  60: { x: 200, y: 612 },  // top-center
+  52: { x: 242, y: 620 },  // top-right
+  19: { x: 158, y: 655 },  // mid-left
+  39: { x: 200, y: 655 },  // mid-center
+  41: { x: 242, y: 655 },  // mid-right
+  58: { x: 158, y: 690 },  // bottom-left
+  38: { x: 200, y: 697 },  // bottom-center
+  54: { x: 242, y: 690 }   // bottom-right
+};
 
 function renderHumanDesign(d){
-  var html='<div class="chart-wrapper"><h2>Human Design Bodygraph</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div><div class="hd-summary">';
-  html+='<div class="hd-summary-item"><div class="label">Type</div><div class="value">'+d.hdType+'</div></div>';
-  html+='<div class="hd-summary-item"><div class="label">Strategy</div><div class="value">'+d.strategy+'</div></div>';
-  html+='<div class="hd-summary-item"><div class="label">Authority</div><div class="value">'+d.authority+'</div></div>';
-  html+='<div class="hd-summary-item"><div class="label">Profile</div><div class="value">'+d.profile+'</div></div>';
-  html+='<div class="hd-summary-item"><div class="label">Definition</div><div class="value">'+d.definition+'</div></div>';
+  var html='<div class="chart-wrapper"><h2>Human Design Bodygraph</h2><div class="chart-meta">'+d.engine+'</div>';
+  html+='<div class="hd-summary">';
+  html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Type</div><div class="value">'+d.hdType+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Strategy</div><div class="value">'+d.strategy+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showAuthorityInterp(\''+d.authority+'\')"><div class="label">Authority</div><div class="value">'+d.authority.split(" ")[0]+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showProfileInterp(\''+d.profile+'\')"><div class="label">Profile</div><div class="value">'+d.profile+'</div></div>';
+  html+='<div class="hd-summary-item" onclick="window._mami.showDefinitionInterp(\''+d.definition+'\')"><div class="label">Definition</div><div class="value">'+d.definition.replace(" Definition","")+'</div></div>';
   html+='<div class="hd-summary-item"><div class="label">Signature</div><div class="value">'+d.signature+'</div></div>';
-  html+='<div class="hd-summary-item"><div class="label">Not-Self</div><div class="value">'+d.notSelf+'</div></div></div>';
-  var svg='<svg class="bodygraph" viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg">';
-  Object.keys(CENTER_LAYOUT).forEach(function(cn){
-    var c=CENTER_LAYOUT[cn],df=d.definedCenters[cn],fl=df?CENTER_COLORS[cn]:"transparent",st="#e0c077",sw=1.5,pts;
-    if(c.shape==="triangle-up"){pts=c.x+","+(c.y+c.h)+" "+(c.x+c.w)+","+(c.y+c.h)+" "+(c.x+c.w/2)+","+c.y;svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    else if(c.shape==="triangle-down"){pts=c.x+","+c.y+" "+(c.x+c.w)+","+c.y+" "+(c.x+c.w/2)+","+(c.y+c.h);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    else if(c.shape==="diamond"){pts=(c.x+c.w/2)+","+c.y+" "+(c.x+c.w)+","+(c.y+c.h/2)+" "+(c.x+c.w/2)+","+(c.y+c.h)+" "+c.x+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    else if(c.shape==="triangle-left"){pts=(c.x+c.w)+","+c.y+" "+(c.x+c.w)+","+(c.y+c.h)+" "+c.x+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    else if(c.shape==="triangle-right"){pts=c.x+","+c.y+" "+c.x+","+(c.y+c.h)+" "+(c.x+c.w)+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    else{svg+='<rect x="'+c.x+'" y="'+c.y+'" width="'+c.w+'" height="'+c.h+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
-    svg+='<text x="'+(c.x+c.w/2)+'" y="'+(c.y+c.h/2)+'" text-anchor="middle" dominant-baseline="central" fill="'+(df?"#fff":"#888")+'" font-size="9" font-family="Georgia, serif" font-style="italic">'+cn+'</text>';
+  html+='<div class="hd-summary-item"><div class="label">Not-Self</div><div class="value">'+d.notSelf+'</div></div>';
+  html+='</div>';
+  html+='<div class="tap-hint">Tap any element of the chart to read its meaning</div>';
+
+  // Build SVG
+  var svg='<svg class="bodygraph" viewBox="0 0 400 740" xmlns="http://www.w3.org/2000/svg">';
+
+  // Draw channels FIRST (under centers)
+  function gp(g){return BODYGRAPH_GATE_POSITIONS[g];}
+  d.definedChannels.forEach(function(ch){
+    var p1=gp(ch[0]),p2=gp(ch[1]);if(!p1||!p2)return;
+    var bP=d.personalityGates[ch[0]]&&d.personalityGates[ch[1]];
+    var bD=d.designGates[ch[0]]&&d.designGates[ch[1]];
+    var lc;
+    if(bP&&bD)lc="#e9cb8a";       // both = gold (defined fully)
+    else if(bP)lc="#0a1028";       // personality only = dark/black
+    else lc="#c44536";             // design only = red
+    svg+='<g class="interactive" onclick="window._mami.showChannelInterp('+ch[0]+','+ch[1]+')"><line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+lc+'" stroke-width="6" opacity="0.95" stroke-linecap="round"/></g>';
   });
-  function gp(g){var c=HD_GATE_CENTERS[g];if(!c)return null;var lay=CENTER_LAYOUT[c];if(!lay)return null;return{x:lay.x+lay.w/2,y:lay.y+lay.h/2};}
-  d.definedChannels.forEach(function(ch){var p1=gp(ch[0]),p2=gp(ch[1]);if(!p1||!p2)return;var bP=d.personalityGates[ch[0]]&&d.personalityGates[ch[1]],bD=d.designGates[ch[0]]&&d.designGates[ch[1]],lc=bD&&!bP?"#c44536":(bP&&!bD?"#0a1028":"#e0c077");svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+lc+'" stroke-width="3" opacity="0.85"/>';});
-  // Show activated gate numbers as small labels around each center
-  Object.keys(HD_CENTER_GATES).forEach(function(cn){var c=CENTER_LAYOUT[cn];HD_CENTER_GATES[cn].forEach(function(g,idx){if(!d.activatedGates[g])return;var bP=d.personalityGates[g],bD=d.designGates[g],col=bP&&bD?"#e0c077":(bD?"#c44536":"#fff");var col2=cn==="Head"||cn==="Ajna"||cn==="G"||cn==="Sacral"||cn==="Throat"||cn==="Root"?"#000":col;var px=c.x+5+(idx%4)*(c.w/4),py=c.y+c.h+10+Math.floor(idx/4)*10;svg+='<text x="'+px+'" y="'+py+'" fill="'+col+'" font-size="8" font-family="Georgia, serif">'+g+'</text>';});});
+
+  // Draw centers
+  Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){
+    var c=BODYGRAPH_CENTERS[cn];
+    var defined=d.definedCenters[cn];
+    var fl=defined?c.color:"transparent";
+    var pts=c.points.map(function(p){return p[0]+","+p[1];}).join(" ");
+    if(c.shape==="rect"){
+      var x=c.points[0][0],y=c.points[0][1],w=c.points[1][0]-c.points[0][0],h=c.points[2][1]-c.points[1][1];
+      svg+='<g class="interactive" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+fl+'" stroke="#d4b675" stroke-width="1.5"/></g>';
+    } else {
+      svg+='<g class="interactive" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><polygon points="'+pts+'" fill="'+fl+'" stroke="#d4b675" stroke-width="1.5"/></g>';
+    }
+    // Center name
+    var labelColor=defined?"#0a0a0a":"#b8b09a";
+    svg+='<text x="'+c.cx+'" y="'+c.cy+'" text-anchor="middle" dominant-baseline="central" fill="'+labelColor+'" font-size="10" font-family="Cinzel, serif" font-style="italic" pointer-events="none" letter-spacing="1">'+cn+'</text>';
+  });
+
+  // Draw gate numbers ON the centers, at proper positions
+  Object.keys(BODYGRAPH_GATE_POSITIONS).forEach(function(gateStr){
+    var g=parseInt(gateStr);
+    var pos=BODYGRAPH_GATE_POSITIONS[g];
+    var center=HD_GATE_CENTERS[g];
+    var centerDefined=d.definedCenters[center];
+    var bP=d.personalityGates[g],bD=d.designGates[g];
+    var activated=d.activatedGates[g];
+
+    // Background circle for readability
+    var bgFill,textColor;
+    if(activated){
+      if(bP&&bD){ bgFill="#e9cb8a"; textColor="#0a0a0a"; }
+      else if(bP){ bgFill="#0a0a0a"; textColor="#e9cb8a"; }
+      else { bgFill="#c44536"; textColor="#ffffff"; }
+    } else {
+      bgFill=centerDefined?"rgba(0,0,0,0.15)":"transparent";
+      textColor=centerDefined?"#3a3a3a":"#6b6451";
+    }
+
+    if(activated){
+      svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\''+(bP&&bD?"Both Personality & Design":bP?"Personality (Conscious)":"Design (Unconscious)")+'\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="9" fill="'+bgFill+'" stroke="#d4b675" stroke-width="0.8"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="9" font-weight="bold" font-family="Cinzel, serif" pointer-events="none">'+g+'</text></g>';
+    } else {
+      svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\'Not activated\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="8" fill="'+bgFill+'" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="8" font-family="Cinzel, serif" pointer-events="none" opacity="0.7">'+g+'</text></g>';
+    }
+  });
+
   svg+='</svg>';
   html+=svg;
-  html+='<div class="section-title">Personality (Conscious) Activations</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
-  d.personalityPlanets.forEach(function(pl){var dms=splitDMS(pl.longitude);html+='<tr><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"'</td></tr>";});
-  html+='</tbody></table><div class="section-title">Design (Unconscious) Activations</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
-  d.designPlanets.forEach(function(pl){var dms=splitDMS(pl.longitude);html+='<tr><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg" style="color:#c44536;">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"'</td></tr>";});
-  html+='</tbody></table><div class="section-title">Defined Channels</div>';
-  if(d.definedChannels.length===0){html+='<p style="color:#a8a08a;font-style:italic;">No defined channels.</p>';}
-  else{html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';d.definedChannels.forEach(function(c){html+='<tr><td>'+c[0]+'-'+c[1]+'</td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});html+='</tbody></table>';}
-  html+='<div class="section-title">Incarnation Cross</div><p style="color:#e0c077;font-style:italic;padding:8px 0;">'+d.incarnationCross+'</p></div>';
+
+  // Legend
+  html+='<div class="legend" style="margin-top:8px;"><span class="swatch" style="background:#e9cb8a;"></span>Both &nbsp; <span class="swatch" style="background:#0a0a0a;border:1px solid #d4b675;"></span>Personality &nbsp; <span class="swatch" style="background:#c44536;"></span>Design</div>';
+
+  html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
+
+  // Personality activations table
+  window._hdPers=d.personalityPlanets;
+  html+='<div class="section-title">Personality (Conscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.personalityPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Personality (Conscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
+  html+='</tbody></table>';
+
+  // Design activations table
+  window._hdDes=d.designPlanets;
+  html+='<div class="section-title">Design (Unconscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.designPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Design (Unconscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg" style="color:#c44536;">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
+  html+='</tbody></table>';
+
+  // Channels table
+  html+='<div class="section-title">Defined Channels</div><div class="tap-hint">Tap any channel to read its meaning</div>';
+  if(d.definedChannels.length===0){
+    html+='<p style="color:#b8b09a;font-style:italic;text-align:center;padding:14px;">No defined channels.</p>';
+  } else {
+    html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';
+    d.definedChannels.forEach(function(c){html+='<tr class="clickable" onclick="window._mami.showChannelInterp('+c[0]+','+c[1]+')"><td><span class="deg">'+c[0]+'\u2014'+c[1]+'</span></td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});
+    html+='</tbody></table>';
+  }
+
+  // Centers table
+  html+='<div class="section-title">Centers</div><div class="tap-hint">Tap any center to read its meaning</div><table class="data-table"><thead><tr><th>Center</th><th>State</th></tr></thead><tbody>';
+  Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){var defined=d.definedCenters[cn];html+='<tr class="clickable" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><td>'+cn+'</td><td>'+(defined?'<span style="color:#e9cb8a;">Defined</span>':'<span style="color:#b8b09a;">Open</span>')+'</td></tr>';});
+  html+='</tbody></table>';
+
+  html+='<div class="section-title">Incarnation Cross</div><p style="color:#e9cb8a;font-style:italic;text-align:center;padding:14px 0;font-size:17px;">'+d.incarnationCross+'</p>';
+
+  html+='</div>';
   resultDiv.innerHTML=html;
 }
 </script>
+
 </body>
 </html>
