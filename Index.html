@@ -172,11 +172,13 @@ function sunLongitude(T) {
   var C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(Mr)
         + (0.019993 - 0.000101*T)*Math.sin(2*Mr)
         + 0.000289*Math.sin(3*Mr);
-  return norm360(L0 + C);
-}
-
-function moonLongitude(T) {
-  var Lp = 218.3164477 + 481267.88123421*T - 0.0015786*T*T;
+  var mc = norm360(Math.atan2(Math.sin(ramc), Math.cos(ramc)*Math.cos(eps)) * RAD);
+var ascY = Math.cos(ramc);
+var ascX = -(Math.sin(ramc)*Math.cos(eps) + Math.tan(lat)*Math.sin(eps));
+var asc = norm360(Math.atan2(ascY, ascX) * RAD);
+var vxY = Math.cos(ramc);
+var vxX = -(Math.sin(eps)*Math.tan(-lat) + Math.cos(eps)*Math.sin(ramc));
+var vertex = norm360(Math.atan2(vxY, vxX) * RAD);
   var Dm = 297.8501921 + 445267.1114034*T - 0.0018819*T*T;
   var M  = 357.5291092 + 35999.0502909*T;
   var Mp = 134.9633964 + 477198.8675055*T + 0.0087414*T*T;
