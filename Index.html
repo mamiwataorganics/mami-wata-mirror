@@ -1,3 +1,17 @@
+None selected
+
+Skip to content
+Using Gmail with screen readers
+Enable desktop notifications for Gmail.
+   OK  No thanks
+1 of 130
+(no subject)
+Inbox
+
+ashlee ray <ashleenray@gmail.com>
+2:13 AM (0 minutes ago)
+to me
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -1023,7 +1037,20 @@ function generateHumanDesignChart(y,m,d,h,mn,la,ln,tz){
    ============================================================ */
 function setupLocationSearch(iI,rI,laI,lnI,sI){
   var inp=document.getElementById(iI),res=document.getElementById(rI),laInp=document.getElementById(laI),lnInp=document.getElementById(lnI),sel=document.getElementById(sI),t;
-  inp.addEventListener("input",function(){clearTimeout(t);var q=inp.value.trim();if(q.length<3){res.innerHTML="";return;}t=setTimeout(function(){fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(q)+"&format=json&limit=5").then(function(r){return r.json();}).then(function(data){var html='<div class="location-results">';data.forEach(function(r){var p=r.display_name.split(",").map(function(s){return s.trim();}),cl=p[0];if(p.length>=2)cl+=", "+p[p.length-2];if(p.length>=3)cl+=", "+p[p.length-1];html+='<div class="location-result" data-lat="'+r.lat+'" data-lon="'+r.lon+'" data-name="'+cl.replace(/"/g,"&quot;")+'">'+cl+'</div>';});html+='</div>';res.innerHTML=html;res.querySelectorAll(".location-result").forEach(function(n){n.addEventListener("click",function(){laInp.value=this.dataset.lat;lnInp.value=this.dataset.lon;inp.value=this.dataset.name;sel.textContent="\u2713 "+
+  function tryGeocode(q){
+    return fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(q)+"&count=8&language=en&format=json")
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(data&&data.results&&data.results.length){
+          return data.results.map(function(r){
+            var nm=r.name;
+            if(r.admin1&&r.admin1!==r.name)nm+=", "+r.admin1;
+            if(r.country)nm+=", "+r.country;
+            return {lat:r.latitude,lon:r.longitude,name:nm};
+          });
+        }
+        return fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(q)+"&format=json&limit=5")
+          .then(functi
 ...
 
 [Message clipped]  View entire message
