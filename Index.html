@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -91,68 +90,102 @@
     font-size: 14px;
   }
   .location-result:hover { background: rgba(201,169,97,0.1); }
+  .engine-status {
+    text-align: center; font-size: 11px; color: #888;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .engine-status.ready { color: #6b8e4e; }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Mami Wata's Mirror</h1>
     <p class="subtitle">Generate your natal chart with exact degrees</p>
+    <div id="engine-status" class="engine-status">Loading Swiss Ephemeris engine...</div>
 
-```
-<div class="form-card">
-  <div class="row">
-    <div>
-      <label>Birth Date</label>
-      <input type="date" id="birth-date" required>
+    <div class="form-card">
+      <div class="row">
+        <div>
+          <label>Birth Date</label>
+          <input type="date" id="birth-date" required>
+        </div>
+        <div>
+          <label>Birth Time</label>
+          <input type="time" id="birth-time" required>
+          <div class="helper">If unknown, use 12:00 (noon)</div>
+        </div>
+      </div>
+
+      <label>Birth Location</label>
+      <input type="text" id="location-search" placeholder="City, Country (e.g. Austin, USA)" autocomplete="off">
+      <div id="location-results"></div>
+      <input type="hidden" id="latitude">
+      <input type="hidden" id="longitude">
+      <div id="selected-location" class="helper" style="color:#e0c077;"></div>
+
+      <label>House System</label>
+      <select id="house-system">
+        <option value="placidus">Placidus</option>
+        <option value="whole-sign">Whole Sign</option>
+      </select>
+
+      <button id="generate-btn" disabled>Generate Chart</button>
     </div>
-    <div>
-      <label>Birth Time</label>
-      <input type="time" id="birth-time" required>
-      <div class="helper">If unknown, use 12:00 (noon)</div>
-    </div>
+
+    <div id="result"></div>
   </div>
 
-  <label>Birth Location</label>
-  <input type="text" id="location-search" placeholder="City, Country (e.g. Austin, USA)" autocomplete="off">
-  <div id="location-results"></div>
-  <input type="hidden" id="latitude">
-  <input type="hidden" id="longitude">
-  <div id="selected-location" class="helper" style="color:#e0c077;"></div>
+<script type="module">
+import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@main/src/swisseph.js';
 
-  <label>House System</label>
-  <select id="house-system">
-    <option value="placidus">Placidus (Porphyry)</option>
-    <option value="whole-sign">Whole Sign</option>
-  </select>
-
-  <button id="generate-btn">Generate Chart</button>
-</div>
-
-<div id="result"></div>
-```
-
-  </div>
-
-<script>
 // ============================================================
-// CHART CALCULATION ENGINE - runs entirely in the browser
+// CONSTANTS
 // ============================================================
-
-var DEG = Math.PI / 180;
-var RAD = 180 / Math.PI;
 
 var SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 var SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
 
-function norm360(x) { x = x % 360; return x < 0 ? x + 360 : x; }
+// Swiss Ephemeris planet IDs
+var SE_SUN = 0, SE_MOON = 1, SE_MERCURY = 2, SE_VENUS = 3, SE_MARS = 4;
+var SE_JUPITER = 5, SE_SATURN = 6, SE_URANUS = 7, SE_NEPTUNE = 8, SE_PLUTO = 9;
+var SE_MEAN_NODE = 10, SE_TRUE_NODE = 11, SE_MEAN_APOG = 12;
+var SE_CHIRON = 15;
 
-function julianDay(y, m, d, h, min) {
-  var dayFrac = (h + min/60) / 24;
-  if (m <= 2) { y -= 1; m += 12; }
-  var a = Math.floor(y / 100);
-  var b = 2 - a + Math.floor(a / 4);
-  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + dayFrac + b - 1524.5;
-}
+// Calculation flags
+var SEFLG_SWIEPH = 2;
+var SEFLG_MOSEPH = 4;
+var SEFLG_SPEED = 256;
+
+// ============================================================
+// SWISS EPHEMERIS INITIALIZATION
+// ============================================================
+
+var swe = null;
+var sweReady = false;
+var statusEl = document.getElementById("engine-status");
+var btn = document.getElementById("generate-btn");
+
+(async function() {
+  try {
+    swe = new SwissEph();
+    await swe.initSwissEph();
+    sweReady = true;
+    statusEl.textContent = "\u2713 Engine ready";
+    statusEl.classList.add("ready");
+    btn.disabled = false;
+  } catch (err) {
+    console.error("Swiss Ephemeris failed to load:", err);
+    statusEl.textContent = "\u26A0 Engine failed to load. Reload the page.";
+    statusEl.style.color = "#c44536";
+  }
+})();
+
+// ============================================================
+// HELPERS
+// ============================================================
+
+function norm360(x) { x = x % 360; return x < 0 ? x + 360 : x; }
 
 function splitDMS(lon) {
   var norm = norm360(lon);
@@ -165,139 +198,23 @@ function splitDMS(lon) {
   return { sign: sign, deg: deg, min: min, sec: sec };
 }
 
-function sunLongitude(T) {
-  var L0 = 280.46646 + 36000.76983*T + 0.0003032*T*T;
-  var M = 357.52911 + 35999.05029*T - 0.0001537*T*T;
-  var Mr = M * DEG;
-  var C = (1.914602 - 0.004817*T - 0.000014*T*T)*Math.sin(Mr)
-        + (0.019993 - 0.000101*T)*Math.sin(2*Mr)
-        + 0.000289*Math.sin(3*Mr);
-  var mc = norm360(Math.atan2(Math.sin(ramc), Math.cos(ramc)*Math.cos(eps)) * RAD);
-var ascY = Math.cos(ramc);
-var ascX = -(Math.sin(ramc)*Math.cos(eps) + Math.tan(lat)*Math.sin(eps));
-var asc = norm360(Math.atan2(ascY, ascX) * RAD);
-var vxY = Math.cos(ramc);
-var vxX = -(Math.sin(eps)*Math.tan(-lat) + Math.cos(eps)*Math.sin(ramc));
-var vertex = norm360(Math.atan2(vxY, vxX) * RAD);
-  var Dm = 297.8501921 + 445267.1114034*T - 0.0018819*T*T;
-  var M  = 357.5291092 + 35999.0502909*T;
-  var Mp = 134.9633964 + 477198.8675055*T + 0.0087414*T*T;
-  var F  = 93.2720950 + 483202.0175233*T - 0.0036539*T*T;
-  var Dr = Dm*DEG, Mr = M*DEG, Mpr = Mp*DEG, Fr = F*DEG;
-  var L = 6288774*Math.sin(Mpr)
-        + 1274027*Math.sin(2*Dr - Mpr)
-        +  658314*Math.sin(2*Dr)
-        +  213618*Math.sin(2*Mpr)
-        -  185116*Math.sin(Mr)
-        -  114332*Math.sin(2*Fr)
-        +   58793*Math.sin(2*Dr - 2*Mpr)
-        +   57066*Math.sin(2*Dr - Mr - Mpr)
-        +   53322*Math.sin(2*Dr + Mpr)
-        +   45758*Math.sin(2*Dr - Mr)
-        -   40923*Math.sin(Mr - Mpr)
-        -   34720*Math.sin(Dr)
-        -   30383*Math.sin(Mr + Mpr)
-        +   15327*Math.sin(2*Dr - 2*Fr)
-        -   12528*Math.sin(Mpr + 2*Fr)
-        +   10980*Math.sin(Mpr - 2*Fr)
-        +   10675*Math.sin(4*Dr - Mpr)
-        +    8548*Math.sin(4*Dr - 2*Mpr)
-        -    7888*Math.sin(2*Dr + Mr - Mpr)
-        -    6766*Math.sin(2*Dr + Mr);
-  return norm360(Lp + L / 1000000);
+function calcPlanet(jd, planetId, useMoshier) {
+  var flag = (useMoshier ? SEFLG_MOSEPH : SEFLG_SWIEPH) | SEFLG_SPEED;
+  var result = swe.calc_ut(jd, planetId, flag);
+  return {
+    longitude: result[0],
+    speed: result[3]
+  };
 }
 
-var ORBITAL_ELEMENTS = {
-  mercury: { L: 252.250906, n: 149472.6746358, e: 0.20563593, M0: 174.7948, a: 0.387098 },
-  venus:   { L: 181.979801, n:  58517.8156760, e: 0.00677672, M0:  50.4161, a: 0.723330 },
-  earth:   { L: 100.466449, n:  35999.3728519, e: 0.01671022, M0: 357.5291, a: 1.000000 },
-  mars:    { L: 355.433000, n:  19140.2993039, e: 0.09341233, M0:  19.3870, a: 1.523688 },
-  jupiter: { L:  34.351519, n:   3034.9056606, e: 0.04839266, M0:  20.0202, a: 5.202561 },
-  saturn:  { L:  50.077444, n:   1222.1138488, e: 0.05415060, M0: 317.0207, a: 9.554747 },
-  uranus:  { L: 314.055005, n:    428.4669983, e: 0.04716771, M0: 141.0498, a: 19.218140 },
-  neptune: { L: 304.348665, n:    218.4862002, e: 0.00858587, M0: 256.2250, a: 30.110387 },
-  pluto:   { L: 238.92881,  n:    145.20780,   e: 0.24882730, M0:  14.882,  a: 39.482117 },
-  chiron:  { L: 207.224,    n:    50.49,       e: 0.38,       M0: 339.43,   a: 13.708 }
-};
-
-function planetLongitude(planet, T) {
-  var e = ORBITAL_ELEMENTS[planet];
-  if (!e) return 0;
-  var M = norm360(e.M0 + e.n * T);
-  var Mr = M * DEG;
-  var E = Mr;
-  for (var i = 0; i < 8; i++) { E = Mr + e.e * Math.sin(E); }
-  var v = 2 * Math.atan2(Math.sqrt(1+e.e)*Math.sin(E/2), Math.sqrt(1-e.e)*Math.cos(E/2));
-  var helio = norm360(e.L + v*RAD - M);
-  if (planet === "earth") return helio;
-  var earthEl = ORBITAL_ELEMENTS.earth;
-  var earthM = norm360(earthEl.M0 + earthEl.n * T);
-  var earthMr = earthM * DEG;
-  var earthE = earthMr;
-  for (var j = 0; j < 6; j++) { earthE = earthMr + earthEl.e * Math.sin(earthE); }
-  var earthV = 2 * Math.atan2(Math.sqrt(1+earthEl.e)*Math.sin(earthE/2), Math.sqrt(1-earthEl.e)*Math.cos(earthE/2));
-  var earthHelio = norm360(earthEl.L + earthV*RAD - earthM);
-  var earthR = earthEl.a * (1 - earthEl.e*Math.cos(earthE));
-  var r = e.a * (1 - e.e*Math.cos(E));
-  var xH = r * Math.cos(helio * DEG);
-  var yH = r * Math.sin(helio * DEG);
-  var xE = earthR * Math.cos(earthHelio * DEG);
-  var yE = earthR * Math.sin(earthHelio * DEG);
-  return norm360(Math.atan2(yH - yE, xH - xE) * RAD);
+function partOfFortune(sun, moon, asc, isDay) {
+  if (isDay) return norm360(asc + moon - sun);
+  return norm360(asc + sun - moon);
 }
 
-function meanNorthNode(T) { return norm360(125.04452 - 1934.136261*T + 0.0020708*T*T); }
-function meanLilith(T) { return norm360(83.353 + 4069.0137 * T); }
-function obliquity(T) { return 23.439291 - 0.0130042*T - 1.64e-7*T*T + 5.04e-7*T*T*T; }
-
-function localSiderealTime(JD, longitude) {
-  var T = (JD - 2451545.0) / 36525;
-  var GMST = 280.46061837 + 360.98564736629*(JD - 2451545.0) + 0.000387933*T*T;
-  return norm360(GMST + longitude);
-}
-
-function calcAngles(JD, latitude, longitude) {
-  var T = (JD - 2451545.0) / 36525;
-  var eps = obliquity(T) * DEG;
-  var LST = localSiderealTime(JD, longitude);
-  var ramc = LST * DEG;
-  var lat = latitude * DEG;
-  var mc = norm360(Math.atan2(Math.sin(ramc), Math.cos(ramc)*Math.cos(eps)) * RAD);
-  var ascRad = Math.atan2(-Math.cos(ramc), Math.sin(ramc)*Math.cos(eps) + Math.tan(lat)*Math.sin(eps));
-  var asc = norm360(ascRad * RAD);
-  var vxRad = Math.atan2(-Math.cos(ramc), Math.sin(eps)*Math.tan(-lat) + Math.cos(eps)*Math.sin(ramc));
-  var vertex = norm360(vxRad * RAD);
-  return { ascendant: asc, midheaven: mc, vertex: vertex };
-}
-
-function porphyryHouses(angles) {
-  var ascendant = angles.ascendant;
-  var midheaven = angles.midheaven;
-  var cusps = new Array(12);
-  cusps[0] = ascendant;
-  cusps[9] = midheaven;
-  cusps[3] = norm360(midheaven + 180);
-  cusps[6] = norm360(ascendant + 180);
-  var arcMC_ASC = norm360(ascendant - midheaven);
-  var arcASC_IC = norm360(cusps[3] - ascendant);
-  cusps[10] = norm360(midheaven + arcMC_ASC / 3);
-  cusps[11] = norm360(midheaven + 2 * arcMC_ASC / 3);
-  cusps[1] = norm360(ascendant + arcASC_IC / 3);
-  cusps[2] = norm360(ascendant + 2 * arcASC_IC / 3);
-  cusps[4] = norm360(cusps[3] + arcMC_ASC / 3);
-  cusps[5] = norm360(cusps[3] + 2 * arcMC_ASC / 3);
-  cusps[7] = norm360(cusps[6] + arcASC_IC / 3);
-  cusps[8] = norm360(cusps[6] + 2 * arcASC_IC / 3);
-  return cusps;
-}
-
-function wholeSignHouses(ascendant) {
-  var ascSign = Math.floor(norm360(ascendant) / 30);
-  var cusps = new Array(12);
-  for (var i = 0; i < 12; i++) {
-    cusps[i] = ((ascSign + i) % 12) * 30;
-  }
-  return cusps;
+function isDayBirth(sunLon, ascLon) {
+  var diff = norm360(sunLon - ascLon);
+  return diff >= 180;
 }
 
 function houseOfPlanet(lon, cusps) {
@@ -313,14 +230,13 @@ function houseOfPlanet(lon, cusps) {
   return null;
 }
 
-function partOfFortune(sun, moon, asc, isDay) {
-  if (isDay) return norm360(asc + moon - sun);
-  return norm360(asc + sun - moon);
-}
-
-function isDayBirth(sunLon, ascLon) {
-  var diff = norm360(sunLon - ascLon);
-  return diff >= 180;
+function wholeSignHouses(ascendant) {
+  var ascSign = Math.floor(norm360(ascendant) / 30);
+  var cusps = new Array(12);
+  for (var i = 0; i < 12; i++) {
+    cusps[i] = ((ascSign + i) % 12) * 30;
+  }
+  return cusps;
 }
 
 var ASPECTS = [
@@ -355,87 +271,138 @@ function calcAspects(points) {
   return result;
 }
 
+// ============================================================
+// CHART GENERATION
+// ============================================================
+
 function generateChart(year, month, day, hour, minute, latitude, longitude, houseSystem, tzOffsetHours) {
-  // Convert local time to UTC by subtracting timezone offset
-  // tzOffsetHours: positive for east of UTC (e.g. +9 for Tokyo), negative for west (e.g. -6 for CST)
-  var utcHour = hour - tzOffsetHours;
-  var utcMinute = minute;
-  // Handle day rollover
-  var utcDay = day;
-  var utcMonth = month;
-  var utcYear = year;
-  if (utcHour < 0) {
-    utcHour += 24;
-    utcDay -= 1;
-    if (utcDay < 1) {
-      utcMonth -= 1;
-      if (utcMonth < 1) { utcMonth = 12; utcYear -= 1; }
-      var daysInMonth = new Date(utcYear, utcMonth, 0).getDate();
-      utcDay = daysInMonth;
+  var utHourDecimal = (hour + minute / 60) - tzOffsetHours;
+  var utDay = day, utMonth = month, utYear = year;
+  if (utHourDecimal < 0) {
+    utHourDecimal += 24;
+    utDay -= 1;
+    if (utDay < 1) {
+      utMonth -= 1;
+      if (utMonth < 1) { utMonth = 12; utYear -= 1; }
+      utDay = new Date(utYear, utMonth, 0).getDate();
     }
-  } else if (utcHour >= 24) {
-    utcHour -= 24;
-    utcDay += 1;
-    var dim = new Date(utcYear, utcMonth, 0).getDate();
-    if (utcDay > dim) {
-      utcDay = 1;
-      utcMonth += 1;
-      if (utcMonth > 12) { utcMonth = 1; utcYear += 1; }
+  } else if (utHourDecimal >= 24) {
+    utHourDecimal -= 24;
+    utDay += 1;
+    var dim = new Date(utYear, utMonth, 0).getDate();
+    if (utDay > dim) {
+      utDay = 1;
+      utMonth += 1;
+      if (utMonth > 12) { utMonth = 1; utYear += 1; }
     }
   }
 
-  var JD = julianDay(utcYear, utcMonth, utcDay, utcHour, utcMinute);
-  var T = (JD - 2451545.0) / 36525;
+  var jd = swe.julday(utYear, utMonth, utDay, utHourDecimal);
 
-  var sunLon = sunLongitude(T);
-  var moonLon = moonLongitude(T);
-  var northNodeLon = meanNorthNode(T);
-  var southNodeLon = norm360(northNodeLon + 180);
-  var lilithLon = meanLilith(T);
+  // Try Swiss ephemeris files first; fall back to Moshier (built-in, professional accuracy)
+  var useMoshier = false;
+  try {
+    var testCalc = swe.calc_ut(jd, SE_SUN, SEFLG_SWIEPH);
+    if (!testCalc || testCalc.length < 6 || isNaN(testCalc[0])) {
+      useMoshier = true;
+    }
+  } catch (e) {
+    useMoshier = true;
+  }
 
-  var angles = calcAngles(JD, latitude, longitude);
-  var isDay = isDayBirth(sunLon, angles.ascendant);
-  var fortuneLon = partOfFortune(sunLon, moonLon, angles.ascendant, isDay);
+  var sun = calcPlanet(jd, SE_SUN, useMoshier);
+  var moon = calcPlanet(jd, SE_MOON, useMoshier);
+  var mercury = calcPlanet(jd, SE_MERCURY, useMoshier);
+  var venus = calcPlanet(jd, SE_VENUS, useMoshier);
+  var mars = calcPlanet(jd, SE_MARS, useMoshier);
+  var jupiter = calcPlanet(jd, SE_JUPITER, useMoshier);
+  var saturn = calcPlanet(jd, SE_SATURN, useMoshier);
+  var uranus = calcPlanet(jd, SE_URANUS, useMoshier);
+  var neptune = calcPlanet(jd, SE_NEPTUNE, useMoshier);
+  var pluto = calcPlanet(jd, SE_PLUTO, useMoshier);
+  var northNode = calcPlanet(jd, SE_MEAN_NODE, useMoshier);
+  var lilith = calcPlanet(jd, SE_MEAN_APOG, useMoshier);
+
+  var chironLon = 0;
+  try {
+    var chironResult = swe.calc_ut(jd, SE_CHIRON, useMoshier ? SEFLG_MOSEPH : SEFLG_SWIEPH);
+    if (chironResult && !isNaN(chironResult[0])) {
+      chironLon = chironResult[0];
+    }
+  } catch (e) {
+    chironLon = 0;
+  }
+
+  // Houses
+  var hsys = houseSystem === "whole-sign" ? "W" : "P";
+  var housesResult = swe.houses(jd, latitude, longitude, hsys);
+
+  var cusps;
+  if (housesResult.house && housesResult.house.length >= 12) {
+    if (housesResult.house.length === 13) {
+      cusps = housesResult.house.slice(1, 13);
+    } else {
+      cusps = housesResult.house.slice(0, 12);
+    }
+  } else if (housesResult.cusps && housesResult.cusps.length >= 12) {
+    if (housesResult.cusps.length === 13) {
+      cusps = housesResult.cusps.slice(1, 13);
+    } else {
+      cusps = housesResult.cusps.slice(0, 12);
+    }
+  } else {
+    throw new Error("House calculation failed");
+  }
+
+  var ascmc = housesResult.ascmc || housesResult.ascMc || [];
+  var ascendant = ascmc[0];
+  var midheaven = ascmc[1];
+  var vertex = ascmc[3];
+
+  if (houseSystem === "whole-sign") {
+    cusps = wholeSignHouses(ascendant);
+  }
+
+  var southNodeLon = norm360(northNode.longitude + 180);
+  var isDay = isDayBirth(sun.longitude, ascendant);
+  var fortuneLon = partOfFortune(sun.longitude, moon.longitude, ascendant, isDay);
 
   var planetData = [
-    { name: "Sun",            key: "sun",       symbol: "\u2609", longitude: sunLon },
-    { name: "Moon",           key: "moon",      symbol: "\u263D", longitude: moonLon },
-    { name: "Mercury",        key: "mercury",   symbol: "\u263F", longitude: planetLongitude("mercury", T) },
-    { name: "Venus",          key: "venus",     symbol: "\u2640", longitude: planetLongitude("venus", T) },
-    { name: "Mars",           key: "mars",      symbol: "\u2642", longitude: planetLongitude("mars", T) },
-    { name: "Jupiter",        key: "jupiter",   symbol: "\u2643", longitude: planetLongitude("jupiter", T) },
-    { name: "Saturn",         key: "saturn",    symbol: "\u2644", longitude: planetLongitude("saturn", T) },
-    { name: "Uranus",         key: "uranus",    symbol: "\u2645", longitude: planetLongitude("uranus", T) },
-    { name: "Neptune",        key: "neptune",   symbol: "\u2646", longitude: planetLongitude("neptune", T) },
-    { name: "Pluto",          key: "pluto",     symbol: "\u2647", longitude: planetLongitude("pluto", T) },
-    { name: "Chiron",         key: "chiron",    symbol: "\u26B7", longitude: planetLongitude("chiron", T) },
-    { name: "North Node",     key: "northnode", symbol: "\u260A", longitude: northNodeLon },
-    { name: "South Node",     key: "southnode", symbol: "\u260B", longitude: southNodeLon },
-    { name: "Lilith",         key: "lilith",    symbol: "\u26B8", longitude: lilithLon },
-    { name: "Part of Fortune",key: "fortune",   symbol: "\u2297", longitude: fortuneLon },
-    { name: "Vertex",         key: "vertex",    symbol: "Vx",     longitude: angles.vertex }
+    { name: "Sun",            symbol: "\u2609", longitude: sun.longitude,     speed: sun.speed },
+    { name: "Moon",           symbol: "\u263D", longitude: moon.longitude,    speed: moon.speed },
+    { name: "Mercury",        symbol: "\u263F", longitude: mercury.longitude, speed: mercury.speed },
+    { name: "Venus",          symbol: "\u2640", longitude: venus.longitude,   speed: venus.speed },
+    { name: "Mars",           symbol: "\u2642", longitude: mars.longitude,    speed: mars.speed },
+    { name: "Jupiter",        symbol: "\u2643", longitude: jupiter.longitude, speed: jupiter.speed },
+    { name: "Saturn",         symbol: "\u2644", longitude: saturn.longitude,  speed: saturn.speed },
+    { name: "Uranus",         symbol: "\u2645", longitude: uranus.longitude,  speed: uranus.speed },
+    { name: "Neptune",        symbol: "\u2646", longitude: neptune.longitude, speed: neptune.speed },
+    { name: "Pluto",          symbol: "\u2647", longitude: pluto.longitude,   speed: pluto.speed },
+    { name: "Chiron",         symbol: "\u26B7", longitude: chironLon,         speed: 0 },
+    { name: "North Node",     symbol: "\u260A", longitude: northNode.longitude, speed: 0 },
+    { name: "South Node",     symbol: "\u260B", longitude: southNodeLon,      speed: 0 },
+    { name: "Lilith",         symbol: "\u26B8", longitude: lilith.longitude,  speed: 0 },
+    { name: "Part of Fortune",symbol: "\u2297", longitude: fortuneLon,        speed: 0 },
+    { name: "Vertex",         symbol: "Vx",     longitude: vertex,            speed: 0 }
   ];
-
-  var cusps = (houseSystem === "whole-sign")
-    ? wholeSignHouses(angles.ascendant)
-    : porphyryHouses(angles);
 
   var planets = planetData.map(function(p) {
     var dms = splitDMS(p.longitude);
     return {
-      name: p.name, key: p.key, symbol: p.symbol,
+      name: p.name, symbol: p.symbol,
       sign: SIGN_NAMES[dms.sign],
       signSymbol: SIGN_SYMBOLS[dms.sign],
       degreesInSign: dms.deg,
       minutes: dms.min,
       seconds: dms.sec,
       eclipticLongitude: p.longitude,
+      retrograde: p.speed < 0,
       house: houseOfPlanet(p.longitude, cusps)
     };
   });
 
-  var ascDms = splitDMS(angles.ascendant);
-  var mcDms = splitDMS(angles.midheaven);
+  var ascDms = splitDMS(ascendant);
+  var mcDms = splitDMS(midheaven);
 
   var houses = cusps.map(function(lon, i) {
     var dms = splitDMS(lon);
@@ -450,11 +417,12 @@ function generateChart(year, month, day, hour, minute, latitude, longitude, hous
   });
 
   var aspectPoints = planetData.map(function(p) { return { name: p.name, longitude: p.longitude }; });
-  aspectPoints.push({ name: "Ascendant", longitude: angles.ascendant });
-  aspectPoints.push({ name: "Midheaven", longitude: angles.midheaven });
+  aspectPoints.push({ name: "Ascendant", longitude: ascendant });
+  aspectPoints.push({ name: "Midheaven", longitude: midheaven });
   var aspects = calcAspects(aspectPoints);
 
   return {
+    engine: useMoshier ? "Moshier (built-in, sub-arcsecond accuracy)" : "Swiss Ephemeris (full precision)",
     planets: planets,
     angles: {
       ascendant: {
@@ -462,14 +430,14 @@ function generateChart(year, month, day, hour, minute, latitude, longitude, hous
         signSymbol: SIGN_SYMBOLS[ascDms.sign],
         degreesInSign: ascDms.deg,
         minutes: ascDms.min,
-        eclipticLongitude: angles.ascendant
+        eclipticLongitude: ascendant
       },
       midheaven: {
         sign: SIGN_NAMES[mcDms.sign],
         signSymbol: SIGN_SYMBOLS[mcDms.sign],
         degreesInSign: mcDms.deg,
         minutes: mcDms.min,
-        eclipticLongitude: angles.midheaven
+        eclipticLongitude: midheaven
       }
     },
     houses: houses,
@@ -478,7 +446,7 @@ function generateChart(year, month, day, hour, minute, latitude, longitude, hous
 }
 
 // ============================================================
-// LOCATION SEARCH (uses free OpenStreetMap API)
+// LOCATION SEARCH
 // ============================================================
 
 var locationInput = document.getElementById("location-search");
@@ -499,7 +467,11 @@ locationInput.addEventListener("input", function() {
         var html = '<div class="location-results">';
         for (var i = 0; i < data.length; i++) {
           var r = data[i];
-          html += '<div class="location-result" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-name="' + r.display_name.replace(/"/g, "&quot;") + '">' + r.display_name + '</div>';
+          var parts = r.display_name.split(",").map(function(s) { return s.trim(); });
+          var cleanName = parts[0];
+          if (parts.length >= 2) cleanName += ", " + parts[parts.length - 2];
+          if (parts.length >= 3) cleanName += ", " + parts[parts.length - 1];
+          html += '<div class="location-result" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-name="' + cleanName.replace(/"/g, "&quot;") + '">' + cleanName + '</div>';
         }
         html += '</div>';
         locationResults.innerHTML = html;
@@ -521,10 +493,14 @@ locationInput.addEventListener("input", function() {
 // FORM HANDLING
 // ============================================================
 
-var btn = document.getElementById("generate-btn");
 var resultDiv = document.getElementById("result");
 
 btn.addEventListener("click", function() {
+  if (!sweReady) {
+    resultDiv.innerHTML = '<div class="error">Engine still loading. Wait a moment and try again.</div>';
+    return;
+  }
+
   var dateVal = document.getElementById("birth-date").value;
   var timeVal = document.getElementById("birth-time").value;
   var lat = latInput.value;
@@ -546,28 +522,27 @@ btn.addEventListener("click", function() {
 
   resultDiv.innerHTML = '<div class="loading">Calculating your chart...</div>';
 
-  // Build a Unix timestamp for the birth date at noon UTC (just for tz lookup)
-  var lookupTimestamp = Math.floor(Date.UTC(year, month - 1, day, 12, 0, 0) / 1000);
-
-  // Use TimeAPI.io (free, no key, returns historical timezone offset for date+location)
   var tzUrl = "https://timeapi.io/api/timezone/coordinate?latitude=" + lat + "&longitude=" + lng;
 
   fetch(tzUrl)
     .then(function(res) { return res.json(); })
     .then(function(tzData) {
-      // tzData has currentUtcOffset and standardUtcOffset, plus daylight info
-      // For a historical date, we need to determine if DST was in effect
-      // For simplicity, use standardUtcOffset (DST handling for historical dates is complex)
-      // tzData.standardUtcOffset.seconds gives offset in seconds
       var offsetSeconds = tzData.standardUtcOffset ? tzData.standardUtcOffset.seconds : 0;
-      // Check if date falls in DST period (rough US rule: 2nd Sunday March - 1st Sunday Nov, after 2007)
-      // For pre-2007 US, last Sunday April - last Sunday October
       var isDST = false;
-      if (tzData.hasDayLightSaving && tzData.dstInterval) {
-        // Approximate DST check using month (good enough for US/Europe)
-        if (month >= 4 && month <= 10) isDST = true;
-        if (month === 3 && day >= 8) isDST = true;
-        if (month === 11 && day <= 7) isDST = true;
+      if (tzData.hasDayLightSaving) {
+        if (year >= 2007) {
+          if (month >= 4 && month <= 10) isDST = true;
+          if (month === 3 && day >= 8) isDST = true;
+          if (month === 11 && day <= 7) isDST = true;
+        } else if (year >= 1987) {
+          if (month >= 5 && month <= 9) isDST = true;
+          if (month === 4 && day >= 1) isDST = true;
+          if (month === 10 && day <= 31) isDST = true;
+        } else {
+          if (month >= 5 && month <= 9) isDST = true;
+          if (month === 4 && day >= 24) isDST = true;
+          if (month === 10 && day <= 31) isDST = true;
+        }
       }
       if (isDST && tzData.daylightSavings) {
         offsetSeconds = tzData.daylightSavings.utcOffset ? tzData.daylightSavings.utcOffset.seconds : offsetSeconds + 3600;
@@ -576,7 +551,6 @@ btn.addEventListener("click", function() {
       runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
     })
     .catch(function(err) {
-      // Fallback: estimate timezone from longitude (15 degrees per hour)
       var tzOffsetHours = Math.round(parseFloat(lng) / 15);
       runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
     });
@@ -587,12 +561,13 @@ function runChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffse
     var data = generateChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffsetHours);
     renderChart(data);
   } catch (err) {
+    console.error(err);
     resultDiv.innerHTML = '<div class="error">Error: ' + err.message + '</div>';
   }
 }
 
 // ============================================================
-// CHART RENDERING (SVG wheel + tables)
+// CHART RENDERING
 // ============================================================
 
 function renderChart(data) {
@@ -681,7 +656,6 @@ function renderChart(data) {
   svg += '<text x="' + ascLabel.x + '" y="' + ascLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">ASC</text>';
   svg += '<text x="' + mcLabel.x + '" y="' + mcLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">MC</text>';
 
-  // Position planets, nudging clusters outward
   var sorted = [];
   for (var pj = 0; pj < planetsToShow.length; pj++) sorted.push({ p: planetsToShow[pj], idx: pj });
   sorted.sort(function(a, b) { return a.p.eclipticLongitude - b.p.eclipticLongitude; });
@@ -704,16 +678,26 @@ function renderChart(data) {
     svg += '<circle cx="' + pos.x + '" cy="' + pos.y + '" r="13" fill="#0a1028" stroke="#e0c077" stroke-width="0.7"/>';
     svg += '<text x="' + pos.x + '" y="' + pos.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="14" font-family="Georgia, serif">' + p.symbol + '</text>';
     var degPos = polar(cx, cy, adjR + 22, pAngle);
-    svg += '<text x="' + degPos.x + '" y="' + degPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#c9a961" font-size="9">' + p.degreesInSign + '\u00B0</text>';
+    var rxMark = p.retrograde ? '<tspan fill="#c44536" font-size="7"> R</tspan>' : '';
+    svg += '<text x="' + degPos.x + '" y="' + degPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#c9a961" font-size="9">' + p.degreesInSign + '\u00B0' + rxMark + '</text>';
   }
 
   svg += '</svg>';
 
-  var html = '<div class="chart-wrapper"><h2>Your Natal Chart</h2>' + svg;
+  var html = '<div class="chart-wrapper"><h2>Your Natal Chart</h2>';
+  html += '<div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">Calculated with ' + data.engine + '</div>';
+  html += svg;
+
+  html += '<div class="section-title">Angles</div><table class="data-table"><tbody>';
+  html += '<tr><td>Ascendant</td><td>' + data.angles.ascendant.signSymbol + ' ' + data.angles.ascendant.sign + '</td><td><span class="deg">' + data.angles.ascendant.degreesInSign + '\u00B0</span> ' + String(data.angles.ascendant.minutes).padStart(2, "0") + "'</td></tr>";
+  html += '<tr><td>Midheaven</td><td>' + data.angles.midheaven.signSymbol + ' ' + data.angles.midheaven.sign + '</td><td><span class="deg">' + data.angles.midheaven.degreesInSign + '\u00B0</span> ' + String(data.angles.midheaven.minutes).padStart(2, "0") + "'</td></tr>";
+  html += '</tbody></table>';
+
   html += '<div class="section-title">Planets and Points</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th><th>House</th></tr></thead><tbody>';
   for (var ti = 0; ti < planetsToShow.length; ti++) {
     var pt = planetsToShow[ti];
-    html += '<tr><td>' + pt.symbol + ' ' + pt.name + '</td><td>' + pt.signSymbol + ' ' + pt.sign + '</td><td><span class="deg">' + pt.degreesInSign + '\u00B0</span> ' + String(pt.minutes).padStart(2, "0") + "'" + String(pt.seconds).padStart(2, "0") + '"</td><td>' + (pt.house || "\u2014") + '</td></tr>';
+    var rxLabel = pt.retrograde ? ' <span style="color:#c44536;font-size:11px;">\u211E</span>' : '';
+    html += '<tr><td>' + pt.symbol + ' ' + pt.name + rxLabel + '</td><td>' + pt.signSymbol + ' ' + pt.sign + '</td><td><span class="deg">' + pt.degreesInSign + '\u00B0</span> ' + String(pt.minutes).padStart(2, "0") + "'" + String(pt.seconds).padStart(2, "0") + '"</td><td>' + (pt.house || "\u2014") + '</td></tr>';
   }
   html += '</tbody></table>';
 
@@ -738,6 +722,5 @@ function renderChart(data) {
   resultDiv.innerHTML = html;
 }
 </script>
-
 </body>
 </html>
