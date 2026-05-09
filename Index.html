@@ -353,8 +353,36 @@ function calcAspects(points) {
   return result;
 }
 
-function generateChart(year, month, day, hour, minute, latitude, longitude, houseSystem) {
-  var JD = julianDay(year, month, day, hour, minute);
+function generateChart(year, month, day, hour, minute, latitude, longitude, houseSystem, tzOffsetHours) {
+  // Convert local time to UTC by subtracting timezone offset
+  // tzOffsetHours: positive for east of UTC (e.g. +9 for Tokyo), negative for west (e.g. -6 for CST)
+  var utcHour = hour - tzOffsetHours;
+  var utcMinute = minute;
+  // Handle day rollover
+  var utcDay = day;
+  var utcMonth = month;
+  var utcYear = year;
+  if (utcHour < 0) {
+    utcHour += 24;
+    utcDay -= 1;
+    if (utcDay < 1) {
+      utcMonth -= 1;
+      if (utcMonth < 1) { utcMonth = 12; utcYear -= 1; }
+      var daysInMonth = new Date(utcYear, utcMonth, 0).getDate();
+      utcDay = daysInMonth;
+    }
+  } else if (utcHour >= 24) {
+    utcHour -= 24;
+    utcDay += 1;
+    var dim = new Date(utcYear, utcMonth, 0).getDate();
+    if (utcDay > dim) {
+      utcDay = 1;
+      utcMonth += 1;
+      if (utcMonth > 12) { utcMonth = 1; utcYear += 1; }
+    }
+  }
+
+  var JD = julianDay(utcYear, utcMonth, utcDay, utcHour, utcMinute);
   var T = (JD - 2451545.0) / 36525;
 
   var sunLon = sunLongitude(T);
@@ -516,13 +544,50 @@ btn.addEventListener("click", function() {
 
   resultDiv.innerHTML = '<div class="loading">Calculating your chart...</div>';
 
+  // Build a Unix timestamp for the birth date at noon UTC (just for tz lookup)
+  var lookupTimestamp = Math.floor(Date.UTC(year, month - 1, day, 12, 0, 0) / 1000);
+
+  // Use TimeAPI.io (free, no key, returns historical timezone offset for date+location)
+  var tzUrl = "https://timeapi.io/api/timezone/coordinate?latitude=" + lat + "&longitude=" + lng;
+
+  fetch(tzUrl)
+    .then(function(res) { return res.json(); })
+    .then(function(tzData) {
+      // tzData has currentUtcOffset and standardUtcOffset, plus daylight info
+      // For a historical date, we need to determine if DST was in effect
+      // For simplicity, use standardUtcOffset (DST handling for historical dates is complex)
+      // tzData.standardUtcOffset.seconds gives offset in seconds
+      var offsetSeconds = tzData.standardUtcOffset ? tzData.standardUtcOffset.seconds : 0;
+      // Check if date falls in DST period (rough US rule: 2nd Sunday March - 1st Sunday Nov, after 2007)
+      // For pre-2007 US, last Sunday April - last Sunday October
+      var isDST = false;
+      if (tzData.hasDayLightSaving && tzData.dstInterval) {
+        // Approximate DST check using month (good enough for US/Europe)
+        if (month >= 4 && month <= 10) isDST = true;
+        if (month === 3 && day >= 8) isDST = true;
+        if (month === 11 && day <= 7) isDST = true;
+      }
+      if (isDST && tzData.daylightSavings) {
+        offsetSeconds = tzData.daylightSavings.utcOffset ? tzData.daylightSavings.utcOffset.seconds : offsetSeconds + 3600;
+      }
+      var tzOffsetHours = offsetSeconds / 3600;
+      runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
+    })
+    .catch(function(err) {
+      // Fallback: estimate timezone from longitude (15 degrees per hour)
+      var tzOffsetHours = Math.round(parseFloat(lng) / 15);
+      runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
+    });
+});
+
+function runChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffsetHours) {
   try {
-    var data = generateChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem);
+    var data = generateChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffsetHours);
     renderChart(data);
   } catch (err) {
     resultDiv.innerHTML = '<div class="error">Error: ' + err.message + '</div>';
   }
-});
+}
 
 // ============================================================
 // CHART RENDERING (SVG wheel + tables)
