@@ -6,720 +6,393 @@
 <title>Mami Wata's Mirror</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: Georgia, serif;
-    background: #0a1028;
-    color: #f0ead6;
-    padding: 24px 16px 60px;
-    min-height: 100vh;
-  }
+  body { font-family: Georgia, serif; background: #0a1028; color: #f0ead6; padding: 24px 16px 60px; min-height: 100vh; }
   .container { max-width: 900px; margin: 0 auto; }
-  h1 {
-    font-size: 32px; font-style: italic; text-align: center;
-    margin-bottom: 8px; color: #e0c077;
-  }
-  .subtitle {
-    text-align: center; color: #a8a08a; margin-bottom: 32px;
-    font-style: italic; font-size: 15px;
-  }
-  .form-card {
-    background: rgba(255,255,255,0.04); padding: 24px;
-    border: 1px solid rgba(224,192,119,0.3); margin-bottom: 24px;
-  }
-  label {
-    display: block; font-size: 12px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: #c9a961; margin-bottom: 6px;
-    margin-top: 14px;
-  }
+  h1 { font-size: 32px; font-style: italic; text-align: center; margin-bottom: 8px; color: #e0c077; }
+  .subtitle { text-align: center; color: #a8a08a; margin-bottom: 24px; font-style: italic; font-size: 15px; }
+  .form-card { background: rgba(255,255,255,0.04); padding: 24px; border: 1px solid rgba(224,192,119,0.3); margin-bottom: 24px; }
+  .form-section { border-top: 1px dashed rgba(224,192,119,0.2); padding-top: 18px; margin-top: 18px; }
+  .form-section.first { border-top: none; padding-top: 0; margin-top: 0; }
+  .form-section h3 { font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #e0c077; margin-bottom: 12px; font-style: italic; }
+  label { display: block; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a961; margin-bottom: 6px; margin-top: 14px; }
   label:first-child { margin-top: 0; }
-  input, select {
-    width: 100%; padding: 10px 12px; font-size: 15px;
-    background: rgba(0,0,0,0.3); color: #f0ead6;
-    border: 1px solid rgba(240,234,214,0.2);
-    font-family: Georgia, serif;
-  }
+  input, select { width: 100%; padding: 10px 12px; font-size: 15px; background: rgba(0,0,0,0.3); color: #f0ead6; border: 1px solid rgba(240,234,214,0.2); font-family: Georgia, serif; }
   input:focus, select:focus { outline: none; border-color: #c9a961; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
-  button {
-    width: 100%; margin-top: 20px; padding: 14px;
-    background: #c9a961; color: #0a1028; border: none;
-    font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase;
-    cursor: pointer; font-family: Georgia, serif;
-  }
+  button { width: 100%; margin-top: 20px; padding: 14px; background: #c9a961; color: #0a1028; border: none; font-size: 14px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; font-family: Georgia, serif; }
   button:hover { background: #e0c077; }
   button:disabled { opacity: 0.5; cursor: not-allowed; }
   .helper { font-size: 12px; color: #888; margin-top: 4px; font-style: italic; }
   #result { margin-top: 32px; }
-  .chart-wrapper {
-    background: rgba(255,255,255,0.04); padding: 24px;
-    border: 1px solid rgba(224,192,119,0.3);
-  }
-  .chart-wrapper h2 {
-    font-size: 22px; font-style: italic; text-align: center;
-    color: #e0c077; margin-bottom: 16px;
-  }
-  svg.wheel { display: block; margin: 0 auto; max-width: 100%; height: auto; }
-  .data-table {
-    width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px;
-  }
-  .data-table th {
-    text-align: left; font-size: 11px; letter-spacing: 0.15em;
-    text-transform: uppercase; color: #c9a961; padding: 8px;
-    border-bottom: 1px solid rgba(240,234,214,0.2);
-  }
-  .data-table td {
-    padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.08);
-  }
+  .chart-wrapper { background: rgba(255,255,255,0.04); padding: 24px; border: 1px solid rgba(224,192,119,0.3); }
+  .chart-wrapper h2 { font-size: 22px; font-style: italic; text-align: center; color: #e0c077; margin-bottom: 8px; }
+  svg.wheel, svg.bodygraph { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+  .data-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; }
+  .data-table th { text-align: left; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #c9a961; padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.2); }
+  .data-table td { padding: 8px; border-bottom: 1px solid rgba(240,234,214,0.08); }
   .data-table .deg { color: #e0c077; font-weight: bold; }
-  .section-title {
-    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: #c9a961; margin: 28px 0 12px;
-  }
-  .error {
-    background: rgba(196,69,54,0.15); border: 1px solid #c44536;
-    padding: 14px; color: #f0ead6; margin-top: 16px;
-  }
+  .section-title { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: #c9a961; margin: 28px 0 12px; }
+  .error { background: rgba(196,69,54,0.15); border: 1px solid #c44536; padding: 14px; color: #f0ead6; margin-top: 16px; }
   .loading { text-align: center; color: #c9a961; padding: 24px; font-style: italic; }
-  .location-results {
-    background: rgba(0,0,0,0.5); border: 1px solid rgba(240,234,214,0.2);
-    border-top: none; max-height: 200px; overflow-y: auto;
-  }
-  .location-result {
-    padding: 10px 12px; cursor: pointer; border-bottom: 1px solid rgba(240,234,214,0.05);
-    font-size: 14px;
-  }
+  .location-results { background: rgba(0,0,0,0.5); border: 1px solid rgba(240,234,214,0.2); border-top: none; max-height: 200px; overflow-y: auto; }
+  .location-result { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid rgba(240,234,214,0.05); font-size: 14px; }
   .location-result:hover { background: rgba(201,169,97,0.1); }
-  .engine-status {
-    text-align: center; font-size: 11px; color: #888;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    margin-bottom: 16px;
-  }
+  .engine-status { text-align: center; font-size: 11px; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
   .engine-status.ready { color: #6b8e4e; }
+  .hd-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 20px 0; }
+  .hd-summary-item { background: rgba(0,0,0,0.3); padding: 12px; text-align: center; border: 1px solid rgba(224,192,119,0.2); }
+  .hd-summary-item .label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c9a961; margin-bottom: 4px; }
+  .hd-summary-item .value { font-size: 16px; color: #e0c077; font-style: italic; }
+  .hidden { display: none; }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Mami Wata's Mirror</h1>
-    <p class="subtitle">Generate your natal chart with exact degrees</p>
+    <p class="subtitle">Generate your chart with exact degrees</p>
     <div id="engine-status" class="engine-status">Loading Swiss Ephemeris engine...</div>
-
     <div class="form-card">
-      <div class="row">
-        <div>
-          <label>Birth Date</label>
-          <input type="date" id="birth-date" required>
-        </div>
-        <div>
-          <label>Birth Time</label>
-          <input type="time" id="birth-time" required>
-          <div class="helper">If unknown, use 12:00 (noon)</div>
-        </div>
+      <div class="form-section first">
+        <label>Chart Type</label>
+        <select id="chart-type">
+          <option value="natal">Western Natal Chart</option>
+          <option value="transit">Transit Chart (current planets)</option>
+          <option value="synastry">Synastry / Compatibility</option>
+          <option value="human-design">Human Design Bodygraph</option>
+        </select>
       </div>
-
-      <label>Birth Location</label>
-      <input type="text" id="location-search" placeholder="City, Country (e.g. Austin, USA)" autocomplete="off">
-      <div id="location-results"></div>
-      <input type="hidden" id="latitude">
-      <input type="hidden" id="longitude">
-      <div id="selected-location" class="helper" style="color:#e0c077;"></div>
-
-      <label>House System</label>
-      <select id="house-system">
-        <option value="placidus">Placidus</option>
-        <option value="whole-sign">Whole Sign</option>
-      </select>
-
+      <div class="form-section" id="primary-section">
+        <h3 id="primary-heading">Birth Information</h3>
+        <div class="row">
+          <div><label>Birth Date</label><input type="date" id="birth-date" required></div>
+          <div><label>Birth Time</label><input type="time" id="birth-time" required><div class="helper">If unknown, use 12:00 (noon)</div></div>
+        </div>
+        <label>Birth Location</label>
+        <input type="text" id="location-search" placeholder="City, Country" autocomplete="off">
+        <div id="location-results"></div>
+        <input type="hidden" id="latitude"><input type="hidden" id="longitude">
+        <div id="selected-location" class="helper" style="color:#e0c077;"></div>
+        <label>House System</label>
+        <select id="house-system"><option value="placidus">Placidus</option><option value="whole-sign">Whole Sign</option></select>
+      </div>
+      <div class="form-section hidden" id="transit-section">
+        <h3>Transit Date</h3>
+        <div class="row">
+          <div><label>Transit Date</label><input type="date" id="transit-date"><div class="helper">Default: today</div></div>
+          <div><label>Transit Time</label><input type="time" id="transit-time" value="12:00"></div>
+        </div>
+        <label>Transit Location (where you are now)</label>
+        <input type="text" id="transit-location-search" placeholder="City, Country" autocomplete="off">
+        <div id="transit-location-results"></div>
+        <input type="hidden" id="transit-latitude"><input type="hidden" id="transit-longitude">
+        <div id="transit-selected-location" class="helper" style="color:#e0c077;"></div>
+      </div>
+      <div class="form-section hidden" id="synastry-section">
+        <h3>Partner's Birth Information</h3>
+        <div class="row">
+          <div><label>Birth Date</label><input type="date" id="birth-date-2"></div>
+          <div><label>Birth Time</label><input type="time" id="birth-time-2"></div>
+        </div>
+        <label>Birth Location</label>
+        <input type="text" id="location-search-2" placeholder="City, Country" autocomplete="off">
+        <div id="location-results-2"></div>
+        <input type="hidden" id="latitude-2"><input type="hidden" id="longitude-2">
+        <div id="selected-location-2" class="helper" style="color:#e0c077;"></div>
+      </div>
       <button id="generate-btn" disabled>Generate Chart</button>
     </div>
-
     <div id="result"></div>
   </div>
-
 <script type="module">
 import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@main/src/swisseph.js';
 
-// ============================================================
-// CONSTANTS
-// ============================================================
-
 var SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 var SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
+var SE_SUN=0,SE_MOON=1,SE_MERCURY=2,SE_VENUS=3,SE_MARS=4,SE_JUPITER=5,SE_SATURN=6,SE_URANUS=7,SE_NEPTUNE=8,SE_PLUTO=9,SE_MEAN_NODE=10,SE_MEAN_APOG=12,SE_CHIRON=15;
+var SEFLG_SWIEPH=2,SEFLG_MOSEPH=4,SEFLG_SPEED=256;
 
-// Swiss Ephemeris planet IDs
-var SE_SUN = 0, SE_MOON = 1, SE_MERCURY = 2, SE_VENUS = 3, SE_MARS = 4;
-var SE_JUPITER = 5, SE_SATURN = 6, SE_URANUS = 7, SE_NEPTUNE = 8, SE_PLUTO = 9;
-var SE_MEAN_NODE = 10, SE_TRUE_NODE = 11, SE_MEAN_APOG = 12;
-var SE_CHIRON = 15;
+var HD_GATE_ORDER = [25,17,21,51,42,3,27,24,2,23,8,20,16,35,45,12,15,52,39,53,62,56,31,33,7,4,29,59,40,64,47,6,46,18,48,57,32,50,28,44,1,43,14,34,9,5,26,11,10,58,38,54,61,60,41,19,13,49,30,55,37,63,22,36];
+var HD_WHEEL_START = 358.125;
+var HD_CENTER_GATES = {Head:[64,61,63],Ajna:[47,24,4,17,43,11],Throat:[62,23,56,16,20,31,8,33,35,12,45],G:[1,13,25,46,2,15,10,7],Heart:[21,40,26,51],Spleen:[48,57,44,50,32,28,18],Sacral:[34,5,14,29,59,9,3,42,27],Solar:[6,37,22,36,30,55,49],Root:[53,60,52,19,39,41,58,38,54]};
+var HD_GATE_CENTERS = {};
+Object.keys(HD_CENTER_GATES).forEach(function(c){HD_CENTER_GATES[c].forEach(function(g){HD_GATE_CENTERS[g]=c;});});
+var HD_CHANNELS = [[1,8,"Inspiration"],[2,14,"The Beat"],[3,60,"Mutation"],[4,63,"Logic"],[5,15,"Rhythm"],[6,59,"Mating"],[7,31,"The Alpha"],[9,52,"Concentration"],[10,20,"Awakening"],[10,34,"Exploration"],[10,57,"Perfected Form"],[11,56,"Curiosity"],[12,22,"Openness"],[13,33,"The Prodigal"],[16,48,"Talent"],[17,62,"Acceptance"],[18,58,"Judgment"],[19,49,"Synthesis"],[20,34,"Charisma"],[20,57,"The Brain Wave"],[21,45,"Money"],[23,43,"Structuring"],[24,61,"Awareness"],[25,51,"Initiation"],[26,44,"Surrender"],[27,50,"Preservation"],[28,38,"Struggle"],[29,46,"Discovery"],[30,41,"Recognition"],[32,54,"Transformation"],[34,57,"Power"],[35,36,"Transitoriness"],[37,40,"Community"],[39,55,"Emoting"],[42,53,"Maturation"],[47,64,"Abstraction"]];
 
-// Calculation flags
-var SEFLG_SWIEPH = 2;
-var SEFLG_MOSEPH = 4;
-var SEFLG_SPEED = 256;
+var swe=null,sweReady=false;
+var statusEl=document.getElementById("engine-status");
+var btn=document.getElementById("generate-btn");
+(async function(){try{swe=new SwissEph();await swe.initSwissEph();sweReady=true;statusEl.textContent="\u2713 Engine ready";statusEl.classList.add("ready");btn.disabled=false;}catch(e){console.error(e);statusEl.textContent="\u26A0 Engine failed to load. Reload.";statusEl.style.color="#c44536";}})();
 
-// ============================================================
-// SWISS EPHEMERIS INITIALIZATION
-// ============================================================
+var chartTypeSelect=document.getElementById("chart-type");
+chartTypeSelect.addEventListener("change",function(){
+  var t=chartTypeSelect.value;
+  document.getElementById("transit-section").classList.toggle("hidden",t!=="transit");
+  document.getElementById("synastry-section").classList.toggle("hidden",t!=="synastry");
+});
 
-var swe = null;
-var sweReady = false;
-var statusEl = document.getElementById("engine-status");
-var btn = document.getElementById("generate-btn");
+function norm360(x){x=x%360;return x<0?x+360:x;}
+function splitDMS(lon){var n=norm360(lon),s=Math.floor(n/30),i=n-s*30,d=Math.floor(i),mF=(i-d)*60,m=Math.floor(mF),sec=Math.floor((mF-m)*60);return{sign:s,deg:d,min:m,sec:sec};}
+function calcPlanet(jd,id,mosh){var f=(mosh?SEFLG_MOSEPH:SEFLG_SWIEPH)|SEFLG_SPEED;var r=swe.calc_ut(jd,id,f);return{longitude:r[0],speed:r[3]};}
+function determineMoshier(jd){try{var t=swe.calc_ut(jd,SE_SUN,SEFLG_SWIEPH);if(!t||t.length<6||isNaN(t[0]))return true;return false;}catch(e){return true;}}
+function partOfFortune(s,m,a,d){return d?norm360(a+m-s):norm360(a+s-m);}
+function isDayBirth(s,a){var d=norm360(s-a);return d>=180;}
+function houseOfPlanet(lon,c){for(var i=0;i<12;i++){var s=c[i],e=c[(i+1)%12];if(s<=e){if(lon>=s&&lon<e)return i+1;}else{if(lon>=s||lon<e)return i+1;}}return null;}
+function wholeSignHouses(a){var s=Math.floor(norm360(a)/30),c=new Array(12);for(var i=0;i<12;i++)c[i]=((s+i)%12)*30;return c;}
+var ASPECTS=[{type:"conjunction",angle:0,orb:8},{type:"sextile",angle:60,orb:4},{type:"square",angle:90,orb:6},{type:"trine",angle:120,orb:6},{type:"opposition",angle:180,orb:6}];
+function calcAspects(p){var r=[];for(var i=0;i<p.length;i++)for(var j=i+1;j<p.length;j++){var d=Math.abs(p[i].longitude-p[j].longitude);if(d>180)d=360-d;for(var k=0;k<ASPECTS.length;k++){var a=ASPECTS[k],o=Math.abs(d-a.angle);if(o<=a.orb){r.push({point1:p[i].name,point2:p[j].name,type:a.type,orb:o.toFixed(2)});break;}}}return r;}
+function calcInterAspects(A,B){var r=[];for(var i=0;i<A.length;i++)for(var j=0;j<B.length;j++){var d=Math.abs(A[i].longitude-B[j].longitude);if(d>180)d=360-d;for(var k=0;k<ASPECTS.length;k++){var a=ASPECTS[k],o=Math.abs(d-a.angle);if(o<=a.orb){r.push({point1:A[i].name,point2:B[j].name,type:a.type,orb:o.toFixed(2)});break;}}}return r;}
+function localToUT(y,m,d,h,mn,tz){var uH=(h+mn/60)-tz,uD=d,uM=m,uY=y;if(uH<0){uH+=24;uD-=1;if(uD<1){uM-=1;if(uM<1){uM=12;uY-=1;}uD=new Date(uY,uM,0).getDate();}}else if(uH>=24){uH-=24;uD+=1;var dim=new Date(uY,uM,0).getDate();if(uD>dim){uD=1;uM+=1;if(uM>12){uM=1;uY+=1;}}}return{y:uY,m:uM,d:uD,h:uH};}
+function longitudeToGate(lon){var rel=norm360(lon-HD_WHEEL_START),gs=360/64,gi=Math.floor(rel/gs),g=HD_GATE_ORDER[gi],wG=rel-gi*gs,l=Math.floor(wG/(gs/6))+1;if(l>6)l=6;if(l<1)l=1;return{gate:g,line:l};}
 
-(async function() {
-  try {
-    swe = new SwissEph();
-    await swe.initSwissEph();
-    sweReady = true;
-    statusEl.textContent = "\u2713 Engine ready";
-    statusEl.classList.add("ready");
-    btn.disabled = false;
-  } catch (err) {
-    console.error("Swiss Ephemeris failed to load:", err);
-    statusEl.textContent = "\u26A0 Engine failed to load. Reload the page.";
-    statusEl.style.color = "#c44536";
-  }
-})();
-
-// ============================================================
-// HELPERS
-// ============================================================
-
-function norm360(x) { x = x % 360; return x < 0 ? x + 360 : x; }
-
-function splitDMS(lon) {
-  var norm = norm360(lon);
-  var sign = Math.floor(norm / 30);
-  var inSign = norm - sign * 30;
-  var deg = Math.floor(inSign);
-  var minF = (inSign - deg) * 60;
-  var min = Math.floor(minF);
-  var sec = Math.floor((minF - min) * 60);
-  return { sign: sign, deg: deg, min: min, sec: sec };
+function calculatePlanetSet(jd,mosh){
+  var sun=calcPlanet(jd,SE_SUN,mosh),moon=calcPlanet(jd,SE_MOON,mosh);
+  var mer=calcPlanet(jd,SE_MERCURY,mosh),ven=calcPlanet(jd,SE_VENUS,mosh);
+  var mar=calcPlanet(jd,SE_MARS,mosh),jup=calcPlanet(jd,SE_JUPITER,mosh);
+  var sat=calcPlanet(jd,SE_SATURN,mosh),ura=calcPlanet(jd,SE_URANUS,mosh);
+  var nep=calcPlanet(jd,SE_NEPTUNE,mosh),plu=calcPlanet(jd,SE_PLUTO,mosh);
+  var nn=calcPlanet(jd,SE_MEAN_NODE,mosh),lil=calcPlanet(jd,SE_MEAN_APOG,mosh);
+  var ch=0;try{var c=swe.calc_ut(jd,SE_CHIRON,mosh?SEFLG_MOSEPH:SEFLG_SWIEPH);if(c&&!isNaN(c[0]))ch=c[0];}catch(e){}
+  return{sun:sun,moon:moon,mercury:mer,venus:ven,mars:mar,jupiter:jup,saturn:sat,uranus:ura,neptune:nep,pluto:plu,northNode:nn,lilith:lil,chironLon:ch};
 }
 
-function calcPlanet(jd, planetId, useMoshier) {
-  var flag = (useMoshier ? SEFLG_MOSEPH : SEFLG_SWIEPH) | SEFLG_SPEED;
-  var result = swe.calc_ut(jd, planetId, flag);
-  return {
-    longitude: result[0],
-    speed: result[3]
-  };
-}
-
-function partOfFortune(sun, moon, asc, isDay) {
-  if (isDay) return norm360(asc + moon - sun);
-  return norm360(asc + sun - moon);
-}
-
-function isDayBirth(sunLon, ascLon) {
-  var diff = norm360(sunLon - ascLon);
-  return diff >= 180;
-}
-
-function houseOfPlanet(lon, cusps) {
-  for (var i = 0; i < 12; i++) {
-    var start = cusps[i];
-    var end = cusps[(i + 1) % 12];
-    if (start <= end) {
-      if (lon >= start && lon < end) return i + 1;
-    } else {
-      if (lon >= start || lon < end) return i + 1;
-    }
-  }
-  return null;
-}
-
-function wholeSignHouses(ascendant) {
-  var ascSign = Math.floor(norm360(ascendant) / 30);
-  var cusps = new Array(12);
-  for (var i = 0; i < 12; i++) {
-    cusps[i] = ((ascSign + i) % 12) * 30;
-  }
-  return cusps;
-}
-
-var ASPECTS = [
-  { type: "conjunction", angle: 0,   orb: 8 },
-  { type: "sextile",     angle: 60,  orb: 4 },
-  { type: "square",      angle: 90,  orb: 6 },
-  { type: "trine",       angle: 120, orb: 6 },
-  { type: "opposition",  angle: 180, orb: 6 }
-];
-
-function calcAspects(points) {
-  var result = [];
-  for (var i = 0; i < points.length; i++) {
-    for (var j = i + 1; j < points.length; j++) {
-      var diff = Math.abs(points[i].longitude - points[j].longitude);
-      if (diff > 180) diff = 360 - diff;
-      for (var k = 0; k < ASPECTS.length; k++) {
-        var asp = ASPECTS[k];
-        var orb = Math.abs(diff - asp.angle);
-        if (orb <= asp.orb) {
-          result.push({
-            point1: points[i].name,
-            point2: points[j].name,
-            type: asp.type,
-            orb: orb.toFixed(2)
-          });
-          break;
-        }
-      }
-    }
-  }
-  return result;
-}
-
-// ============================================================
-// CHART GENERATION
-// ============================================================
-
-function generateChart(year, month, day, hour, minute, latitude, longitude, houseSystem, tzOffsetHours) {
-  var utHourDecimal = (hour + minute / 60) - tzOffsetHours;
-  var utDay = day, utMonth = month, utYear = year;
-  if (utHourDecimal < 0) {
-    utHourDecimal += 24;
-    utDay -= 1;
-    if (utDay < 1) {
-      utMonth -= 1;
-      if (utMonth < 1) { utMonth = 12; utYear -= 1; }
-      utDay = new Date(utYear, utMonth, 0).getDate();
-    }
-  } else if (utHourDecimal >= 24) {
-    utHourDecimal -= 24;
-    utDay += 1;
-    var dim = new Date(utYear, utMonth, 0).getDate();
-    if (utDay > dim) {
-      utDay = 1;
-      utMonth += 1;
-      if (utMonth > 12) { utMonth = 1; utYear += 1; }
-    }
-  }
-
-  var jd = swe.julday(utYear, utMonth, utDay, utHourDecimal);
-
-  // Try Swiss ephemeris files first; fall back to Moshier (built-in, professional accuracy)
-  var useMoshier = false;
-  try {
-    var testCalc = swe.calc_ut(jd, SE_SUN, SEFLG_SWIEPH);
-    if (!testCalc || testCalc.length < 6 || isNaN(testCalc[0])) {
-      useMoshier = true;
-    }
-  } catch (e) {
-    useMoshier = true;
-  }
-
-  var sun = calcPlanet(jd, SE_SUN, useMoshier);
-  var moon = calcPlanet(jd, SE_MOON, useMoshier);
-  var mercury = calcPlanet(jd, SE_MERCURY, useMoshier);
-  var venus = calcPlanet(jd, SE_VENUS, useMoshier);
-  var mars = calcPlanet(jd, SE_MARS, useMoshier);
-  var jupiter = calcPlanet(jd, SE_JUPITER, useMoshier);
-  var saturn = calcPlanet(jd, SE_SATURN, useMoshier);
-  var uranus = calcPlanet(jd, SE_URANUS, useMoshier);
-  var neptune = calcPlanet(jd, SE_NEPTUNE, useMoshier);
-  var pluto = calcPlanet(jd, SE_PLUTO, useMoshier);
-  var northNode = calcPlanet(jd, SE_MEAN_NODE, useMoshier);
-  var lilith = calcPlanet(jd, SE_MEAN_APOG, useMoshier);
-
-  var chironLon = 0;
-  try {
-    var chironResult = swe.calc_ut(jd, SE_CHIRON, useMoshier ? SEFLG_MOSEPH : SEFLG_SWIEPH);
-    if (chironResult && !isNaN(chironResult[0])) {
-      chironLon = chironResult[0];
-    }
-  } catch (e) {
-    chironLon = 0;
-  }
-
-  // Houses
-  var hsys = houseSystem === "whole-sign" ? "W" : "P";
-  var housesResult = swe.houses(jd, latitude, longitude, hsys);
-
-  var cusps;
-  if (housesResult.house && housesResult.house.length >= 12) {
-    if (housesResult.house.length === 13) {
-      cusps = housesResult.house.slice(1, 13);
-    } else {
-      cusps = housesResult.house.slice(0, 12);
-    }
-  } else if (housesResult.cusps && housesResult.cusps.length >= 12) {
-    if (housesResult.cusps.length === 13) {
-      cusps = housesResult.cusps.slice(1, 13);
-    } else {
-      cusps = housesResult.cusps.slice(0, 12);
-    }
-  } else {
-    throw new Error("House calculation failed");
-  }
-
-  var ascmc = housesResult.ascmc || housesResult.ascMc || [];
-  var ascendant = ascmc[0];
-  var midheaven = ascmc[1];
-  var vertex = ascmc[3];
-
-  if (houseSystem === "whole-sign") {
-    cusps = wholeSignHouses(ascendant);
-  }
-
-  var southNodeLon = norm360(northNode.longitude + 180);
-  var isDay = isDayBirth(sun.longitude, ascendant);
-  var fortuneLon = partOfFortune(sun.longitude, moon.longitude, ascendant, isDay);
-
-  var planetData = [
-    { name: "Sun",            symbol: "\u2609", longitude: sun.longitude,     speed: sun.speed },
-    { name: "Moon",           symbol: "\u263D", longitude: moon.longitude,    speed: moon.speed },
-    { name: "Mercury",        symbol: "\u263F", longitude: mercury.longitude, speed: mercury.speed },
-    { name: "Venus",          symbol: "\u2640", longitude: venus.longitude,   speed: venus.speed },
-    { name: "Mars",           symbol: "\u2642", longitude: mars.longitude,    speed: mars.speed },
-    { name: "Jupiter",        symbol: "\u2643", longitude: jupiter.longitude, speed: jupiter.speed },
-    { name: "Saturn",         symbol: "\u2644", longitude: saturn.longitude,  speed: saturn.speed },
-    { name: "Uranus",         symbol: "\u2645", longitude: uranus.longitude,  speed: uranus.speed },
-    { name: "Neptune",        symbol: "\u2646", longitude: neptune.longitude, speed: neptune.speed },
-    { name: "Pluto",          symbol: "\u2647", longitude: pluto.longitude,   speed: pluto.speed },
-    { name: "Chiron",         symbol: "\u26B7", longitude: chironLon,         speed: 0 },
-    { name: "North Node",     symbol: "\u260A", longitude: northNode.longitude, speed: 0 },
-    { name: "South Node",     symbol: "\u260B", longitude: southNodeLon,      speed: 0 },
-    { name: "Lilith",         symbol: "\u26B8", longitude: lilith.longitude,  speed: 0 },
-    { name: "Part of Fortune",symbol: "\u2297", longitude: fortuneLon,        speed: 0 },
-    { name: "Vertex",         symbol: "Vx",     longitude: vertex,            speed: 0 }
+function buildPlanetData(p,asc,mc,vx){
+  var sn=norm360(p.northNode.longitude+180),iD=isDayBirth(p.sun.longitude,asc),fL=partOfFortune(p.sun.longitude,p.moon.longitude,asc,iD);
+  return [
+    {name:"Sun",symbol:"\u2609",longitude:p.sun.longitude,speed:p.sun.speed},
+    {name:"Moon",symbol:"\u263D",longitude:p.moon.longitude,speed:p.moon.speed},
+    {name:"Mercury",symbol:"\u263F",longitude:p.mercury.longitude,speed:p.mercury.speed},
+    {name:"Venus",symbol:"\u2640",longitude:p.venus.longitude,speed:p.venus.speed},
+    {name:"Mars",symbol:"\u2642",longitude:p.mars.longitude,speed:p.mars.speed},
+    {name:"Jupiter",symbol:"\u2643",longitude:p.jupiter.longitude,speed:p.jupiter.speed},
+    {name:"Saturn",symbol:"\u2644",longitude:p.saturn.longitude,speed:p.saturn.speed},
+    {name:"Uranus",symbol:"\u2645",longitude:p.uranus.longitude,speed:p.uranus.speed},
+    {name:"Neptune",symbol:"\u2646",longitude:p.neptune.longitude,speed:p.neptune.speed},
+    {name:"Pluto",symbol:"\u2647",longitude:p.pluto.longitude,speed:p.pluto.speed},
+    {name:"Chiron",symbol:"\u26B7",longitude:p.chironLon,speed:0},
+    {name:"North Node",symbol:"\u260A",longitude:p.northNode.longitude,speed:0},
+    {name:"South Node",symbol:"\u260B",longitude:sn,speed:0},
+    {name:"Lilith",symbol:"\u26B8",longitude:p.lilith.longitude,speed:0},
+    {name:"Part of Fortune",symbol:"\u2297",longitude:fL,speed:0},
+    {name:"Vertex",symbol:"Vx",longitude:vx,speed:0}
   ];
-
-  var planets = planetData.map(function(p) {
-    var dms = splitDMS(p.longitude);
-    return {
-      name: p.name, symbol: p.symbol,
-      sign: SIGN_NAMES[dms.sign],
-      signSymbol: SIGN_SYMBOLS[dms.sign],
-      degreesInSign: dms.deg,
-      minutes: dms.min,
-      seconds: dms.sec,
-      eclipticLongitude: p.longitude,
-      retrograde: p.speed < 0,
-      house: houseOfPlanet(p.longitude, cusps)
-    };
-  });
-
-  var ascDms = splitDMS(ascendant);
-  var mcDms = splitDMS(midheaven);
-
-  var houses = cusps.map(function(lon, i) {
-    var dms = splitDMS(lon);
-    return {
-      number: i + 1,
-      sign: SIGN_NAMES[dms.sign],
-      signSymbol: SIGN_SYMBOLS[dms.sign],
-      degreesInSign: dms.deg,
-      minutes: dms.min,
-      eclipticLongitude: lon
-    };
-  });
-
-  var aspectPoints = planetData.map(function(p) { return { name: p.name, longitude: p.longitude }; });
-  aspectPoints.push({ name: "Ascendant", longitude: ascendant });
-  aspectPoints.push({ name: "Midheaven", longitude: midheaven });
-  var aspects = calcAspects(aspectPoints);
-
-  return {
-    engine: useMoshier ? "Moshier (built-in, sub-arcsecond accuracy)" : "Swiss Ephemeris (full precision)",
-    planets: planets,
-    angles: {
-      ascendant: {
-        sign: SIGN_NAMES[ascDms.sign],
-        signSymbol: SIGN_SYMBOLS[ascDms.sign],
-        degreesInSign: ascDms.deg,
-        minutes: ascDms.min,
-        eclipticLongitude: ascendant
-      },
-      midheaven: {
-        sign: SIGN_NAMES[mcDms.sign],
-        signSymbol: SIGN_SYMBOLS[mcDms.sign],
-        degreesInSign: mcDms.deg,
-        minutes: mcDms.min,
-        eclipticLongitude: midheaven
-      }
-    },
-    houses: houses,
-    aspects: aspects
-  };
 }
 
-// ============================================================
-// LOCATION SEARCH
-// ============================================================
-
-var locationInput = document.getElementById("location-search");
-var locationResults = document.getElementById("location-results");
-var latInput = document.getElementById("latitude");
-var lngInput = document.getElementById("longitude");
-var selectedLocation = document.getElementById("selected-location");
-var searchTimeout;
-
-locationInput.addEventListener("input", function() {
-  clearTimeout(searchTimeout);
-  var query = locationInput.value.trim();
-  if (query.length < 3) { locationResults.innerHTML = ""; return; }
-  searchTimeout = setTimeout(function() {
-    fetch("https://nominatim.openstreetmap.org/search?q=" + encodeURIComponent(query) + "&format=json&limit=5")
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
-        var html = '<div class="location-results">';
-        for (var i = 0; i < data.length; i++) {
-          var r = data[i];
-          var parts = r.display_name.split(",").map(function(s) { return s.trim(); });
-          var cleanName = parts[0];
-          if (parts.length >= 2) cleanName += ", " + parts[parts.length - 2];
-          if (parts.length >= 3) cleanName += ", " + parts[parts.length - 1];
-          html += '<div class="location-result" data-lat="' + r.lat + '" data-lon="' + r.lon + '" data-name="' + cleanName.replace(/"/g, "&quot;") + '">' + cleanName + '</div>';
-        }
-        html += '</div>';
-        locationResults.innerHTML = html;
-        var nodes = document.querySelectorAll(".location-result");
-        for (var k = 0; k < nodes.length; k++) {
-          nodes[k].addEventListener("click", function() {
-            latInput.value = this.dataset.lat;
-            lngInput.value = this.dataset.lon;
-            locationInput.value = this.dataset.name;
-            selectedLocation.textContent = "\u2713 " + this.dataset.name + " (" + parseFloat(this.dataset.lat).toFixed(2) + ", " + parseFloat(this.dataset.lon).toFixed(2) + ")";
-            locationResults.innerHTML = "";
-          });
-        }
-      });
-  }, 400);
-});
-
-// ============================================================
-// FORM HANDLING
-// ============================================================
-
-var resultDiv = document.getElementById("result");
-
-btn.addEventListener("click", function() {
-  if (!sweReady) {
-    resultDiv.innerHTML = '<div class="error">Engine still loading. Wait a moment and try again.</div>';
-    return;
-  }
-
-  var dateVal = document.getElementById("birth-date").value;
-  var timeVal = document.getElementById("birth-time").value;
-  var lat = latInput.value;
-  var lng = lngInput.value;
-  var houseSystem = document.getElementById("house-system").value;
-
-  if (!dateVal || !timeVal || !lat || !lng) {
-    resultDiv.innerHTML = '<div class="error">Please fill in all fields and select a location from the dropdown.</div>';
-    return;
-  }
-
-  var dateParts = dateVal.split("-");
-  var timeParts = timeVal.split(":");
-  var year = parseInt(dateParts[0]);
-  var month = parseInt(dateParts[1]);
-  var day = parseInt(dateParts[2]);
-  var hour = parseInt(timeParts[0]);
-  var minute = parseInt(timeParts[1]);
-
-  resultDiv.innerHTML = '<div class="loading">Calculating your chart...</div>';
-
-  var tzUrl = "https://timeapi.io/api/timezone/coordinate?latitude=" + lat + "&longitude=" + lng;
-
-  fetch(tzUrl)
-    .then(function(res) { return res.json(); })
-    .then(function(tzData) {
-      var offsetSeconds = tzData.standardUtcOffset ? tzData.standardUtcOffset.seconds : 0;
-      var isDST = false;
-      if (tzData.hasDayLightSaving) {
-        if (year >= 2007) {
-          if (month >= 4 && month <= 10) isDST = true;
-          if (month === 3 && day >= 8) isDST = true;
-          if (month === 11 && day <= 7) isDST = true;
-        } else if (year >= 1987) {
-          if (month >= 5 && month <= 9) isDST = true;
-          if (month === 4 && day >= 1) isDST = true;
-          if (month === 10 && day <= 31) isDST = true;
-        } else {
-          if (month >= 5 && month <= 9) isDST = true;
-          if (month === 4 && day >= 24) isDST = true;
-          if (month === 10 && day <= 31) isDST = true;
-        }
-      }
-      if (isDST && tzData.daylightSavings) {
-        offsetSeconds = tzData.daylightSavings.utcOffset ? tzData.daylightSavings.utcOffset.seconds : offsetSeconds + 3600;
-      }
-      var tzOffsetHours = offsetSeconds / 3600;
-      runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
-    })
-    .catch(function(err) {
-      var tzOffsetHours = Math.round(parseFloat(lng) / 15);
-      runChart(year, month, day, hour, minute, parseFloat(lat), parseFloat(lng), houseSystem, tzOffsetHours);
-    });
-});
-
-function runChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffsetHours) {
-  try {
-    var data = generateChart(year, month, day, hour, minute, lat, lng, houseSystem, tzOffsetHours);
-    renderChart(data);
-  } catch (err) {
-    console.error(err);
-    resultDiv.innerHTML = '<div class="error">Error: ' + err.message + '</div>';
-  }
+function generateNatalChart(y,m,d,h,mn,la,ln,hs,tz){
+  var ut=localToUT(y,m,d,h,mn,tz),jd=swe.julday(ut.y,ut.m,ut.d,ut.h),mosh=determineMoshier(jd);
+  var p=calculatePlanetSet(jd,mosh);
+  var hsys=hs==="whole-sign"?"W":"P",hr=swe.houses(jd,la,ln,hsys);
+  var raw=hr.house||hr.cusps,cusps;
+  if(raw&&raw.length>=12)cusps=raw.length===13?raw.slice(1,13):raw.slice(0,12);
+  else throw new Error("House calculation failed");
+  var am=hr.ascmc||hr.ascMc||[],asc=am[0],mc=am[1],vx=am[3];
+  if(hs==="whole-sign")cusps=wholeSignHouses(asc);
+  var pd=buildPlanetData(p,asc,mc,vx);
+  var planets=pd.map(function(pl){var dms=splitDMS(pl.longitude);return{name:pl.name,symbol:pl.symbol,sign:SIGN_NAMES[dms.sign],signSymbol:SIGN_SYMBOLS[dms.sign],degreesInSign:dms.deg,minutes:dms.min,seconds:dms.sec,eclipticLongitude:pl.longitude,retrograde:pl.speed<0,house:houseOfPlanet(pl.longitude,cusps)};});
+  var aD=splitDMS(asc),mD=splitDMS(mc);
+  var houses=cusps.map(function(lon,i){var dms=splitDMS(lon);return{number:i+1,sign:SIGN_NAMES[dms.sign],signSymbol:SIGN_SYMBOLS[dms.sign],degreesInSign:dms.deg,minutes:dms.min,eclipticLongitude:lon};});
+  var ap=pd.map(function(pl){return{name:pl.name,longitude:pl.longitude};});
+  ap.push({name:"Ascendant",longitude:asc});ap.push({name:"Midheaven",longitude:mc});
+  return{type:"natal",engine:mosh?"Moshier (built-in)":"Swiss Ephemeris",planets:planets,angles:{ascendant:{sign:SIGN_NAMES[aD.sign],signSymbol:SIGN_SYMBOLS[aD.sign],degreesInSign:aD.deg,minutes:aD.min,eclipticLongitude:asc},midheaven:{sign:SIGN_NAMES[mD.sign],signSymbol:SIGN_SYMBOLS[mD.sign],degreesInSign:mD.deg,minutes:mD.min,eclipticLongitude:mc}},houses:houses,aspects:calcAspects(ap)};
 }
 
-// ============================================================
-// CHART RENDERING
-// ============================================================
+function generateTransitChart(nA,tA){
+  var natal=generateNatalChart(nA.year,nA.month,nA.day,nA.hour,nA.minute,nA.lat,nA.lng,nA.houseSystem,nA.tzOffsetHours);
+  var ut=localToUT(tA.year,tA.month,tA.day,tA.hour,tA.minute,tA.tzOffsetHours),jd=swe.julday(ut.y,ut.m,ut.d,ut.h),mosh=determineMoshier(jd);
+  var p=calculatePlanetSet(jd,mosh);
+  var pd=buildPlanetData(p,natal.angles.ascendant.eclipticLongitude,natal.angles.midheaven.eclipticLongitude,0);
+  var tp=pd.map(function(pl){var dms=splitDMS(pl.longitude);return{name:pl.name,symbol:pl.symbol,sign:SIGN_NAMES[dms.sign],signSymbol:SIGN_SYMBOLS[dms.sign],degreesInSign:dms.deg,minutes:dms.min,seconds:dms.sec,eclipticLongitude:pl.longitude,retrograde:pl.speed<0,house:houseOfPlanet(pl.longitude,natal.houses.map(function(h){return h.eclipticLongitude;}))};});
+  var nP=natal.planets.map(function(pl){return{name:"Natal "+pl.name,longitude:pl.eclipticLongitude};});
+  var tP=pd.map(function(pl){return{name:"Transit "+pl.name,longitude:pl.longitude};});
+  return{type:"transit",engine:natal.engine,natal:natal,transitPlanets:tp,transitDate:tA.year+"-"+String(tA.month).padStart(2,"0")+"-"+String(tA.day).padStart(2,"0"),interAspects:calcInterAspects(tP,nP)};
+}
 
-function renderChart(data) {
-  var ascLon = data.angles.ascendant.eclipticLongitude;
+function generateSynastryChart(A,B){
+  var nA=generateNatalChart(A.year,A.month,A.day,A.hour,A.minute,A.lat,A.lng,A.houseSystem,A.tzOffsetHours);
+  var nB=generateNatalChart(B.year,B.month,B.day,B.hour,B.minute,B.lat,B.lng,B.houseSystem,B.tzOffsetHours);
+  var pA=nA.planets.map(function(pl){return{name:"A: "+pl.name,longitude:pl.eclipticLongitude};});
+  pA.push({name:"A: ASC",longitude:nA.angles.ascendant.eclipticLongitude});pA.push({name:"A: MC",longitude:nA.angles.midheaven.eclipticLongitude});
+  var pB=nB.planets.map(function(pl){return{name:"B: "+pl.name,longitude:pl.eclipticLongitude};});
+  pB.push({name:"B: ASC",longitude:nB.angles.ascendant.eclipticLongitude});pB.push({name:"B: MC",longitude:nB.angles.midheaven.eclipticLongitude});
+  return{type:"synastry",engine:nA.engine,natalA:nA,natalB:nB,interAspects:calcInterAspects(pA,pB)};
+}
 
-  function eclToSvg(lon) { return 180 + (lon - ascLon); }
-  function polar(cx, cy, r, deg) {
-    var rad = (deg * Math.PI) / 180;
-    return { x: cx + r * Math.cos(rad), y: cy - r * Math.sin(rad) };
-  }
+function generateHumanDesignChart(y,m,d,h,mn,la,ln,tz){
+  var ut=localToUT(y,m,d,h,mn,tz),jdP=swe.julday(ut.y,ut.m,ut.d,ut.h),mosh=determineMoshier(jdP);
+  var pP=calculatePlanetSet(jdP,mosh);
+  var tgt=norm360(pP.sun.longitude-88),jdD=jdP-88;
+  for(var i=0;i<25;i++){var sg=calcPlanet(jdD,SE_SUN,mosh);var df=norm360(sg.longitude-tgt);if(df>180)df-=360;if(Math.abs(df)<0.0001)break;jdD-=df/0.9856;}
+  var pD=calculatePlanetSet(jdD,mosh);
+  function bH(p){var eL=norm360(p.sun.longitude+180),sN=norm360(p.northNode.longitude+180);return[{name:"Sun",symbol:"\u2609",longitude:p.sun.longitude},{name:"Earth",symbol:"\u2295",longitude:eL},{name:"Moon",symbol:"\u263D",longitude:p.moon.longitude},{name:"North Node",symbol:"\u260A",longitude:p.northNode.longitude},{name:"South Node",symbol:"\u260B",longitude:sN},{name:"Mercury",symbol:"\u263F",longitude:p.mercury.longitude},{name:"Venus",symbol:"\u2640",longitude:p.venus.longitude},{name:"Mars",symbol:"\u2642",longitude:p.mars.longitude},{name:"Jupiter",symbol:"\u2643",longitude:p.jupiter.longitude},{name:"Saturn",symbol:"\u2644",longitude:p.saturn.longitude},{name:"Uranus",symbol:"\u2645",longitude:p.uranus.longitude},{name:"Neptune",symbol:"\u2646",longitude:p.neptune.longitude},{name:"Pluto",symbol:"\u2647",longitude:p.pluto.longitude},{name:"Chiron",symbol:"\u26B7",longitude:p.chironLon}];}
+  var pers=bH(pP).map(function(pl){var gl=longitudeToGate(pl.longitude);return{name:pl.name,symbol:pl.symbol,longitude:pl.longitude,gate:gl.gate,line:gl.line};});
+  var des=bH(pD).map(function(pl){var gl=longitudeToGate(pl.longitude);return{name:pl.name,symbol:pl.symbol,longitude:pl.longitude,gate:gl.gate,line:gl.line};});
+  var aG={},pG={},dG={};
+  pers.forEach(function(pl){aG[pl.gate]=true;pG[pl.gate]=true;});
+  des.forEach(function(pl){aG[pl.gate]=true;dG[pl.gate]=true;});
+  var dCh=HD_CHANNELS.filter(function(c){return aG[c[0]]&&aG[c[1]];});
+  var dC={};dCh.forEach(function(c){var c1=HD_GATE_CENTERS[c[0]],c2=HD_GATE_CENTERS[c[1]];if(c1)dC[c1]=true;if(c2)dC[c2]=true;});
+  var conn={};dCh.forEach(function(c){var c1=HD_GATE_CENTERS[c[0]],c2=HD_GATE_CENTERS[c[1]];if(!conn[c1])conn[c1]=[];if(!conn[c2])conn[c2]=[];if(c1!==c2){conn[c1].push(c2);conn[c2].push(c1);}});
+  function pathExists(s,e,v){v=v||{};if(s===e)return true;if(v[s])return false;v[s]=true;var n=conn[s]||[];for(var i=0;i<n.length;i++)if(pathExists(n[i],e,v))return true;return false;}
+  var sacD=dC["Sacral"],thrD=dC["Throat"];
+  var mTT=false;["Sacral","Heart","Solar","Root"].forEach(function(mo){if(dC[mo]&&thrD&&pathExists(mo,"Throat",{}))mTT=true;});
+  var hT,st,sg,ns,anyD=Object.keys(dC).length>0;
+  if(!anyD){hT="Reflector";st="Wait a Lunar Cycle";sg="Surprise";ns="Disappointment";}
+  else if(sacD){if(mTT){hT="Manifesting Generator";st="Wait to Respond, then Inform";sg="Satisfaction";ns="Frustration & Anger";}else{hT="Generator";st="Wait to Respond";sg="Satisfaction";ns="Frustration";}}
+  else{if(mTT){hT="Manifestor";st="Inform Before Acting";sg="Peace";ns="Anger";}else{hT="Projector";st="Wait for the Invitation";sg="Success";ns="Bitterness";}}
+  var auth;
+  if(dC["Solar"])auth="Emotional (Solar Plexus)";
+  else if(sacD)auth="Sacral";
+  else if(dC["Spleen"])auth="Splenic";
+  else if(dC["Heart"])auth="Ego (Heart)";
+  else if(dC["G"]&&thrD)auth="Self-Projected (G Center)";
+  else if(hT==="Projector")auth="Mental (Outer Authority)";
+  else if(hT==="Reflector")auth="Lunar";
+  else auth="None";
+  var prof=pers[0].line+"/"+des[0].line;
+  var cL=Object.keys(dC),vis={},isl=0;
+  cL.forEach(function(c){if(!vis[c]){isl++;var st=[c];while(st.length){var cu=st.pop();if(vis[cu])continue;vis[cu]=true;(conn[cu]||[]).forEach(function(n){if(!vis[n])st.push(n);});}}});
+  var def=isl===0?"None (Reflector)":isl===1?"Single Definition":isl===2?"Split Definition":isl===3?"Triple-Split Definition":"Quadruple-Split Definition";
+  var cross="Cross of "+pers[0].gate+"/"+pers[1].gate+" | "+des[0].gate+"/"+des[1].gate;
+  return{type:"human-design",engine:mosh?"Moshier":"Swiss Ephemeris",personalityPlanets:pers,designPlanets:des,activatedGates:aG,personalityGates:pG,designGates:dG,definedChannels:dCh,definedCenters:dC,hdType:hT,strategy:st,authority:auth,profile:prof,definition:def,signature:sg,notSelf:ns,incarnationCross:cross};
+}
 
-  var cx = 300, cy = 300;
-  var planetsToShow = data.planets;
+function setupLocationSearch(iI,rI,laI,lnI,sI){
+  var inp=document.getElementById(iI),res=document.getElementById(rI),laInp=document.getElementById(laI),lnInp=document.getElementById(lnI),sel=document.getElementById(sI),t;
+  inp.addEventListener("input",function(){clearTimeout(t);var q=inp.value.trim();if(q.length<3){res.innerHTML="";return;}t=setTimeout(function(){fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(q)+"&format=json&limit=5").then(function(r){return r.json();}).then(function(data){var html='<div class="location-results">';data.forEach(function(r){var p=r.display_name.split(",").map(function(s){return s.trim();}),cl=p[0];if(p.length>=2)cl+=", "+p[p.length-2];if(p.length>=3)cl+=", "+p[p.length-1];html+='<div class="location-result" data-lat="'+r.lat+'" data-lon="'+r.lon+'" data-name="'+cl.replace(/"/g,"&quot;")+'">'+cl+'</div>';});html+='</div>';res.innerHTML=html;res.querySelectorAll(".location-result").forEach(function(n){n.addEventListener("click",function(){laInp.value=this.dataset.lat;lnInp.value=this.dataset.lon;inp.value=this.dataset.name;sel.textContent="\u2713 "+this.dataset.name;res.innerHTML="";});});});},400);});
+}
+setupLocationSearch("location-search","location-results","latitude","longitude","selected-location");
+setupLocationSearch("location-search-2","location-results-2","latitude-2","longitude-2","selected-location-2");
+setupLocationSearch("transit-location-search","transit-location-results","transit-latitude","transit-longitude","transit-selected-location");
 
-  var svg = '<svg class="wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="280" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/>';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="250" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/>';
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
+function getTimezoneOffset(y,m,d,la,ln){
+  return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(tz.hasDayLightSaving){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
+}
 
-  for (var i = 0; i < 12; i++) {
-    var angle = eclToSvg(i * 30);
-    var p1 = polar(cx, cy, 250, angle);
-    var p2 = polar(cx, cy, 280, angle);
-    svg += '<line x1="' + p1.x + '" y1="' + p1.y + '" x2="' + p2.x + '" y2="' + p2.y + '" stroke="#c9a961" stroke-width="1" opacity="0.5"/>';
-  }
+var resultDiv=document.getElementById("result");
+btn.addEventListener("click",function(){
+  if(!sweReady){resultDiv.innerHTML='<div class="error">Engine still loading.</div>';return;}
+  var ct=chartTypeSelect.value;
+  var dV=document.getElementById("birth-date").value,tV=document.getElementById("birth-time").value;
+  var la=document.getElementById("latitude").value,ln=document.getElementById("longitude").value;
+  var hs=document.getElementById("house-system").value;
+  if(!dV||!tV||!la||!ln){resultDiv.innerHTML='<div class="error">Fill in all fields and pick a location.</div>';return;}
+  var dp=dV.split("-"),tp=tV.split(":"),y=parseInt(dp[0]),m=parseInt(dp[1]),d=parseInt(dp[2]),h=parseInt(tp[0]),mn=parseInt(tp[1]);
+  resultDiv.innerHTML='<div class="loading">Calculating your chart...</div>';
+  getTimezoneOffset(y,m,d,la,ln).then(function(tz){
+    try{
+      if(ct==="natal"){renderNatalChart(generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz));}
+      else if(ct==="human-design"){renderHumanDesign(generateHumanDesignChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),tz));}
+      else if(ct==="transit"){
+        var tD=document.getElementById("transit-date").value,tT=document.getElementById("transit-time").value||"12:00";
+        var tLa=document.getElementById("transit-latitude").value||la,tLn=document.getElementById("transit-longitude").value||ln;
+        if(!tD){var n=new Date();tD=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");}
+        var tdp=tD.split("-"),ttp=tT.split(":");
+        getTimezoneOffset(parseInt(tdp[0]),parseInt(tdp[1]),parseInt(tdp[2]),tLa,tLn).then(function(tT2){
+          renderTransitChart(generateTransitChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:parseInt(tdp[0]),month:parseInt(tdp[1]),day:parseInt(tdp[2]),hour:parseInt(ttp[0]),minute:parseInt(ttp[1]),tzOffsetHours:tT2}));
+        });
+      }
+      else if(ct==="synastry"){
+        var d2=document.getElementById("birth-date-2").value,t2=document.getElementById("birth-time-2").value;
+        var la2=document.getElementById("latitude-2").value,ln2=document.getElementById("longitude-2").value;
+        if(!d2||!t2||!la2||!ln2){resultDiv.innerHTML='<div class="error">Fill in partner info too.</div>';return;}
+        var dp2=d2.split("-"),tp2=t2.split(":"),y2=parseInt(dp2[0]),m2=parseInt(dp2[1]),day2=parseInt(dp2[2]),h2=parseInt(tp2[0]),mn2=parseInt(tp2[1]);
+        getTimezoneOffset(y2,m2,day2,la2,ln2).then(function(tz2){
+          renderSynastryChart(generateSynastryChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:y2,month:m2,day:day2,hour:h2,minute:mn2,lat:parseFloat(la2),lng:parseFloat(ln2),houseSystem:hs,tzOffsetHours:tz2}));
+        });
+      }
+    }catch(e){console.error(e);resultDiv.innerHTML='<div class="error">Error: '+e.message+'</div>';}
+  });
+});
 
-  for (var d = 0; d < 360; d++) {
-    var a = eclToSvg(d);
-    var isMajor = d % 10 === 0;
-    var tickLen = isMajor ? 6 : (d % 5 === 0 ? 4 : 2);
-    var tp1 = polar(cx, cy, 280, a);
-    var tp2 = polar(cx, cy, 280 - tickLen, a);
-    svg += '<line x1="' + tp1.x + '" y1="' + tp1.y + '" x2="' + tp2.x + '" y2="' + tp2.y + '" stroke="#c9a961" stroke-width="' + (isMajor ? 1 : 0.5) + '" opacity="' + (isMajor ? 0.85 : 0.4) + '"/>';
-  }
+function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt){
+  opt=opt||{};
+  function eclToSvg(lon){return 180+(lon-ascLon);}
+  function polar(cx,cy,r,deg){var rad=(deg*Math.PI)/180;return{x:cx+r*Math.cos(rad),y:cy-r*Math.sin(rad)};}
+  var cx=300,cy=300;
+  var svg='<svg class="wheel" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">';
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="280" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="250" fill="none" stroke="#c9a961" stroke-width="1" opacity="0.7"/><circle cx="'+cx+'" cy="'+cy+'" r="190" fill="none" stroke="#e8e1cc" stroke-width="0.5" opacity="0.2"/>';
+  for(var i=0;i<12;i++){var a=eclToSvg(i*30),p1=polar(cx,cy,250,a),p2=polar(cx,cy,280,a);svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="#c9a961" stroke-width="1" opacity="0.5"/>';}
+  for(var d=0;d<360;d++){var a=eclToSvg(d),iM=d%10===0,tL=iM?6:(d%5===0?4:2),tp1=polar(cx,cy,280,a),tp2=polar(cx,cy,280-tL,a);svg+='<line x1="'+tp1.x+'" y1="'+tp1.y+'" x2="'+tp2.x+'" y2="'+tp2.y+'" stroke="#c9a961" stroke-width="'+(iM?1:0.5)+'" opacity="'+(iM?0.85:0.4)+'"/>';}
+  for(var s=0;s<12;s++){var sa=eclToSvg(s*30+15),sp=polar(cx,cy,265,sa);svg+='<text x="'+sp.x+'" y="'+sp.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="22" font-family="Georgia, serif">'+SIGN_SYMBOLS[s]+'</text>';}
+  if(houses){for(var hi=0;hi<houses.length;hi++){var h=houses[hi],ha=eclToSvg(h.eclipticLongitude),hp1=polar(cx,cy,80,ha),hp2=polar(cx,cy,250,ha),iA=[0,3,6,9].indexOf(hi)!==-1;svg+='<line x1="'+hp1.x+'" y1="'+hp1.y+'" x2="'+hp2.x+'" y2="'+hp2.y+'" stroke="#e8e1cc" stroke-width="'+(iA?1:0.5)+'" opacity="'+(iA?0.6:0.3)+'"/>';var nh=houses[(hi+1)%12],ml=(h.eclipticLongitude+nh.eclipticLongitude)/2;if(nh.eclipticLongitude<h.eclipticLongitude)ml=((h.eclipticLongitude+nh.eclipticLongitude+360)/2)%360;var ma=eclToSvg(ml),np=polar(cx,cy,100,ma);svg+='<text x="'+np.x+'" y="'+np.y+'" text-anchor="middle" dominant-baseline="central" fill="#a8a08a" font-size="11" font-style="italic">'+h.number+'</text>';}}
+  if(aspects&&aspects.length){var aC={conjunction:"#e0c077",opposition:"#c44536",trine:"#6b8e4e",square:"#c44536",sextile:"#4a6b8e"};for(var ai=0;ai<aspects.length;ai++){var asp=aspects[ai],pa1=null,pa2=null;for(var pi=0;pi<planets.length;pi++){if(planets[pi].name===asp.point1)pa1=planets[pi];if(planets[pi].name===asp.point2)pa2=planets[pi];}if(asp.point1==="Ascendant")pa1={eclipticLongitude:ascLon};if(asp.point1==="Midheaven")pa1={eclipticLongitude:mcLon};if(asp.point2==="Ascendant")pa2={eclipticLongitude:ascLon};if(asp.point2==="Midheaven")pa2={eclipticLongitude:mcLon};if(!pa1||!pa2)continue;var aa1=eclToSvg(pa1.eclipticLongitude),aa2=eclToSvg(pa2.eclipticLongitude),ap1=polar(cx,cy,160,aa1),ap2=polar(cx,cy,160,aa2),co=aC[asp.type]||"#888",dh=(asp.type==="square"||asp.type==="opposition")?'stroke-dasharray="2,3"':"";svg+='<line x1="'+ap1.x+'" y1="'+ap1.y+'" x2="'+ap2.x+'" y2="'+ap2.y+'" stroke="'+co+'" stroke-width="0.7" opacity="0.55" '+dh+'/>';}}
+  svg+='<circle cx="'+cx+'" cy="'+cy+'" r="80" fill="none" stroke="#c9a961" stroke-width="0.5" opacity="0.4"/>';
+  if(ascLon!==undefined){var aL=polar(cx,cy,298,eclToSvg(ascLon));svg+='<text x="'+aL.x+'" y="'+aL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">ASC</text>';}
+  if(mcLon!==undefined){var mL=polar(cx,cy,298,eclToSvg(mcLon));svg+='<text x="'+mL.x+'" y="'+mL.y+'" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">MC</text>';}
+  var rR=opt.ringRadius||215,pCo=opt.planetColor||"#e0c077",pS=planets||[];
+  var sd=[];for(var pj=0;pj<pS.length;pj++)sd.push({p:pS[pj],idx:pj});
+  sd.sort(function(a,b){return a.p.eclipticLongitude-b.p.eclipticLongitude;});
+  var nu=new Array(pS.length);for(var nz=0;nz<nu.length;nz++)nu[nz]=0;
+  for(var si=1;si<sd.length;si++){var df=Math.abs(sd[si].p.eclipticLongitude-sd[si-1].p.eclipticLongitude);if(df>180)df=360-df;if(df<7)nu[sd[si].idx]=nu[sd[si-1].idx]+18;}
+  for(var pk=0;pk<pS.length;pk++){var p=pS[pk],pA=eclToSvg(p.eclipticLongitude),aR=rR+nu[pk],po=polar(cx,cy,aR,pA),tS=polar(cx,cy,250,pA),tE=polar(cx,cy,aR+12,pA);svg+='<line x1="'+tS.x+'" y1="'+tS.y+'" x2="'+tE.x+'" y2="'+tE.y+'" stroke="'+pCo+'" stroke-width="0.5" opacity="0.45"/><circle cx="'+po.x+'" cy="'+po.y+'" r="13" fill="#0a1028" stroke="'+pCo+'" stroke-width="0.7"/><text x="'+po.x+'" y="'+po.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="14" font-family="Georgia, serif">'+p.symbol+'</text>';var dP=polar(cx,cy,aR+22,pA),rx=p.retrograde?'<tspan fill="#c44536" font-size="7"> R</tspan>':'';svg+='<text x="'+dP.x+'" y="'+dP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+pCo+'" font-size="9">'+(p.degreesInSign!==undefined?p.degreesInSign+'\u00B0':'')+rx+'</text>';}
+  if(opt.overlayPlanets){var ov=opt.overlayPlanets,oC=opt.overlayColor||"#4a6b8e",oR=opt.overlayRingRadius||240;for(var op=0;op<ov.length;op++){var o=ov[op],oA=eclToSvg(o.eclipticLongitude),oP=polar(cx,cy,oR,oA);svg+='<circle cx="'+oP.x+'" cy="'+oP.y+'" r="11" fill="#0a1028" stroke="'+oC+'" stroke-width="0.7"/><text x="'+oP.x+'" y="'+oP.y+'" text-anchor="middle" dominant-baseline="central" fill="'+oC+'" font-size="12" font-family="Georgia, serif">'+o.symbol+'</text>';}}
+  svg+='</svg>';return svg;
+}
 
-  for (var s = 0; s < 12; s++) {
-    var sa = eclToSvg(s * 30 + 15);
-    var spos = polar(cx, cy, 265, sa);
-    svg += '<text x="' + spos.x + '" y="' + spos.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="22" font-family="Georgia, serif">' + SIGN_SYMBOLS[s] + '</text>';
-  }
+function tableOfPlanets(t,p,wH){var h='<div class="section-title">'+t+'</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th>'+(wH?'<th>House</th>':'')+'</tr></thead><tbody>';p.forEach(function(pt){var rx=pt.retrograde?' <span style="color:#c44536;font-size:11px;">\u211E</span>':'';h+='<tr><td>'+pt.symbol+' '+pt.name+rx+'</td><td>'+pt.signSymbol+' '+pt.sign+'</td><td><span class="deg">'+pt.degreesInSign+'\u00B0</span> '+String(pt.minutes).padStart(2,"0")+"'"+(pt.seconds!==undefined?String(pt.seconds).padStart(2,"0")+'"':'')+'</td>'+(wH?'<td>'+(pt.house||"\u2014")+'</td>':'')+'</tr>';});h+='</tbody></table>';return h;}
+function tableOfHouses(hs){var h='<div class="section-title">Houses</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp</th></tr></thead><tbody>';hs.forEach(function(x){h+='<tr><td>House '+x.number+'</td><td>'+x.signSymbol+' '+x.sign+'</td><td><span class="deg">'+x.degreesInSign+'\u00B0</span> '+String(x.minutes).padStart(2,"0")+"'</td></tr>";});h+='</tbody></table>';return h;}
+function tableOfAspects(t,a){if(!a||!a.length)return'';var h='<div class="section-title">'+t+'</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';var mx=Math.min(60,a.length);for(var i=0;i<mx;i++){var x=a[i];h+='<tr><td>'+x.point1+'</td><td>'+x.type+'</td><td>'+x.point2+'</td><td>'+parseFloat(x.orb).toFixed(2)+'\u00B0</td></tr>';}h+='</tbody></table>';return h;}
 
-  for (var hi = 0; hi < data.houses.length; hi++) {
-    var house = data.houses[hi];
-    var ha = eclToSvg(house.eclipticLongitude);
-    var hp1 = polar(cx, cy, 80, ha);
-    var hp2 = polar(cx, cy, 250, ha);
-    var isAngle = [0, 3, 6, 9].indexOf(hi) !== -1;
-    svg += '<line x1="' + hp1.x + '" y1="' + hp1.y + '" x2="' + hp2.x + '" y2="' + hp2.y + '" stroke="#e8e1cc" stroke-width="' + (isAngle ? 1 : 0.5) + '" opacity="' + (isAngle ? 0.6 : 0.3) + '"/>';
+function renderNatalChart(d){
+  var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects);
+  var html='<div class="chart-wrapper"><h2>Your Natal Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div>'+svg;
+  html+='<div class="section-title">Angles</div><table class="data-table"><tbody>';
+  html+='<tr><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"'</td></tr>";
+  html+='<tr><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"'</td></tr>";
+  html+='</tbody></table>'+tableOfPlanets("Planets and Points",d.planets,true)+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects)+'</div>';
+  resultDiv.innerHTML=html;
+}
+function renderTransitChart(d){
+  var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude};});
+  var svg=buildWheelSVG(d.natal.planets,d.natal.houses,d.natal.angles.ascendant.eclipticLongitude,d.natal.angles.midheaven.eclipticLongitude,d.natal.aspects,{overlayPlanets:ov,overlayColor:"#4a6b8e",ringRadius:215,overlayRingRadius:240});
+  var html='<div class="chart-wrapper"><h2>Transit Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">Transits for '+d.transitDate+' | '+d.engine+'</div><div style="text-align:center;font-size:11px;color:#a8a08a;margin-bottom:14px;"><span style="color:#e0c077;">Inner: Natal</span> &nbsp; \u00B7 &nbsp; <span style="color:#4a6b8e;">Outer: Transits</span></div>'+svg+tableOfPlanets("Natal Planets",d.natal.planets,true)+tableOfPlanets("Transiting Planets",d.transitPlanets,true)+tableOfAspects("Transit-to-Natal Aspects",d.interAspects)+'</div>';
+  resultDiv.innerHTML=html;
+}
+function renderSynastryChart(d){
+  var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude};});
+  var svg=buildWheelSVG(d.natalA.planets,d.natalA.houses,d.natalA.angles.ascendant.eclipticLongitude,d.natalA.angles.midheaven.eclipticLongitude,null,{overlayPlanets:ov,overlayColor:"#c9a961",ringRadius:215,overlayRingRadius:240});
+  var html='<div class="chart-wrapper"><h2>Synastry Chart</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div><div style="text-align:center;font-size:11px;color:#a8a08a;margin-bottom:14px;"><span style="color:#e0c077;">Inner: Person A</span> &nbsp; \u00B7 &nbsp; <span style="color:#c9a961;">Outer: Person B</span></div>'+svg+tableOfPlanets("Person A Planets",d.natalA.planets,true)+tableOfPlanets("Person B Planets",d.natalB.planets,true)+tableOfAspects("Inter-Chart Aspects (A to B)",d.interAspects)+'</div>';
+  resultDiv.innerHTML=html;
+}
 
-    var nextHouse = data.houses[(hi + 1) % 12];
-    var midLon = (house.eclipticLongitude + nextHouse.eclipticLongitude) / 2;
-    if (nextHouse.eclipticLongitude < house.eclipticLongitude) midLon = ((house.eclipticLongitude + nextHouse.eclipticLongitude + 360) / 2) % 360;
-    var midAngle = eclToSvg(midLon);
-    var numPos = polar(cx, cy, 100, midAngle);
-    svg += '<text x="' + numPos.x + '" y="' + numPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#a8a08a" font-size="11" font-style="italic">' + house.number + '</text>';
-  }
+var CENTER_LAYOUT={Head:{x:160,y:30,w:80,h:70,shape:"triangle-up"},Ajna:{x:160,y:120,w:80,h:70,shape:"triangle-down"},Throat:{x:160,y:215,w:80,h:70,shape:"rect"},G:{x:160,y:315,w:80,h:80,shape:"diamond"},Heart:{x:255,y:330,w:60,h:60,shape:"triangle-left"},Spleen:{x:50,y:400,w:70,h:70,shape:"triangle-right"},Sacral:{x:160,y:435,w:80,h:80,shape:"rect"},Solar:{x:265,y:455,w:70,h:70,shape:"triangle-right"},Root:{x:160,y:550,w:80,h:80,shape:"rect"}};
+var CENTER_COLORS={Head:"#f7d917",Ajna:"#5cb85c",Throat:"#8b6f47",G:"#e8c547",Heart:"#d9534f",Spleen:"#a06ec5",Sacral:"#d9534f",Solar:"#c9a961",Root:"#8b4f3f"};
 
-  var aspectColors = { conjunction: "#e0c077", opposition: "#c44536", trine: "#6b8e4e", square: "#c44536", sextile: "#4a6b8e" };
-  for (var ai = 0; ai < data.aspects.length; ai++) {
-    var asp = data.aspects[ai];
-    var pa1 = null, pa2 = null;
-    for (var pi = 0; pi < planetsToShow.length; pi++) {
-      if (planetsToShow[pi].name === asp.point1) pa1 = planetsToShow[pi];
-      if (planetsToShow[pi].name === asp.point2) pa2 = planetsToShow[pi];
-    }
-    if (asp.point1 === "Ascendant") pa1 = data.angles.ascendant;
-    if (asp.point1 === "Midheaven") pa1 = data.angles.midheaven;
-    if (asp.point2 === "Ascendant") pa2 = data.angles.ascendant;
-    if (asp.point2 === "Midheaven") pa2 = data.angles.midheaven;
-    if (!pa1 || !pa2) continue;
-    var aa1 = eclToSvg(pa1.eclipticLongitude);
-    var aa2 = eclToSvg(pa2.eclipticLongitude);
-    var ap1 = polar(cx, cy, 160, aa1);
-    var ap2 = polar(cx, cy, 160, aa2);
-    var color = aspectColors[asp.type] || "#888";
-    var dash = (asp.type === "square" || asp.type === "opposition") ? 'stroke-dasharray="2,3"' : "";
-    svg += '<line x1="' + ap1.x + '" y1="' + ap1.y + '" x2="' + ap2.x + '" y2="' + ap2.y + '" stroke="' + color + '" stroke-width="0.7" opacity="0.55" ' + dash + '/>';
-  }
-
-  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="80" fill="none" stroke="#c9a961" stroke-width="0.5" opacity="0.4"/>';
-
-  var ascAngle = eclToSvg(data.angles.ascendant.eclipticLongitude);
-  var mcAngle = eclToSvg(data.angles.midheaven.eclipticLongitude);
-  var ascLabel = polar(cx, cy, 298, ascAngle);
-  var mcLabel = polar(cx, cy, 298, mcAngle);
-  svg += '<text x="' + ascLabel.x + '" y="' + ascLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">ASC</text>';
-  svg += '<text x="' + mcLabel.x + '" y="' + mcLabel.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="10" letter-spacing="2">MC</text>';
-
-  var sorted = [];
-  for (var pj = 0; pj < planetsToShow.length; pj++) sorted.push({ p: planetsToShow[pj], idx: pj });
-  sorted.sort(function(a, b) { return a.p.eclipticLongitude - b.p.eclipticLongitude; });
-  var nudges = new Array(planetsToShow.length);
-  for (var nz = 0; nz < nudges.length; nz++) nudges[nz] = 0;
-  for (var si = 1; si < sorted.length; si++) {
-    var diff = Math.abs(sorted[si].p.eclipticLongitude - sorted[si-1].p.eclipticLongitude);
-    if (diff > 180) diff = 360 - diff;
-    if (diff < 7) nudges[sorted[si].idx] = nudges[sorted[si-1].idx] + 18;
-  }
-
-  for (var pk = 0; pk < planetsToShow.length; pk++) {
-    var p = planetsToShow[pk];
-    var pAngle = eclToSvg(p.eclipticLongitude);
-    var adjR = 215 + nudges[pk];
-    var pos = polar(cx, cy, adjR, pAngle);
-    var tickStart = polar(cx, cy, 250, pAngle);
-    var tickEnd = polar(cx, cy, adjR + 12, pAngle);
-    svg += '<line x1="' + tickStart.x + '" y1="' + tickStart.y + '" x2="' + tickEnd.x + '" y2="' + tickEnd.y + '" stroke="#e0c077" stroke-width="0.5" opacity="0.45"/>';
-    svg += '<circle cx="' + pos.x + '" cy="' + pos.y + '" r="13" fill="#0a1028" stroke="#e0c077" stroke-width="0.7"/>';
-    svg += '<text x="' + pos.x + '" y="' + pos.y + '" text-anchor="middle" dominant-baseline="central" fill="#e0c077" font-size="14" font-family="Georgia, serif">' + p.symbol + '</text>';
-    var degPos = polar(cx, cy, adjR + 22, pAngle);
-    var rxMark = p.retrograde ? '<tspan fill="#c44536" font-size="7"> R</tspan>' : '';
-    svg += '<text x="' + degPos.x + '" y="' + degPos.y + '" text-anchor="middle" dominant-baseline="central" fill="#c9a961" font-size="9">' + p.degreesInSign + '\u00B0' + rxMark + '</text>';
-  }
-
-  svg += '</svg>';
-
-  var html = '<div class="chart-wrapper"><h2>Your Natal Chart</h2>';
-  html += '<div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">Calculated with ' + data.engine + '</div>';
-  html += svg;
-
-  html += '<div class="section-title">Angles</div><table class="data-table"><tbody>';
-  html += '<tr><td>Ascendant</td><td>' + data.angles.ascendant.signSymbol + ' ' + data.angles.ascendant.sign + '</td><td><span class="deg">' + data.angles.ascendant.degreesInSign + '\u00B0</span> ' + String(data.angles.ascendant.minutes).padStart(2, "0") + "'</td></tr>";
-  html += '<tr><td>Midheaven</td><td>' + data.angles.midheaven.signSymbol + ' ' + data.angles.midheaven.sign + '</td><td><span class="deg">' + data.angles.midheaven.degreesInSign + '\u00B0</span> ' + String(data.angles.midheaven.minutes).padStart(2, "0") + "'</td></tr>";
-  html += '</tbody></table>';
-
-  html += '<div class="section-title">Planets and Points</div><table class="data-table"><thead><tr><th>Point</th><th>Sign</th><th>Position</th><th>House</th></tr></thead><tbody>';
-  for (var ti = 0; ti < planetsToShow.length; ti++) {
-    var pt = planetsToShow[ti];
-    var rxLabel = pt.retrograde ? ' <span style="color:#c44536;font-size:11px;">\u211E</span>' : '';
-    html += '<tr><td>' + pt.symbol + ' ' + pt.name + rxLabel + '</td><td>' + pt.signSymbol + ' ' + pt.sign + '</td><td><span class="deg">' + pt.degreesInSign + '\u00B0</span> ' + String(pt.minutes).padStart(2, "0") + "'" + String(pt.seconds).padStart(2, "0") + '"</td><td>' + (pt.house || "\u2014") + '</td></tr>';
-  }
-  html += '</tbody></table>';
-
-  html += '<div class="section-title">Houses</div><table class="data-table"><thead><tr><th>House</th><th>Sign</th><th>Cusp Position</th></tr></thead><tbody>';
-  for (var hj = 0; hj < data.houses.length; hj++) {
-    var hh = data.houses[hj];
-    html += '<tr><td>House ' + hh.number + '</td><td>' + hh.signSymbol + ' ' + hh.sign + '</td><td><span class="deg">' + hh.degreesInSign + '\u00B0</span> ' + String(hh.minutes).padStart(2, "0") + "'</td></tr>";
-  }
-  html += '</tbody></table>';
-
-  if (data.aspects && data.aspects.length) {
-    html += '<div class="section-title">Aspects</div><table class="data-table"><thead><tr><th>From</th><th>Aspect</th><th>To</th><th>Orb</th></tr></thead><tbody>';
-    var max = Math.min(40, data.aspects.length);
-    for (var aj = 0; aj < max; aj++) {
-      var aa = data.aspects[aj];
-      html += '<tr><td>' + aa.point1 + '</td><td>' + aa.type + '</td><td>' + aa.point2 + '</td><td>' + parseFloat(aa.orb).toFixed(2) + '\u00B0</td></tr>';
-    }
-    html += '</tbody></table>';
-  }
-
-  html += '</div>';
-  resultDiv.innerHTML = html;
+function renderHumanDesign(d){
+  var html='<div class="chart-wrapper"><h2>Human Design Bodygraph</h2><div style="text-align:center;font-size:11px;color:#888;margin-bottom:8px;font-style:italic;">'+d.engine+'</div><div class="hd-summary">';
+  html+='<div class="hd-summary-item"><div class="label">Type</div><div class="value">'+d.hdType+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Strategy</div><div class="value">'+d.strategy+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Authority</div><div class="value">'+d.authority+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Profile</div><div class="value">'+d.profile+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Definition</div><div class="value">'+d.definition+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Signature</div><div class="value">'+d.signature+'</div></div>';
+  html+='<div class="hd-summary-item"><div class="label">Not-Self</div><div class="value">'+d.notSelf+'</div></div></div>';
+  var svg='<svg class="bodygraph" viewBox="0 0 400 700" xmlns="http://www.w3.org/2000/svg">';
+  Object.keys(CENTER_LAYOUT).forEach(function(cn){
+    var c=CENTER_LAYOUT[cn],df=d.definedCenters[cn],fl=df?CENTER_COLORS[cn]:"transparent",st="#e0c077",sw=1.5,pts;
+    if(c.shape==="triangle-up"){pts=c.x+","+(c.y+c.h)+" "+(c.x+c.w)+","+(c.y+c.h)+" "+(c.x+c.w/2)+","+c.y;svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    else if(c.shape==="triangle-down"){pts=c.x+","+c.y+" "+(c.x+c.w)+","+c.y+" "+(c.x+c.w/2)+","+(c.y+c.h);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    else if(c.shape==="diamond"){pts=(c.x+c.w/2)+","+c.y+" "+(c.x+c.w)+","+(c.y+c.h/2)+" "+(c.x+c.w/2)+","+(c.y+c.h)+" "+c.x+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    else if(c.shape==="triangle-left"){pts=(c.x+c.w)+","+c.y+" "+(c.x+c.w)+","+(c.y+c.h)+" "+c.x+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    else if(c.shape==="triangle-right"){pts=c.x+","+c.y+" "+c.x+","+(c.y+c.h)+" "+(c.x+c.w)+","+(c.y+c.h/2);svg+='<polygon points="'+pts+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    else{svg+='<rect x="'+c.x+'" y="'+c.y+'" width="'+c.w+'" height="'+c.h+'" fill="'+fl+'" stroke="'+st+'" stroke-width="'+sw+'"/>';}
+    svg+='<text x="'+(c.x+c.w/2)+'" y="'+(c.y+c.h/2)+'" text-anchor="middle" dominant-baseline="central" fill="'+(df?"#fff":"#888")+'" font-size="9" font-family="Georgia, serif" font-style="italic">'+cn+'</text>';
+  });
+  function gp(g){var c=HD_GATE_CENTERS[g];if(!c)return null;var lay=CENTER_LAYOUT[c];if(!lay)return null;return{x:lay.x+lay.w/2,y:lay.y+lay.h/2};}
+  d.definedChannels.forEach(function(ch){var p1=gp(ch[0]),p2=gp(ch[1]);if(!p1||!p2)return;var bP=d.personalityGates[ch[0]]&&d.personalityGates[ch[1]],bD=d.designGates[ch[0]]&&d.designGates[ch[1]],lc=bD&&!bP?"#c44536":(bP&&!bD?"#0a1028":"#e0c077");svg+='<line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+lc+'" stroke-width="3" opacity="0.85"/>';});
+  // Show activated gate numbers as small labels around each center
+  Object.keys(HD_CENTER_GATES).forEach(function(cn){var c=CENTER_LAYOUT[cn];HD_CENTER_GATES[cn].forEach(function(g,idx){if(!d.activatedGates[g])return;var bP=d.personalityGates[g],bD=d.designGates[g],col=bP&&bD?"#e0c077":(bD?"#c44536":"#fff");var col2=cn==="Head"||cn==="Ajna"||cn==="G"||cn==="Sacral"||cn==="Throat"||cn==="Root"?"#000":col;var px=c.x+5+(idx%4)*(c.w/4),py=c.y+c.h+10+Math.floor(idx/4)*10;svg+='<text x="'+px+'" y="'+py+'" fill="'+col+'" font-size="8" font-family="Georgia, serif">'+g+'</text>';});});
+  svg+='</svg>';
+  html+=svg;
+  html+='<div class="section-title">Personality (Conscious) Activations</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.personalityPlanets.forEach(function(pl){var dms=splitDMS(pl.longitude);html+='<tr><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"'</td></tr>";});
+  html+='</tbody></table><div class="section-title">Design (Unconscious) Activations</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
+  d.designPlanets.forEach(function(pl){var dms=splitDMS(pl.longitude);html+='<tr><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg" style="color:#c44536;">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"'</td></tr>";});
+  html+='</tbody></table><div class="section-title">Defined Channels</div>';
+  if(d.definedChannels.length===0){html+='<p style="color:#a8a08a;font-style:italic;">No defined channels.</p>';}
+  else{html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';d.definedChannels.forEach(function(c){html+='<tr><td>'+c[0]+'-'+c[1]+'</td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});html+='</tbody></table>';}
+  html+='<div class="section-title">Incarnation Cross</div><p style="color:#e0c077;font-style:italic;padding:8px 0;">'+d.incarnationCross+'</p></div>';
+  resultDiv.innerHTML=html;
 }
 </script>
 </body>
