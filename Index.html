@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -40,7 +39,6 @@
       radial-gradient(circle at 50% 50%, #0a0f24 0%, #060914 100%);
     background-attachment: fixed;
   }
-  /* Subtle starfield */
   body::before {
     content: '';
     position: fixed;
@@ -101,437 +99,469 @@
   }
   .engine-status.ready { color: var(--accent-sage); }
   .engine-status.error { color: var(--accent-rose); }
-
-/* Form card */
-.form-card {
-background: linear-gradient(180deg, rgba(13,18,38,0.85) 0%, rgba(6,9,20,0.85) 100%);
-backdrop-filter: blur(8px);
-border: 1px solid var(–line);
-padding: 28px 22px;
-margin-bottom: 28px;
-box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,182,117,0.08);
-position: relative;
-}
-.form-card::before, .form-card::after {
-content: ‘\2756’;
-position: absolute;
-color: var(–gold);
-font-size: 11px;
-opacity: 0.6;
-}
-.form-card::before { top: 8px; left: 12px; }
-.form-card::after { bottom: 8px; right: 12px; }
-
-.form-section {
-border-top: 1px solid var(–line-faint);
-padding-top: 18px;
-margin-top: 18px;
-}
-.form-section.first { border-top: none; padding-top: 0; margin-top: 0; }
-.form-section h3 {
-font-family: ‘Cinzel’, serif;
-font-size: 12px;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–gold-bright);
-margin-bottom: 14px;
-font-weight: 500;
-}
-label {
-display: block;
-font-family: ‘Cinzel’, serif;
-font-size: 10px;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(–gold);
-margin-bottom: 6px;
-margin-top: 14px;
-font-weight: 500;
-}
-label:first-child { margin-top: 0; }
-input, select {
-width: 100%;
-padding: 12px 14px;
-font-size: 16px;
-background: #ffffff !important;
-color: #1a1a1a !important;
-border: 1px solid var(–line);
-font-family: ‘Cormorant Garamond’, Georgia, serif;
-transition: border-color 0.2s, box-shadow 0.2s;
--webkit-text-fill-color: #1a1a1a;
-}
-input::placeholder { color: #888; opacity: 0.8; }
-input::-webkit-input-placeholder { color: #888; }
-input::-webkit-datetime-edit { color: #1a1a1a; }
-input::-webkit-datetime-edit-fields-wrapper { color: #1a1a1a; }
-input::-webkit-datetime-edit-text { color: #555; }
-input::-webkit-datetime-edit-month-field,
-input::-webkit-datetime-edit-day-field,
-input::-webkit-datetime-edit-year-field,
-input::-webkit-datetime-edit-hour-field,
-input::-webkit-datetime-edit-minute-field,
-input::-webkit-datetime-edit-ampm-field { color: #1a1a1a; }
-input::-webkit-calendar-picker-indicator { cursor: pointer; }
-select option { background: #ffffff; color: #1a1a1a; }
-input:focus, select:focus {
-outline: none;
-border-color: var(–gold);
-box-shadow: 0 0 0 3px rgba(212,182,117,0.1);
-}
-select {
-appearance: none;
--webkit-appearance: none;
-background-image: url(“data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%23d4b675'><path d='M6 8L0 0h12z'/></svg>”);
-background-repeat: no-repeat;
-background-position: right 14px center;
-background-size: 10px;
-padding-right: 36px;
-}
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
-.helper {
-font-size: 13px;
-color: var(–ink-faint);
-margin-top: 6px;
-font-style: italic;
-font-family: ‘Cormorant Garamond’, serif;
-}
-.selected-loc {
-color: var(–gold-bright);
-font-style: italic;
-font-size: 14px;
-margin-top: 8px;
-}
-button.primary {
-width: 100%;
-margin-top: 24px;
-padding: 16px;
-background: linear-gradient(180deg, var(–gold-bright) 0%, var(–gold-deep) 100%);
-color: var(–bg-deep);
-border: none;
-font-family: ‘Cinzel’, serif;
-font-size: 13px;
-font-weight: 500;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-cursor: pointer;
-transition: transform 0.15s, box-shadow 0.15s;
-box-shadow: 0 8px 24px -8px rgba(212,182,117,0.4);
-}
-button.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -10px rgba(212,182,117,0.5); }
-button.primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-/* Location autocomplete */
-.location-results {
-background: #ffffff;
-border: 1px solid var(–line);
-border-top: none;
-max-height: 220px;
-overflow-y: auto;
-}
-.location-result {
-padding: 11px 14px;
-cursor: pointer;
-border-bottom: 1px solid #eee;
-font-size: 14px;
-color: #1a1a1a;
-}
-.location-result:hover { background: #f4ecd8; color: #1a1a1a; }
-.location-result:last-child { border-bottom: none; }
-
-.hidden { display: none !important; }
-
-/* Result */
-#result { margin-top: 32px; }
-.chart-wrapper {
-background: linear-gradient(180deg, rgba(13,18,38,0.7) 0%, rgba(6,9,20,0.7) 100%);
-backdrop-filter: blur(8px);
-padding: 28px 22px;
-border: 1px solid var(–line);
-box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
-position: relative;
-}
-.chart-wrapper::before, .chart-wrapper::after {
-content: ‘\2756’;
-position: absolute;
-color: var(–gold);
-font-size: 11px;
-opacity: 0.6;
-}
-.chart-wrapper::before { top: 8px; left: 12px; }
-.chart-wrapper::after { bottom: 8px; right: 12px; }
-.chart-wrapper h2 {
-font-family: ‘Cinzel’, serif;
-font-size: 22px;
-font-weight: 500;
-letter-spacing: 0.15em;
-text-align: center;
-color: var(–gold-bright);
-margin-bottom: 4px;
-}
-.chart-meta {
-text-align: center;
-font-size: 13px;
-color: var(–ink-faint);
-margin-bottom: 16px;
-font-style: italic;
-}
-svg.wheel, svg.bodygraph {
-display: block;
-margin: 0 auto;
-max-width: 100%;
-height: auto;
-}
-svg.wheel .interactive, svg.bodygraph .interactive { cursor: pointer; }
-svg.wheel .interactive:hover, svg.bodygraph .interactive:hover { filter: brightness(1.3); }
-
-.data-table {
-width: 100%;
-border-collapse: collapse;
-margin-top: 16px;
-font-size: 15px;
-}
-.data-table th {
-text-align: left;
-font-family: ‘Cinzel’, serif;
-font-size: 10px;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(–gold);
-padding: 10px 8px;
-border-bottom: 1px solid var(–line);
-font-weight: 500;
-}
-.data-table td {
-padding: 10px 8px;
-border-bottom: 1px solid var(–line-faint);
-}
-.data-table tr.clickable { cursor: pointer; transition: background 0.15s; }
-.data-table tr.clickable:hover { background: rgba(212,182,117,0.06); }
-.data-table tr.clickable td:first-child { color: var(–gold-bright); }
-.data-table .deg { color: var(–gold-bright); font-weight: 500; }
-.section-title {
-font-family: ‘Cinzel’, serif;
-font-size: 11px;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–gold);
-margin: 28px 0 4px;
-text-align: center;
-font-weight: 500;
-}
-.section-title::before, .section-title::after {
-content: ‘\2756’;
-margin: 0 12px;
-opacity: 0.5;
-font-size: 9px;
-}
-.section-sub {
-text-align: center;
-font-size: 13px;
-color: var(–ink-soft);
-font-style: italic;
-margin-bottom: 14px;
-}
-.error {
-background: rgba(196,69,54,0.12);
-border: 1px solid var(–accent-rose);
-padding: 16px;
-color: var(–ink);
-margin-top: 16px;
-font-style: italic;
-}
-.loading {
-text-align: center;
-color: var(–gold);
-padding: 32px;
-font-style: italic;
-font-size: 17px;
-letter-spacing: 0.05em;
-}
-.loading::before {
-content: ‘\2756’;
-display: block;
-font-size: 14px;
-margin-bottom: 8px;
-animation: pulse 1.6s ease-in-out infinite;
-}
-@keyframes pulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
-
-/* HD summary cards */
-.hd-summary {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-gap: 10px;
-margin: 18px 0 20px;
-}
-.hd-summary-item {
-background: rgba(0,0,0,0.35);
-padding: 14px 10px;
-text-align: center;
-border: 1px solid var(–line-faint);
-cursor: pointer;
-transition: border-color 0.2s, transform 0.15s;
-}
-.hd-summary-item:hover { border-color: var(–gold); transform: translateY(-2px); }
-.hd-summary-item .label {
-font-family: ‘Cinzel’, serif;
-font-size: 9px;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(–gold);
-margin-bottom: 6px;
-font-weight: 500;
-}
-.hd-summary-item .value {
-font-size: 16px;
-color: var(–ink);
-font-style: italic;
-line-height: 1.2;
-}
-.legend {
-text-align: center;
-font-size: 13px;
-color: var(–ink-soft);
-margin-bottom: 12px;
-font-style: italic;
-}
-.legend .swatch {
-display: inline-block;
-width: 10px;
-height: 10px;
-border-radius: 50%;
-margin-right: 4px;
-vertical-align: middle;
-}
-
-/* Modal for interpretations */
-.modal-backdrop {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,0.75);
-backdrop-filter: blur(6px);
-z-index: 100;
-display: none;
-align-items: flex-end;
-justify-content: center;
-padding: 0;
-}
-@media (min-width: 700px) { .modal-backdrop { align-items: center; padding: 32px; } }
-.modal-backdrop.open { display: flex; animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.modal {
-background: linear-gradient(180deg, #0d1226 0%, #060914 100%);
-border: 1px solid var(–gold);
-box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,182,117,0.15);
-max-width: 560px;
-width: 100%;
-max-height: 88vh;
-overflow-y: auto;
-padding: 24px 22px 28px;
-position: relative;
-animation: slideUp 0.25s ease;
-}
-@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.modal::before, .modal::after {
-content: ‘\2756’;
-position: absolute;
-color: var(–gold);
-font-size: 11px;
-opacity: 0.7;
-}
-.modal::before { top: 10px; left: 14px; }
-.modal::after { bottom: 10px; right: 14px; }
-.modal-close {
-position: absolute;
-top: 8px;
-right: 8px;
-background: transparent;
-border: none;
-color: var(–ink-soft);
-font-size: 24px;
-cursor: pointer;
-width: 36px;
-height: 36px;
-line-height: 1;
-padding: 0;
-margin: 0;
-letter-spacing: 0;
-}
-.modal-close:hover { color: var(–gold-bright); }
-.modal-eyebrow {
-font-family: ‘Cinzel’, serif;
-font-size: 10px;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(–gold);
-text-align: center;
-margin-bottom: 6px;
-margin-top: 4px;
-}
-.modal-title {
-font-family: ‘Cinzel’, serif;
-font-size: 22px;
-font-weight: 500;
-letter-spacing: 0.1em;
-color: var(–gold-bright);
-text-align: center;
-margin-bottom: 4px;
-}
-.modal-subtitle {
-text-align: center;
-color: var(–ink-soft);
-font-style: italic;
-font-size: 15px;
-margin-bottom: 16px;
-}
-.modal-divider {
-text-align: center;
-color: var(–gold);
-margin: 14px 0 16px;
-letter-spacing: 0.5em;
-font-size: 11px;
-opacity: 0.6;
-}
-.modal-body {
-color: var(–ink);
-font-size: 16px;
-line-height: 1.65;
-}
-.modal-body p { margin-bottom: 12px; }
-.modal-body strong {
-color: var(–gold-bright);
-font-weight: 500;
-letter-spacing: 0.03em;
-}
-.modal-body .field-row {
-display: flex;
-justify-content: space-between;
-padding: 8px 0;
-border-bottom: 1px solid var(–line-faint);
-font-size: 14px;
-}
-.modal-body .field-row:last-child { border-bottom: none; }
-.modal-body .field-row .lbl {
-font-family: ‘Cinzel’, serif;
-font-size: 10px;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(–gold);
-}
-.modal-body .field-row .val { color: var(–ink); font-style: italic; }
-
-.tap-hint {
-text-align: center;
-font-size: 12px;
-color: var(–ink-faint);
-font-style: italic;
-margin: 8px 0 14px;
-letter-spacing: 0.05em;
-}
-.tap-hint::before { content: ’\261D ’; opacity: 0.7; }
+  .saved-banner {
+    background: rgba(107,142,78,0.12);
+    border: 1px solid rgba(107,142,78,0.4);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--gold-bright);
+    font-style: italic;
+    text-align: center;
+    transition: opacity 0.6s;
+  }
+  .transit-banner {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .transit-banner a {
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .transit-banner a:hover { color: #fff; }
+  .transit-banner .arrow { margin-left: 8px; }
+  .form-card {
+    background: linear-gradient(180deg, rgba(13,18,38,0.85) 0%, rgba(6,9,20,0.85) 100%);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--line);
+    padding: 28px 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,182,117,0.08);
+    position: relative;
+  }
+  .form-card::before, .form-card::after {
+    content: '\2756';
+    position: absolute;
+    color: var(--gold);
+    font-size: 11px;
+    opacity: 0.6;
+  }
+  .form-card::before { top: 8px; left: 12px; }
+  .form-card::after { bottom: 8px; right: 12px; }
+  .form-section {
+    border-top: 1px solid var(--line-faint);
+    padding-top: 18px;
+    margin-top: 18px;
+  }
+  .form-section.first { border-top: none; padding-top: 0; margin-top: 0; }
+  .form-section h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    margin-top: 14px;
+    font-weight: 500;
+  }
+  label:first-child { margin-top: 0; }
+  input, select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border: 1px solid var(--line);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-text-fill-color: #1a1a1a;
+  }
+  input::placeholder { color: #888; opacity: 0.8; }
+  input::-webkit-input-placeholder { color: #888; }
+  input::-webkit-datetime-edit { color: #1a1a1a; }
+  input::-webkit-datetime-edit-fields-wrapper { color: #1a1a1a; }
+  input::-webkit-datetime-edit-text { color: #555; }
+  input::-webkit-datetime-edit-month-field,
+  input::-webkit-datetime-edit-day-field,
+  input::-webkit-datetime-edit-year-field,
+  input::-webkit-datetime-edit-hour-field,
+  input::-webkit-datetime-edit-minute-field,
+  input::-webkit-datetime-edit-ampm-field { color: #1a1a1a; }
+  input::-webkit-calendar-picker-indicator { cursor: pointer; }
+  select option { background: #ffffff; color: #1a1a1a; }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,182,117,0.1);
+  }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='%23d4b675'><path d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 10px;
+    padding-right: 36px;
+  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
+  .helper {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .selected-loc {
+    color: var(--gold-bright);
+    font-style: italic;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  button.primary {
+    width: 100%;
+    margin-top: 24px;
+    padding: 16px;
+    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-deep) 100%);
+    color: var(--bg-deep);
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px -8px rgba(212,182,117,0.4);
+  }
+  button.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -10px rgba(212,182,117,0.5); }
+  button.primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .clear-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: rgba(184,176,154,0.4);
+    padding: 4px;
+    width: 100%;
+  }
+  .clear-link:hover { color: var(--ink); }
+  .location-results {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-top: none;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .location-result {
+    padding: 11px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #1a1a1a;
+  }
+  .location-result:hover { background: #f4ecd8; color: #1a1a1a; }
+  .location-result:last-child { border-bottom: none; }
+  .hidden { display: none !important; }
+  #result { margin-top: 0; }
+  #result:not(:empty) { margin-top: 32px; }
+  .chart-wrapper {
+    background: linear-gradient(180deg, rgba(13,18,38,0.7) 0%, rgba(6,9,20,0.7) 100%);
+    backdrop-filter: blur(8px);
+    padding: 28px 22px;
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+    position: relative;
+  }
+  .chart-wrapper::before, .chart-wrapper::after {
+    content: '\2756';
+    position: absolute;
+    color: var(--gold);
+    font-size: 11px;
+    opacity: 0.6;
+  }
+  .chart-wrapper::before { top: 8px; left: 12px; }
+  .chart-wrapper::after { bottom: 8px; right: 12px; }
+  .chart-wrapper h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-align: center;
+    color: var(--gold-bright);
+    margin-bottom: 4px;
+  }
+  .chart-meta {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  svg.wheel, svg.bodygraph, svg.astromap {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+  }
+  svg.wheel .interactive, svg.bodygraph .interactive, svg.astromap .interactive { cursor: pointer; }
+  svg.wheel .interactive:hover, svg.bodygraph .interactive:hover, svg.astromap .interactive:hover { filter: brightness(1.3); }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 15px;
+  }
+  .data-table th {
+    text-align: left;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    font-weight: 500;
+  }
+  .data-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line-faint);
+  }
+  .data-table tr.clickable { cursor: pointer; transition: background 0.15s; }
+  .data-table tr.clickable:hover { background: rgba(212,182,117,0.06); }
+  .data-table tr.clickable td:first-child { color: var(--gold-bright); }
+  .data-table .deg { color: var(--gold-bright); font-weight: 500; }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 28px 0 4px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .section-title::before, .section-title::after {
+    content: '\2756';
+    margin: 0 12px;
+    opacity: 0.5;
+    font-size: 9px;
+  }
+  .section-sub {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 14px;
+  }
+  .error {
+    background: rgba(196,69,54,0.12);
+    border: 1px solid var(--accent-rose);
+    padding: 16px;
+    color: var(--ink);
+    margin-top: 16px;
+    font-style: italic;
+  }
+  .loading {
+    text-align: center;
+    color: var(--gold);
+    padding: 32px;
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0.05em;
+  }
+  .loading::before {
+    content: '\2756';
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+  .hd-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 18px 0 20px;
+  }
+  .hd-summary-item {
+    background: rgba(0,0,0,0.35);
+    padding: 14px 10px;
+    text-align: center;
+    border: 1px solid var(--line-faint);
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .hd-summary-item:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .hd-summary-item .label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .hd-summary-item .value {
+    font-size: 16px;
+    color: var(--ink);
+    font-style: italic;
+    line-height: 1.2;
+  }
+  .legend {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .legend .swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+  @media (min-width: 700px) { .modal-backdrop { align-items: center; padding: 32px; } }
+  .modal-backdrop.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: linear-gradient(180deg, #0d1226 0%, #060914 100%);
+    border: 1px solid var(--gold);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,182,117,0.15);
+    max-width: 560px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 24px 22px 28px;
+    position: relative;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal::before, .modal::after {
+    content: '\2756';
+    position: absolute;
+    color: var(--gold);
+    font-size: 11px;
+    opacity: 0.7;
+  }
+  .modal::before { top: 10px; left: 14px; }
+  .modal::after { bottom: 10px; right: 14px; }
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    font-size: 24px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    letter-spacing: 0;
+  }
+  .modal-close:hover { color: var(--gold-bright); }
+  .modal-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 6px;
+    margin-top: 4px;
+  }
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--gold-bright);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .modal-subtitle {
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+  .modal-divider {
+    text-align: center;
+    color: var(--gold);
+    margin: 14px 0 16px;
+    letter-spacing: 0.5em;
+    font-size: 11px;
+    opacity: 0.6;
+  }
+  .modal-body {
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .modal-body p { margin-bottom: 12px; }
+  .modal-body strong {
+    color: var(--gold-bright);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .modal-body .field-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-faint);
+    font-size: 14px;
+  }
+  .modal-body .field-row:last-child { border-bottom: none; }
+  .modal-body .field-row .lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .modal-body .field-row .val { color: var(--ink); font-style: italic; }
+  .tap-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin: 8px 0 14px;
+    letter-spacing: 0.05em;
+  }
+  .tap-hint::before { content: '\261D '; opacity: 0.7; }
 </style>
-
 </head>
 <body>
   <div class="container">
@@ -541,96 +571,98 @@ letter-spacing: 0.05em;
       <p class="tagline">See yourself clearly.</p>
     </header>
 
-```
-<div id="engine-status" class="engine-status">Awakening the ephemeris &hellip;</div>
+    <div id="engine-status" class="engine-status">Mami Wata's Mirror &hellip;</div>
+    <div id="saved-banner" class="saved-banner hidden">Welcome back &mdash; your last chart has been restored.</div>
 
-<div class="form-card">
-  <div class="form-section first">
-    <label>Chart Type</label>
-    <select id="chart-type">
-      <option value="natal">Western Natal Chart</option>
-      <option value="transit">Transit Chart (current planets)</option>
-      <option value="synastry">Synastry / Compatibility</option>
-      <option value="human-design">Human Design Bodygraph</option>
-    </select>
-  </div>
+    <div class="form-card">
+      <div class="form-section first">
+        <label>Chart Type</label>
+        <select id="chart-type">
+          <option value="natal">Western Natal Chart</option>
+          <option value="transit">Transit Chart (current planets)</option>
+          <option value="synastry">Synastry / Compatibility</option>
+          <option value="human-design">Human Design Bodygraph</option>
+          <option value="astrocartography">Astrocartography (world map)</option>
+        </select>
+      </div>
 
-  <div class="form-section" id="primary-section">
-    <h3>Birth Information</h3>
-    <div class="row">
-      <div>
-        <label>Birth Date</label>
-        <input type="date" id="birth-date" required>
+      <div class="form-section" id="primary-section">
+        <h3>Birth Information</h3>
+        <label>Name (optional)</label>
+        <input type="text" id="person-name" placeholder="Your name" autocomplete="off">
+        <div class="row">
+          <div>
+            <label>Birth Date</label>
+            <input type="date" id="birth-date" required>
+          </div>
+          <div>
+            <label>Birth Time</label>
+            <input type="time" id="birth-time" required>
+            <div class="helper">If unknown, use 12:00 (noon)</div>
+          </div>
+        </div>
+        <label>Birth Location</label>
+        <input type="text" id="location-search" placeholder="City, Country" autocomplete="off">
+        <div id="location-results"></div>
+        <input type="hidden" id="latitude">
+        <input type="hidden" id="longitude">
+        <div id="selected-location" class="selected-loc"></div>
+        <label>House System</label>
+        <select id="house-system">
+          <option value="placidus">Placidus</option>
+          <option value="whole-sign">Whole Sign</option>
+        </select>
       </div>
-      <div>
-        <label>Birth Time</label>
-        <input type="time" id="birth-time" required>
-        <div class="helper">If unknown, use 12:00 (noon)</div>
+
+      <div class="form-section hidden" id="transit-section">
+        <h3>Transit Date</h3>
+        <div class="row">
+          <div>
+            <label>Transit Date</label>
+            <input type="date" id="transit-date">
+            <div class="helper">Default: today</div>
+          </div>
+          <div>
+            <label>Transit Time</label>
+            <input type="time" id="transit-time" value="12:00">
+          </div>
+        </div>
+        <label>Transit Location (where you are now)</label>
+        <input type="text" id="transit-location-search" placeholder="City, Country" autocomplete="off">
+        <div id="transit-location-results"></div>
+        <input type="hidden" id="transit-latitude">
+        <input type="hidden" id="transit-longitude">
+        <div id="transit-selected-location" class="selected-loc"></div>
       </div>
+
+      <div class="form-section hidden" id="synastry-section">
+        <h3>Partner's Birth Information</h3>
+        <label>Partner's Name (optional)</label>
+        <input type="text" id="person-name-2" placeholder="Partner's name" autocomplete="off">
+        <div class="row">
+          <div>
+            <label>Birth Date</label>
+            <input type="date" id="birth-date-2">
+          </div>
+          <div>
+            <label>Birth Time</label>
+            <input type="time" id="birth-time-2">
+          </div>
+        </div>
+        <label>Birth Location</label>
+        <input type="text" id="location-search-2" placeholder="City, Country" autocomplete="off">
+        <div id="location-results-2"></div>
+        <input type="hidden" id="latitude-2">
+        <input type="hidden" id="longitude-2">
+        <div id="selected-location-2" class="selected-loc"></div>
+      </div>
+
+      <button id="generate-btn" class="primary" disabled>Generate Chart</button>
+      <button id="clear-btn" class="clear-link">clear saved data and start over</button>
     </div>
-    <label>Birth Location</label>
-    <input type="text" id="location-search" placeholder="City, Country" autocomplete="off">
-    <div id="location-results"></div>
-    <input type="hidden" id="latitude">
-    <input type="hidden" id="longitude">
-    <div id="selected-location" class="selected-loc"></div>
-    <label>House System</label>
-    <select id="house-system">
-      <option value="placidus">Placidus</option>
-      <option value="whole-sign">Whole Sign</option>
-    </select>
+
+    <div id="result"></div>
   </div>
-
-  <div class="form-section hidden" id="transit-section">
-    <h3>Transit Date</h3>
-    <div class="row">
-      <div>
-        <label>Transit Date</label>
-        <input type="date" id="transit-date">
-        <div class="helper">Default: today</div>
-      </div>
-      <div>
-        <label>Transit Time</label>
-        <input type="time" id="transit-time" value="12:00">
-      </div>
-    </div>
-    <label>Transit Location (where you are now)</label>
-    <input type="text" id="transit-location-search" placeholder="City, Country" autocomplete="off">
-    <div id="transit-location-results"></div>
-    <input type="hidden" id="transit-latitude">
-    <input type="hidden" id="transit-longitude">
-    <div id="transit-selected-location" class="selected-loc"></div>
-  </div>
-
-  <div class="form-section hidden" id="synastry-section">
-    <h3>Partner's Birth Information</h3>
-    <div class="row">
-      <div>
-        <label>Birth Date</label>
-        <input type="date" id="birth-date-2">
-      </div>
-      <div>
-        <label>Birth Time</label>
-        <input type="time" id="birth-time-2">
-      </div>
-    </div>
-    <label>Birth Location</label>
-    <input type="text" id="location-search-2" placeholder="City, Country" autocomplete="off">
-    <div id="location-results-2"></div>
-    <input type="hidden" id="latitude-2">
-    <input type="hidden" id="longitude-2">
-    <div id="selected-location-2" class="selected-loc"></div>
-  </div>
-
-  <button id="generate-btn" class="primary" disabled>Generate Chart</button>
-</div>
-
-<div id="result"></div>
-```
-
-  </div>
-
-  <!-- Interpretation modal -->
 
   <div class="modal-backdrop" id="modal-backdrop">
     <div class="modal" role="dialog" aria-modal="true">
@@ -645,13 +677,6 @@ letter-spacing: 0.05em;
 
 <script type="module">
 import SwissEph from 'https://cdn.jsdelivr.net/gh/prolaxu/swisseph-wasm@main/src/swisseph.js';
-
-/* ============================================================
-   INTERPRETATION DATA (inlined here)
-   ============================================================ */
-// ============================================================
-// INTERPRETATION LIBRARY - Standard meanings
-// ============================================================
 
 var INTERP_SIGNS = {
   Aries: { element: "Fire", modality: "Cardinal", ruler: "Mars", text: "The first spark. Aries is initiation, will, and the courage to begin without knowing what comes next. It rules the head and acts on instinct, leading from the front. Strengths: courage, directness, vitality, pioneering drive. Shadows: impulsiveness, impatience, anger, acting before thinking. Aries energy wants to start things, not finish them." },
@@ -709,6 +734,14 @@ var INTERP_ASPECTS = {
   trine: { text: "Trine (120\u00B0): natural grace. The planets flow together effortlessly, a gift that comes without much striving. The shadow is taking it for granted; trines bless what they touch." },
   opposition: { text: "Opposition (180\u00B0): the mirror. The two energies sit across from each other and ask you to integrate them. Often projected onto other people first, oppositions teach balance through relationship." }
 };
+
+var INTERP_ASTRO_LINES = {
+  MC: { text: "The Midheaven line is where this planet was directly overhead at your moment of birth. Living or traveling here amplifies the planet's themes in your career, public reputation, and the way the world sees you. It is the most visible expression of that planet's energy." },
+  IC: { text: "The IC line is opposite the Midheaven, where this planet was directly beneath you at birth. Living or traveling here brings the planet's themes into your home life, foundations, family, and deepest inner work. It is the most private expression of that planet's energy." },
+  ASC: { text: "The Ascendant line is where this planet was rising on the eastern horizon at your birth. Living or traveling here brings the planet's qualities into your personality, body, and the way you first show up to others. It is how you embody that planet." },
+  DSC: { text: "The Descendant line is where this planet was setting on the western horizon at your birth. Living or traveling here brings the planet's themes into your relationships, partnerships, and how others meet you. It is what you attract and project." }
+};
+
 var INTERP_HD_TYPE = {
   "Manifestor": { strategy: "Inform Before Acting", text: "Manifestors are the initiators, roughly 9% of the population. You are designed to begin things, to spark movement that others then pick up and carry. Your energy is not sustained like a Generator's; it comes in bursts and then needs rest. Your core challenge is the impact of your actions on others. When you initiate without informing, you create chaos and resistance. When you inform first, you clear the way and people get out of the path. Your signature is peace. Your not-self is anger." },
   "Generator": { strategy: "Wait to Respond", text: "Generators are the life-force builders, roughly 37% of the population. You have a defined Sacral Center, a sustainable engine that powers you when you are doing work that lights you up. You are not designed to initiate from the mind; you are designed to respond to what life puts in front of you. The body knows before the mind does, through gut sounds and yes/no signals. When you respond from the Sacral, you build mastery and satisfaction. When you push or initiate from the mind, you burn out and grow frustrated. Your signature is satisfaction. Your not-self is frustration." },
@@ -764,110 +797,110 @@ var INTERP_HD_DEFINITION = {
 };
 
 var INTERP_HD_CHANNELS = {
-  "1-8": { name: "Inspiration", text: "The Channel of Inspiration. A creative role model. You are here to express something original in a way that influences others. The 1 carries creative direction; the 8 brings it to the world." },
-  "2-14": { name: "The Beat", text: "The Channel of the Beat. The keeper of keys. A direction that emerges through resources and is followed through hard work. You are here to use what you have been given to move in your true direction." },
-  "3-60": { name: "Mutation", text: "The Channel of Mutation. Energy for change that operates in pulses. Mutation is unpredictable and cannot be forced; it asks you to wait for the right moment to evolve." },
-  "4-63": { name: "Logic", text: "The Channel of Logic. A mind that questions and finds patterns over time. You are designed to doubt, test, and verify, then share what holds up." },
-  "5-15": { name: "Rhythm", text: "The Channel of Rhythm. Being in the flow. You have a fixed rhythm and a love of variety in life. Honoring your rhythm is central to your wellbeing." },
-  "6-59": { name: "Mating", text: "The Channel of Mating. Intimacy and reproduction. You have a magnetic capacity to break through the defenses of others and form intimate bonds. Powerful sexuality and creativity." },
-  "7-31": { name: "The Alpha", text: "The Channel of the Alpha. Leadership for the collective. You have a voice that others will follow if it is invited, not seized. The democratic leader." },
-  "9-52": { name: "Concentration", text: "The Channel of Concentration. Focused determination. You can sit and concentrate on a single thing in a way most cannot. A gift for any sustained creative work." },
-  "10-20": { name: "Awakening", text: "The Channel of Awakening. Commitment to higher principles. Living your truth in the now. A channel of integrity in action." },
-  "10-34": { name: "Exploration", text: "The Channel of Exploration. Following your own convictions. You must do what feels true to you, regardless of approval." },
+  "1-8": { name: "Inspiration", text: "The Channel of Inspiration. A creative role model. You are here to express something original in a way that influences others." },
+  "2-14": { name: "The Beat", text: "The Channel of the Beat. The keeper of keys. A direction that emerges through resources and is followed through hard work." },
+  "3-60": { name: "Mutation", text: "The Channel of Mutation. Energy for change that operates in pulses. Mutation is unpredictable and cannot be forced." },
+  "4-63": { name: "Logic", text: "The Channel of Logic. A mind that questions and finds patterns over time. You are designed to doubt, test, and verify." },
+  "5-15": { name: "Rhythm", text: "The Channel of Rhythm. Being in the flow. You have a fixed rhythm and a love of variety in life." },
+  "6-59": { name: "Mating", text: "The Channel of Mating. Intimacy and reproduction. A magnetic capacity to break through defenses and form intimate bonds." },
+  "7-31": { name: "The Alpha", text: "The Channel of the Alpha. Leadership for the collective. A voice others follow when invited, not seized." },
+  "9-52": { name: "Concentration", text: "The Channel of Concentration. Focused determination. You can sit and concentrate on a single thing in a way most cannot." },
+  "10-20": { name: "Awakening", text: "The Channel of Awakening. Commitment to higher principles. Living your truth in the now." },
+  "10-34": { name: "Exploration", text: "The Channel of Exploration. Following your own convictions. You must do what feels true to you." },
   "10-57": { name: "Perfected Form", text: "The Channel of Perfected Form. Survival through intuition. Awareness of the body and what it needs in the moment." },
   "11-56": { name: "Curiosity", text: "The Channel of Curiosity. The seeker. A storyteller who collects ideas and translates experience into meaning." },
-  "12-22": { name: "Openness", text: "The Channel of Openness. A social being. Emotional expression that opens doors at the right moment, closes them at others." },
-  "13-33": { name: "The Prodigal", text: "The Channel of the Prodigal. The witness. You collect the stories of your life and the lives of others, and you become wise through reflection." },
-  "16-48": { name: "Talent", text: "The Channel of Talent. Mastery through repetition. You are here to refine a skill until it becomes art." },
+  "12-22": { name: "Openness", text: "The Channel of Openness. A social being. Emotional expression that opens and closes doors at the right moment." },
+  "13-33": { name: "The Prodigal", text: "The Channel of the Prodigal. The witness. You collect stories and become wise through reflection." },
+  "16-48": { name: "Talent", text: "The Channel of Talent. Mastery through repetition. You refine a skill until it becomes art." },
   "17-62": { name: "Acceptance", text: "The Channel of Acceptance. The organizational being. A logical mind that arranges details into useful structure." },
-  "18-58": { name: "Judgment", text: "The Channel of Judgment. Insatiable appetite for life and a critical eye that improves what is broken. Joy is your fuel." },
-  "19-49": { name: "Synthesis", text: "The Channel of Synthesis. Sensitivity to need. You feel what is missing and what is required, in food, shelter, and intimacy." },
-  "20-34": { name: "Charisma", text: "The Channel of Charisma. Where thoughts must become deeds. A pure manifesting channel; you act in the now on what you believe." },
-  "20-57": { name: "The Brain Wave", text: "The Channel of the Brain Wave. Penetrating awareness. Intuition expressed in the moment with great clarity." },
-  "21-45": { name: "Money", text: "The Channel of Money. Material world mastery. The will to provide and to lead the tribe in matters of resource." },
-  "23-43": { name: "Structuring", text: "The Channel of Structuring. From individual to fixed. Genius that translates inner knowing into external knowing, when timed right." },
+  "18-58": { name: "Judgment", text: "The Channel of Judgment. Insatiable appetite for life and a critical eye that improves what is broken." },
+  "19-49": { name: "Synthesis", text: "The Channel of Synthesis. Sensitivity to need. You feel what is missing and required, in food, shelter, intimacy." },
+  "20-34": { name: "Charisma", text: "The Channel of Charisma. Where thoughts must become deeds. A pure manifesting channel." },
+  "20-57": { name: "The Brain Wave", text: "The Channel of the Brain Wave. Penetrating awareness. Intuition expressed in the moment with clarity." },
+  "21-45": { name: "Money", text: "The Channel of Money. Material world mastery. The will to provide and lead the tribe in matters of resource." },
+  "23-43": { name: "Structuring", text: "The Channel of Structuring. From individual to fixed. Genius that translates inner knowing into external knowing." },
   "24-61": { name: "Awareness", text: "The Channel of Awareness. The thinker. An inner knowing that arrives through silence and presence." },
-  "25-51": { name: "Initiation", text: "The Channel of Initiation. The wound that becomes the warrior. You are here to be initiated by shock, and through it become courageous and free." },
-  "26-44": { name: "Surrender", text: "The Channel of Surrender. The transmitter. You can sell anything you believe in, and you carry the memory of the tribe in your bones." },
-  "27-50": { name: "Preservation", text: "The Channel of Preservation. The custodian. Care of others through values and right action. A channel of nurturing and ethics." },
-  "28-38": { name: "Struggle", text: "The Channel of Struggle. The stubborn. You fight for what is meaningful and refuse what is not, even at great cost." },
-  "29-46": { name: "Discovery", text: "The Channel of Discovery. Saying yes to life. You leap into experience and find yourself blessed with serendipity when you commit." },
+  "25-51": { name: "Initiation", text: "The Channel of Initiation. The wound that becomes the warrior. Initiated by shock, you become courageous and free." },
+  "26-44": { name: "Surrender", text: "The Channel of Surrender. The transmitter. You can sell anything you believe in." },
+  "27-50": { name: "Preservation", text: "The Channel of Preservation. The custodian. Care of others through values and right action." },
+  "28-38": { name: "Struggle", text: "The Channel of Struggle. The stubborn. You fight for what is meaningful and refuse what is not." },
+  "29-46": { name: "Discovery", text: "The Channel of Discovery. Saying yes to life. Serendipity finds you when you commit." },
   "30-41": { name: "Recognition", text: "The Channel of Recognition. A focused energy for fantasy and feeling. The dreamer who imagines the future." },
-  "32-54": { name: "Transformation", text: "The Channel of Transformation. Drive and ambition for the long climb. The will to be recognized through achievement." },
+  "32-54": { name: "Transformation", text: "The Channel of Transformation. Drive and ambition for the long climb." },
   "34-57": { name: "Power", text: "The Channel of Power. Archetypal power. Survival intelligence that knows when to act and when to wait." },
-  "35-36": { name: "Transitoriness", text: "The Channel of Transitoriness. Jack of all trades. You crave new experiences and grow through change and crisis." },
-  "37-40": { name: "Community", text: "The Channel of Community. Bargains made and bargains kept. The tribe is held together through agreements you negotiate." },
-  "39-55": { name: "Emoting", text: "The Channel of Emoting. The provocateur. You move others emotionally, often by refusing to perform what they expect." },
-  "42-53": { name: "Maturation", text: "The Channel of Maturation. Cycles begun and completed. You bring things to fullness over time, even when you would rather skip ahead." },
-  "47-64": { name: "Abstraction", text: "The Channel of Abstraction. The mind that makes sense of past experience. You replay and replay until pattern emerges." }
-};
-var INTERP_HD_GATES = {
-  1: { name: "The Creative", hex: "Self-Expression", text: "The gate of creative direction and original self-expression. You have a fixed inner identity that wants to create from a place of depth and singularity. Your gift is the unique angle no one else could offer. Shadow: feeling unseen, melancholy when not creating." },
-  2: { name: "The Receptive", hex: "Higher Knowing", text: "The gate of direction. A keeper of the keys to where life is going. You know which way to move and have a magnetic relationship with resources. Your direction comes through receptivity, not chasing." },
-  3: { name: "Difficulty at the Beginning", hex: "Ordering", text: "The gate of ordering through chaos. You bring innovation by mutating what already exists. New things take time to find their form. Patience with the messy beginning is essential." },
-  4: { name: "Youthful Folly", hex: "Formulization", text: "The gate of answers. A logical mind that holds possible solutions, but answers are hypotheses that must be tested over time. Avoid pretending certainty before time has proven you right." },
-  5: { name: "Waiting", hex: "Fixed Rhythms", text: "The gate of fixed rhythms. Your life works when you keep your patterns: sleep, food, exercise, ritual. Disruption to your rhythm shows up as instability everywhere else." },
-  6: { name: "Conflict", hex: "Friction", text: "The gate of intimacy through friction. You set the emotional tone of relationships, opening and closing the door to closeness. Your sensitivity is the membrane through which intimacy is regulated." },
-  7: { name: "The Army", hex: "The Role of the Self", text: "The gate of the leader. You are designed to guide the collective in the right direction, but only when invited. The democratic leader, not the authoritarian one." },
-  8: { name: "Holding Together", hex: "Contribution", text: "The gate of contribution. You have something original to share, and you carry the role of bringing creative work into form for others to see and use." },
-  9: { name: "The Taming Power of the Small", hex: "Focus", text: "The gate of focus on the details. You can give sustained attention to small things and find truth in the particular. A gift for any work that requires precision." },
-  10: { name: "Treading", hex: "Behavior of the Self", text: "The gate of self-love and behavior. You are here to live your truth in the now, behaving in a way that aligns with who you actually are. The gate of integrity." },
-  11: { name: "Peace", hex: "Ideas", text: "The gate of ideas. Your mind generates concepts and pictures that may or may not be for you to act on. Ideas are for sharing, not always for executing. Hold them lightly." },
-  12: { name: "Standstill", hex: "Caution", text: "The gate of caution and articulation. You speak best when the mood is right, with eloquence that arrives in the moment. The poet who waits for the wave." },
-  13: { name: "The Fellowship of Man", hex: "The Listener", text: "The gate of the listener. You are the one others tell their secrets to. You hold the stories of the past and the wisdom that arises from witnessing." },
-  14: { name: "Possession in Great Measure", hex: "Power Skills", text: "The gate of power and skills. You have the capacity to work hard at what you love and accumulate resources through that devotion. Money flows when you follow what lights you up." },
-  15: { name: "Modesty", hex: "Extremes", text: "The gate of extremes. Your rhythm includes wide swings; you are not designed for one steady pace. The rhythm of love and humanity moves through you." },
-  16: { name: "Enthusiasm", hex: "Skills", text: "The gate of mastery and enthusiasm. You commit to perfecting a craft and your passion is contagious. The skill must be true; pretended enthusiasm reveals itself." },
-  17: { name: "Following", hex: "Opinions", text: "The gate of opinions. You see patterns and form views about how things should be ordered. Your opinions inform structure but should be tested before broadcast." },
-  18: { name: "Work on What Has Been Spoiled", hex: "Correction", text: "The gate of correction. You see what is broken and can improve it. Critical insight in service of perfection. Use the gift carefully; it can hurt without intention." },
-  19: { name: "Approach", hex: "Wanting", text: "The gate of wanting and approach. You sense what is needed for community survival, food and shelter and intimacy. The bringer of resources to the tribe." },
-  20: { name: "Contemplation", hex: "The Now", text: "The gate of the now. You have a voice that speaks the truth of this moment. Presence is your power. Speaking what is true now, not what was true yesterday." },
-  21: { name: "Biting Through", hex: "The Hunter", text: "The gate of control. You are designed to control your domain, your money, your work, your space. Without control of what is yours, you grow restless." },
-  22: { name: "Grace", hex: "Openness", text: "The gate of grace. You bring social grace and emotional openness to the right moment. The grace gate also carries the not-do; sometimes the most graceful move is to refuse." },
-  23: { name: "Splitting Apart", hex: "Assimilation", text: "The gate of assimilation. You translate new knowing into language others can understand, but only when timing is right. Speak before invited and you sound like a freak; speak when invited and you sound like a genius." },
-  24: { name: "Returning", hex: "Rationalization", text: "The gate of returning. The mind that returns to the same question until insight arrives. Inspired knowing comes through silence and patient sitting with the unknown." },
-  25: { name: "Innocence", hex: "The Spirit of the Self", text: "The gate of the spirit of the self. Universal love, the love of life itself, beyond the personal. You are here to be initiated by shock and emerge with innocent love intact." },
-  26: { name: "The Taming Power of the Great", hex: "The Egoist", text: "The gate of the egoist. The salesperson and trickster. You can sell what you believe in with great effectiveness. Honesty about what you are selling is the moral edge." },
-  27: { name: "Nourishment", hex: "Caring", text: "The gate of nourishment. You care for others through values, food, education, ethics. The tribal caretaker who tends what is precious." },
-  28: { name: "Preponderance of the Great", hex: "The Game Player", text: "The gate of the game player. You are willing to risk for meaning. The gate of struggle and the search for purpose, even through difficulty." },
-  29: { name: "The Abysmal", hex: "Saying Yes", text: "The gate of saying yes. Devotion to whatever you commit to. Be careful what you say yes to; the commitment will be deep and the energy will follow through completely." },
-  30: { name: "The Clinging Fire", hex: "Feelings", text: "The gate of feelings and desire. You burn with longing for experience and intensity. Desire is the fuel; learn to recognize when desire is mistaken for direction." },
-  31: { name: "Influence", hex: "The Leader", text: "The gate of leadership through influence. You speak for the collective in a way that resonates. The voice of We. Wait to be invited into leadership; do not seize it." },
-  32: { name: "Duration", hex: "Continuity", text: "The gate of continuity. You sense what will last and what will not. The instinct for sustainable transformation; the keeper of what endures." },
-  33: { name: "Retreat", hex: "Privacy", text: "The gate of retreat and privacy. You need solitude to integrate experience, and you tell stories from the perspective of one who has stepped back to see clearly." },
-  34: { name: "The Power of the Great", hex: "Power", text: "The gate of power. Pure life-force in service of conviction. You are powerful when you are following your own response; you are tyrannical when you push against it." },
-  35: { name: "Progress", hex: "Change", text: "The gate of progress through experience. You crave the new and grow through variety. A jack of all trades who learns by trying everything once." },
-  36: { name: "The Darkening of the Light", hex: "Crisis", text: "The gate of crisis. You move through emotional crisis to growth. Drama is the catalyst, not the destination. Learn to ride the wave without becoming it." },
-  37: { name: "The Family", hex: "Friendship", text: "The gate of the family. Bargains made and kept hold the tribe together. You sense the agreements that bond people and feel deeply when they are broken." },
-  38: { name: "Opposition", hex: "The Fighter", text: "The gate of the fighter. You stand up for what gives life meaning and refuse what does not. Stubborn purpose; fight only the fights that matter." },
-  39: { name: "Obstruction", hex: "Provocation", text: "The gate of provocation. You move people emotionally, sometimes by refusing to give them what they expect. The provocateur who unsticks stuck feeling." },
-  40: { name: "Deliverance", hex: "Aloneness", text: "The gate of aloneness. The will to do for the tribe in exchange for love. You give and you withdraw; the rhythm of work and retreat is essential to your wellbeing." },
-  41: { name: "Decrease", hex: "Contraction", text: "The gate of fantasy and the start of new feeling. The kindling of imagination, the dream of what could be. You begin emotional cycles for yourself and others." },
-  42: { name: "Increase", hex: "Growth", text: "The gate of completion. You are designed to bring cycles to their end, to finish what was begun. Resist the urge to skip ahead; honor the full arc." },
-  43: { name: "Breakthrough", hex: "Insight", text: "The gate of insight. The mind that knows in flashes, often beyond words. Wait for the right moment to translate; explain too soon and you sound like a freak." },
-  44: { name: "Coming to Meet", hex: "Alertness", text: "The gate of alertness. You sense the patterns of others and remember the past. Useful in any work that requires understanding people's history." },
-  45: { name: "Gathering Together", hex: "The King", text: "The gate of the king. You gather and direct the resources of the tribe. A natural authority around money, education, and material life." },
-  46: { name: "Pushing Upward", hex: "The Body", text: "The gate of love of the body. You are here to be in your body and discover what serendipity arises when you commit fully to embodied experience. The gate of being in the right place at the right time." },
-  47: { name: "Oppression", hex: "Realization", text: "The gate of realization. The mind that makes sense of the past. You replay events until pattern emerges; the realization comes in its own time and cannot be forced." },
-  48: { name: "The Well", hex: "Depth", text: "The gate of depth. The well of knowing that runs deep, fed by lifetimes of experience. You have access to wisdom you did not earn in this life." },
-  49: { name: "Revolution", hex: "Principles", text: "The gate of principles. The capacity to break with what no longer serves and lead the tribe through transformation. A revolutionary by principle, not by chaos." },
-  50: { name: "The Cauldron", hex: "Values", text: "The gate of values. You hold the laws and ethics that protect the tribe. The historian of what matters, the keeper of culture's deeper rules." },
-  51: { name: "The Arousing", hex: "Shock", text: "The gate of shock. You are here to shock yourself awake and sometimes others too. The warrior who is initiated by sudden disruption and emerges braver." },
-  52: { name: "Keeping Still", hex: "Stillness", text: "The gate of stillness. The mountain. You can sit in concentrated stillness and hold focus longer than most. Energy through stillness, not motion." },
-  53: { name: "Development", hex: "Beginnings", text: "The gate of beginnings. You start things, and not everything you start needs to be finished. The starter energy is the contribution; completion belongs to others." },
-  54: { name: "The Marrying Maiden", hex: "Drive", text: "The gate of drive. The ambition to rise, to be recognized, to climb from below to above. Powerful fuel; needs a worthy direction or it eats itself." },
-  55: { name: "Abundance", hex: "Spirit", text: "The gate of spirit. The emotional gate of faith and despair. Spirit comes and goes; you are designed to feel both ends of the wave. A gate of profound emotional depth." },
-  56: { name: "The Wanderer", hex: "Stimulation", text: "The gate of stimulation. The storyteller. You weave experience into narrative and stimulate others through the telling. A gift for any work involving language." },
-  57: { name: "The Gentle", hex: "Intuition", text: "The gate of intuition. The clearest splenic intuition, a quiet voice in the now that speaks once. You must be still to hear it." },
-  58: { name: "The Joyous", hex: "Vitality", text: "The gate of vitality. Joy as the fuel for life. You have a deep wellspring of aliveness when you are doing what is truly yours." },
-  59: { name: "Dispersion", hex: "Sexuality", text: "The gate of intimacy and sexuality. You have a gift for breaking through defenses and creating bonds. Powerful magnetism in matters of mating, partnership, and the dispersion of barriers between people." },
-  60: { name: "Limitation", hex: "Acceptance", text: "The gate of acceptance. Working within limitation. The shifts of mutation arise from accepting the constraints of the present and finding the small movement that becomes the breakthrough." },
-  61: { name: "Inner Truth", hex: "Mystery", text: "The gate of mystery. The pressure to know what cannot be known. Inspiration arises from sitting with the unknowable and not collapsing into easy answers." },
-  62: { name: "The Preponderance of the Small", hex: "Detail", text: "The gate of detail. Mastery of the small particulars and the precise word. The organizer who arranges information into clear order." },
-  63: { name: "After Completion", hex: "Doubt", text: "The gate of doubt. The healthy mind that questions before believing. Doubt fuels logic; the answer emerges through the testing." },
-  64: { name: "Before Completion", hex: "Confusion", text: "The gate of confusion. The mind that holds the unresolved. The pressure to make sense of past experience that has not yet arranged itself into pattern. Trust the process." }
+  "35-36": { name: "Transitoriness", text: "The Channel of Transitoriness. Jack of all trades. You crave new experiences and grow through change." },
+  "37-40": { name: "Community", text: "The Channel of Community. Bargains made and kept. The tribe is held together through agreements." },
+  "39-55": { name: "Emoting", text: "The Channel of Emoting. The provocateur. You move others emotionally." },
+  "42-53": { name: "Maturation", text: "The Channel of Maturation. Cycles begun and completed. You bring things to fullness over time." },
+  "47-64": { name: "Abstraction", text: "The Channel of Abstraction. The mind that makes sense of past experience. You replay until pattern emerges." }
 };
 
+var INTERP_HD_GATES = {
+  1: { name: "The Creative", hex: "Self-Expression", text: "The gate of creative direction and original self-expression. You have a fixed inner identity that wants to create from depth and singularity." },
+  2: { name: "The Receptive", hex: "Higher Knowing", text: "The gate of direction. A keeper of the keys to where life is going." },
+  3: { name: "Difficulty at the Beginning", hex: "Ordering", text: "The gate of ordering through chaos. You bring innovation by mutating what already exists." },
+  4: { name: "Youthful Folly", hex: "Formulization", text: "The gate of answers. A logical mind that holds possible solutions to be tested over time." },
+  5: { name: "Waiting", hex: "Fixed Rhythms", text: "The gate of fixed rhythms. Your life works when you keep your patterns." },
+  6: { name: "Conflict", hex: "Friction", text: "The gate of intimacy through friction. You set the emotional tone of relationships." },
+  7: { name: "The Army", hex: "The Role of the Self", text: "The gate of the leader. You are designed to guide the collective when invited." },
+  8: { name: "Holding Together", hex: "Contribution", text: "The gate of contribution. You bring creative work into form for others." },
+  9: { name: "The Taming Power of the Small", hex: "Focus", text: "The gate of focus on the details. Sustained attention to small things." },
+  10: { name: "Treading", hex: "Behavior of the Self", text: "The gate of self-love and behavior. Living your truth in the now." },
+  11: { name: "Peace", hex: "Ideas", text: "The gate of ideas. Concepts and pictures that may or may not be for you to act on." },
+  12: { name: "Standstill", hex: "Caution", text: "The gate of caution and articulation. You speak best when the mood is right." },
+  13: { name: "The Fellowship of Man", hex: "The Listener", text: "The gate of the listener. You hold the stories of the past." },
+  14: { name: "Possession in Great Measure", hex: "Power Skills", text: "The gate of power and skills. You work hard at what you love and accumulate resources." },
+  15: { name: "Modesty", hex: "Extremes", text: "The gate of extremes. Your rhythm includes wide swings; the rhythm of love and humanity." },
+  16: { name: "Enthusiasm", hex: "Skills", text: "The gate of mastery and enthusiasm. You perfect a craft and your passion is contagious." },
+  17: { name: "Following", hex: "Opinions", text: "The gate of opinions. You see patterns and form views about how things should be ordered." },
+  18: { name: "Work on What Has Been Spoiled", hex: "Correction", text: "The gate of correction. You see what is broken and can improve it." },
+  19: { name: "Approach", hex: "Wanting", text: "The gate of wanting and approach. You sense what is needed for community survival." },
+  20: { name: "Contemplation", hex: "The Now", text: "The gate of the now. A voice that speaks the truth of this moment." },
+  21: { name: "Biting Through", hex: "The Hunter", text: "The gate of control. You are designed to control your domain." },
+  22: { name: "Grace", hex: "Openness", text: "The gate of grace. Social grace and emotional openness at the right moment." },
+  23: { name: "Splitting Apart", hex: "Assimilation", text: "The gate of assimilation. You translate new knowing into language others can understand." },
+  24: { name: "Returning", hex: "Rationalization", text: "The gate of returning. The mind that returns to the same question until insight arrives." },
+  25: { name: "Innocence", hex: "The Spirit of the Self", text: "The gate of the spirit of the self. Universal love, beyond the personal." },
+  26: { name: "The Taming Power of the Great", hex: "The Egoist", text: "The gate of the egoist. The salesperson and trickster who can sell what you believe in." },
+  27: { name: "Nourishment", hex: "Caring", text: "The gate of nourishment. You care for others through values, food, education, ethics." },
+  28: { name: "Preponderance of the Great", hex: "The Game Player", text: "The gate of the game player. You risk for meaning." },
+  29: { name: "The Abysmal", hex: "Saying Yes", text: "The gate of saying yes. Devotion to whatever you commit to." },
+  30: { name: "The Clinging Fire", hex: "Feelings", text: "The gate of feelings and desire. You burn with longing for experience." },
+  31: { name: "Influence", hex: "The Leader", text: "The gate of leadership through influence. The voice of We." },
+  32: { name: "Duration", hex: "Continuity", text: "The gate of continuity. You sense what will last." },
+  33: { name: "Retreat", hex: "Privacy", text: "The gate of retreat and privacy. You need solitude to integrate experience." },
+  34: { name: "The Power of the Great", hex: "Power", text: "The gate of power. Pure life-force in service of conviction." },
+  35: { name: "Progress", hex: "Change", text: "The gate of progress through experience. You crave the new." },
+  36: { name: "The Darkening of the Light", hex: "Crisis", text: "The gate of crisis. You move through emotional crisis to growth." },
+  37: { name: "The Family", hex: "Friendship", text: "The gate of the family. Bargains hold the tribe together." },
+  38: { name: "Opposition", hex: "The Fighter", text: "The gate of the fighter. You stand up for what gives life meaning." },
+  39: { name: "Obstruction", hex: "Provocation", text: "The gate of provocation. You move people emotionally." },
+  40: { name: "Deliverance", hex: "Aloneness", text: "The gate of aloneness. The will to do for the tribe in exchange for love." },
+  41: { name: "Decrease", hex: "Contraction", text: "The gate of fantasy and the start of new feeling." },
+  42: { name: "Increase", hex: "Growth", text: "The gate of completion. You bring cycles to their end." },
+  43: { name: "Breakthrough", hex: "Insight", text: "The gate of insight. The mind that knows in flashes." },
+  44: { name: "Coming to Meet", hex: "Alertness", text: "The gate of alertness. You sense the patterns of others and remember the past." },
+  45: { name: "Gathering Together", hex: "The King", text: "The gate of the king. You gather and direct the resources of the tribe." },
+  46: { name: "Pushing Upward", hex: "The Body", text: "The gate of love of the body. The gate of being in the right place at the right time." },
+  47: { name: "Oppression", hex: "Realization", text: "The gate of realization. The mind that makes sense of the past." },
+  48: { name: "The Well", hex: "Depth", text: "The gate of depth. The well of knowing that runs deep." },
+  49: { name: "Revolution", hex: "Principles", text: "The gate of principles. The capacity to break with what no longer serves." },
+  50: { name: "The Cauldron", hex: "Values", text: "The gate of values. You hold the laws that protect the tribe." },
+  51: { name: "The Arousing", hex: "Shock", text: "The gate of shock. The warrior initiated by sudden disruption." },
+  52: { name: "Keeping Still", hex: "Stillness", text: "The gate of stillness. The mountain. Concentrated stillness." },
+  53: { name: "Development", hex: "Beginnings", text: "The gate of beginnings. You start things." },
+  54: { name: "The Marrying Maiden", hex: "Drive", text: "The gate of drive. The ambition to rise." },
+  55: { name: "Abundance", hex: "Spirit", text: "The gate of spirit. The emotional gate of faith and despair." },
+  56: { name: "The Wanderer", hex: "Stimulation", text: "The gate of stimulation. The storyteller." },
+  57: { name: "The Gentle", hex: "Intuition", text: "The gate of intuition. The clearest splenic intuition." },
+  58: { name: "The Joyous", hex: "Vitality", text: "The gate of vitality. Joy as the fuel for life." },
+  59: { name: "Dispersion", hex: "Sexuality", text: "The gate of intimacy and sexuality. Breaking through defenses." },
+  60: { name: "Limitation", hex: "Acceptance", text: "The gate of acceptance. Working within limitation." },
+  61: { name: "Inner Truth", hex: "Mystery", text: "The gate of mystery. The pressure to know what cannot be known." },
+  62: { name: "The Preponderance of the Small", hex: "Detail", text: "The gate of detail. Mastery of the small particulars." },
+  63: { name: "After Completion", hex: "Doubt", text: "The gate of doubt. The healthy mind that questions before believing." },
+  64: { name: "Before Completion", hex: "Confusion", text: "The gate of confusion. The mind that holds the unresolved." }
+};
 
 var SIGN_NAMES = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
 var SIGN_SYMBOLS = ["\u2648","\u2649","\u264A","\u264B","\u264C","\u264D","\u264E","\u264F","\u2650","\u2651","\u2652","\u2653"];
@@ -881,16 +914,76 @@ var HD_GATE_CENTERS = {};
 Object.keys(HD_CENTER_GATES).forEach(function(c){HD_CENTER_GATES[c].forEach(function(g){HD_GATE_CENTERS[g]=c;});});
 var HD_CHANNELS = [[1,8,"Inspiration"],[2,14,"The Beat"],[3,60,"Mutation"],[4,63,"Logic"],[5,15,"Rhythm"],[6,59,"Mating"],[7,31,"The Alpha"],[9,52,"Concentration"],[10,20,"Awakening"],[10,34,"Exploration"],[10,57,"Perfected Form"],[11,56,"Curiosity"],[12,22,"Openness"],[13,33,"The Prodigal"],[16,48,"Talent"],[17,62,"Acceptance"],[18,58,"Judgment"],[19,49,"Synthesis"],[20,34,"Charisma"],[20,57,"The Brain Wave"],[21,45,"Money"],[23,43,"Structuring"],[24,61,"Awareness"],[25,51,"Initiation"],[26,44,"Surrender"],[27,50,"Preservation"],[28,38,"Struggle"],[29,46,"Discovery"],[30,41,"Recognition"],[32,54,"Transformation"],[34,57,"Power"],[35,36,"Transitoriness"],[37,40,"Community"],[39,55,"Emoting"],[42,53,"Maturation"],[47,64,"Abstraction"]];
 
+var TRANSIT_LIBRARY_URL = "https://www.mamiwataorganics.com/pages/manifest22transitguidebooklibrary";
+
+var STORAGE_KEY='mwm_state_v1', STORAGE_DAYS=30;
+function gv(id){var el=document.getElementById(id);return el?el.value:'';}
+function gt(id){var el=document.getElementById(id);return el?el.textContent:'';}
+function saveState(){
+  try{
+    var s={t:Date.now(),f:{
+      pn:gv('person-name'),pn2:gv('person-name-2'),ct:gv('chart-type'),
+      bd:gv('birth-date'),bt:gv('birth-time'),ls:gv('location-search'),
+      lat:gv('latitude'),lng:gv('longitude'),sl:gt('selected-location'),
+      hs:gv('house-system'),td:gv('transit-date'),tt:gv('transit-time'),
+      tls:gv('transit-location-search'),tlat:gv('transit-latitude'),tlng:gv('transit-longitude'),
+      tsl:gt('transit-selected-location'),bd2:gv('birth-date-2'),bt2:gv('birth-time-2'),
+      ls2:gv('location-search-2'),lat2:gv('latitude-2'),lng2:gv('longitude-2'),
+      sl2:gt('selected-location-2'),r:document.getElementById('result').innerHTML
+    }};
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(s));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    var raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return null;
+    var s=JSON.parse(raw);
+    if(Date.now()-s.t>STORAGE_DAYS*86400000){localStorage.removeItem(STORAGE_KEY);return null;}
+    return s.f;
+  }catch(e){return null;}
+}
+function restoreState(){
+  var f=loadState();if(!f)return;
+  function sv(id,v){var el=document.getElementById(id);if(el&&v!==undefined&&v!==null)el.value=v;}
+  function st(id,v){var el=document.getElementById(id);if(el&&v)el.textContent=v;}
+  sv('person-name',f.pn);sv('person-name-2',f.pn2);sv('chart-type',f.ct);
+  sv('birth-date',f.bd);sv('birth-time',f.bt);sv('location-search',f.ls);
+  sv('latitude',f.lat);sv('longitude',f.lng);st('selected-location',f.sl);
+  sv('house-system',f.hs);sv('transit-date',f.td);sv('transit-time',f.tt);
+  sv('transit-location-search',f.tls);sv('transit-latitude',f.tlat);sv('transit-longitude',f.tlng);
+  st('transit-selected-location',f.tsl);sv('birth-date-2',f.bd2);sv('birth-time-2',f.bt2);
+  sv('location-search-2',f.ls2);sv('latitude-2',f.lat2);sv('longitude-2',f.lng2);
+  st('selected-location-2',f.sl2);
+  if(f.r){
+    document.getElementById('result').innerHTML=f.r;
+    var b=document.getElementById('saved-banner');
+    b.classList.remove('hidden');
+    setTimeout(function(){b.style.opacity='0';setTimeout(function(){b.classList.add('hidden');},700);},5000);
+  }
+  document.getElementById('chart-type').dispatchEvent(new Event('change'));
+}
+
 var swe=null,sweReady=false;
 var statusEl=document.getElementById("engine-status");
 var btn=document.getElementById("generate-btn");
-(async function(){try{swe=new SwissEph();await swe.initSwissEph();sweReady=true;statusEl.textContent="\u2756 Engine ready \u2756";statusEl.classList.add("ready");btn.disabled=false;}catch(e){console.error(e);statusEl.textContent="\u26A0 Engine failed to load. Reload the page.";statusEl.classList.add("error");}})();
+(async function(){try{swe=new SwissEph();await swe.initSwissEph();sweReady=true;statusEl.textContent="\u2756 Mami Wata's Mirror \u2756";statusEl.classList.add("ready");btn.disabled=false;}catch(e){console.error(e);statusEl.textContent="\u26A0 Engine failed to load. Reload the page.";statusEl.classList.add("error");}})();
 
 var chartTypeSelect=document.getElementById("chart-type");
 chartTypeSelect.addEventListener("change",function(){
   var t=chartTypeSelect.value;
   document.getElementById("transit-section").classList.toggle("hidden",t!=="transit");
   document.getElementById("synastry-section").classList.toggle("hidden",t!=="synastry");
+  saveState();
+});
+
+['person-name','person-name-2','chart-type','birth-date','birth-time','location-search','house-system','transit-date','transit-time','transit-location-search','birth-date-2','birth-time-2','location-search-2'].forEach(function(id){var el=document.getElementById(id);if(el){el.addEventListener('change',saveState);el.addEventListener('input',saveState);}});
+
+document.getElementById('clear-btn').addEventListener('click',function(){
+  if(confirm('Clear your saved chart and start over?')){
+    try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+    location.reload();
+  }
 });
 
 function norm360(x){x=x%360;return x<0?x+360:x;}
@@ -955,7 +1048,7 @@ function generateNatalChart(y,m,d,h,mn,la,ln,hs,tz){
   var houses=cusps.map(function(lon,i){var dms=splitDMS(lon);return{number:i+1,sign:SIGN_NAMES[dms.sign],signSymbol:SIGN_SYMBOLS[dms.sign],degreesInSign:dms.deg,minutes:dms.min,eclipticLongitude:lon};});
   var ap=pd.map(function(pl){return{name:pl.name,longitude:pl.longitude};});
   ap.push({name:"Ascendant",longitude:asc});ap.push({name:"Midheaven",longitude:mc});
-  return{type:"natal",engine:mosh?"Moshier (built-in)":"Swiss Ephemeris",planets:planets,angles:{ascendant:{sign:SIGN_NAMES[aD.sign],signSymbol:SIGN_SYMBOLS[aD.sign],degreesInSign:aD.deg,minutes:aD.min,eclipticLongitude:asc},midheaven:{sign:SIGN_NAMES[mD.sign],signSymbol:SIGN_SYMBOLS[mD.sign],degreesInSign:mD.deg,minutes:mD.min,eclipticLongitude:mc}},houses:houses,aspects:calcAspects(ap)};
+  return{type:"natal",engine:mosh?"Moshier (built-in)":"Swiss Ephemeris",planets:planets,angles:{ascendant:{sign:SIGN_NAMES[aD.sign],signSymbol:SIGN_SYMBOLS[aD.sign],degreesInSign:aD.deg,minutes:aD.min,eclipticLongitude:asc},midheaven:{sign:SIGN_NAMES[mD.sign],signSymbol:SIGN_SYMBOLS[mD.sign],degreesInSign:mD.deg,minutes:mD.min,eclipticLongitude:mc}},houses:houses,aspects:calcAspects(ap),julianDay:jd};
 }
 
 function generateTransitChart(nA,tA){
@@ -997,10 +1090,10 @@ function generateHumanDesignChart(y,m,d,h,mn,la,ln,tz){
   function pathExists(s,e,v){v=v||{};if(s===e)return true;if(v[s])return false;v[s]=true;var n=conn[s]||[];for(var i=0;i<n.length;i++)if(pathExists(n[i],e,v))return true;return false;}
   var sacD=dC["Sacral"],thrD=dC["Throat"];
   var mTT=false;["Sacral","Heart","Solar","Root"].forEach(function(mo){if(dC[mo]&&thrD&&pathExists(mo,"Throat",{}))mTT=true;});
-  var hT,st,sg,ns,anyD=Object.keys(dC).length>0;
-  if(!anyD){hT="Reflector";st="Wait a Lunar Cycle";sg="Surprise";ns="Disappointment";}
-  else if(sacD){if(mTT){hT="Manifesting Generator";st="Wait to Respond, then Inform";sg="Satisfaction";ns="Frustration & Anger";}else{hT="Generator";st="Wait to Respond";sg="Satisfaction";ns="Frustration";}}
-  else{if(mTT){hT="Manifestor";st="Inform Before Acting";sg="Peace";ns="Anger";}else{hT="Projector";st="Wait for the Invitation";sg="Success";ns="Bitterness";}}
+  var hT,strat,sg,ns,anyD=Object.keys(dC).length>0;
+  if(!anyD){hT="Reflector";strat="Wait a Lunar Cycle";sg="Surprise";ns="Disappointment";}
+  else if(sacD){if(mTT){hT="Manifesting Generator";strat="Wait to Respond, then Inform";sg="Satisfaction";ns="Frustration & Anger";}else{hT="Generator";strat="Wait to Respond";sg="Satisfaction";ns="Frustration";}}
+  else{if(mTT){hT="Manifestor";strat="Inform Before Acting";sg="Peace";ns="Anger";}else{hT="Projector";strat="Wait for the Invitation";sg="Success";ns="Bitterness";}}
   var auth;
   if(dC["Solar"])auth="Emotional (Solar Plexus)";
   else if(sacD)auth="Sacral";
@@ -1012,15 +1105,61 @@ function generateHumanDesignChart(y,m,d,h,mn,la,ln,tz){
   else auth="None";
   var prof=pers[0].line+"/"+des[0].line;
   var cL=Object.keys(dC),vis={},isl=0;
-  cL.forEach(function(c){if(!vis[c]){isl++;var st=[c];while(st.length){var cu=st.pop();if(vis[cu])continue;vis[cu]=true;(conn[cu]||[]).forEach(function(n){if(!vis[n])st.push(n);});}}});
+  cL.forEach(function(c){if(!vis[c]){isl++;var stk=[c];while(stk.length){var cu=stk.pop();if(vis[cu])continue;vis[cu]=true;(conn[cu]||[]).forEach(function(n){if(!vis[n])stk.push(n);});}}});
   var def=isl===0?"None (Reflector)":isl===1?"Single Definition":isl===2?"Split Definition":isl===3?"Triple-Split Definition":"Quadruple-Split Definition";
   var cross="Cross of "+pers[0].gate+"/"+pers[1].gate+" | "+des[0].gate+"/"+des[1].gate;
-  return{type:"human-design",engine:mosh?"Moshier":"Swiss Ephemeris",personalityPlanets:pers,designPlanets:des,activatedGates:aG,personalityGates:pG,designGates:dG,definedChannels:dCh,definedCenters:dC,hdType:hT,strategy:st,authority:auth,profile:prof,definition:def,signature:sg,notSelf:ns,incarnationCross:cross};
+  return{type:"human-design",engine:mosh?"Moshier":"Swiss Ephemeris",personalityPlanets:pers,designPlanets:des,activatedGates:aG,personalityGates:pG,designGates:dG,definedChannels:dCh,definedCenters:dC,hdType:hT,strategy:strat,authority:auth,profile:prof,definition:def,signature:sg,notSelf:ns,incarnationCross:cross};
 }
 
-/* ============================================================
-   LOCATION SEARCH & TIMEZONE
-   ============================================================ */
+function obliquity(jd){var T=(jd-2451545.0)/36525;return 23.43929111-0.0130041667*T-1.6388889e-7*T*T+5.0361111e-7*T*T*T;}
+function eclToEqu(lon,lat,eps){var lonR=lon*Math.PI/180,latR=lat*Math.PI/180,epsR=eps*Math.PI/180;var sinDec=Math.sin(latR)*Math.cos(epsR)+Math.cos(latR)*Math.sin(epsR)*Math.sin(lonR);var dec=Math.asin(sinDec)*180/Math.PI;var y=Math.sin(lonR)*Math.cos(epsR)-Math.tan(latR)*Math.sin(epsR);var x=Math.cos(lonR);var ra=Math.atan2(y,x)*180/Math.PI;if(ra<0)ra+=360;return{ra:ra,dec:dec};}
+function gmst(jd){var T=(jd-2451545.0)/36525;var g=280.46061837+360.98564736629*(jd-2451545.0)+0.000387933*T*T-T*T*T/38710000.0;return ((g%360)+360)%360;}
+function generateAstrocartography(natal){
+  var jd=natal.julianDay;
+  var eps=obliquity(jd);
+  var gmstDeg=gmst(jd);
+  var planets=[
+    {name:"Sun",symbol:"\u2609",color:"#f4d35e"},
+    {name:"Moon",symbol:"\u263D",color:"#c8d6e5"},
+    {name:"Mercury",symbol:"\u263F",color:"#a8e6cf"},
+    {name:"Venus",symbol:"\u2640",color:"#ffaaa5"},
+    {name:"Mars",symbol:"\u2642",color:"#ff6b6b"},
+    {name:"Jupiter",symbol:"\u2643",color:"#ffd166"},
+    {name:"Saturn",symbol:"\u2644",color:"#b8b09a"},
+    {name:"Uranus",symbol:"\u2645",color:"#7cc3d4"},
+    {name:"Neptune",symbol:"\u2646",color:"#6699cc"},
+    {name:"Pluto",symbol:"\u2647",color:"#a06ec5"}
+  ];
+  var lines=[];
+  planets.forEach(function(pl){
+    var nat=natal.planets.filter(function(np){return np.name===pl.name;})[0];
+    if(!nat)return;
+    var eq=eclToEqu(nat.eclipticLongitude,0,eps);
+    var mcLon=eq.ra-gmstDeg;
+    while(mcLon>180)mcLon-=360;while(mcLon<-180)mcLon+=360;
+    var icLon=mcLon+180;
+    if(icLon>180)icLon-=360;
+    var ascPoints=[],dscPoints=[];
+    for(var phi=-80;phi<=80;phi+=2){
+      var phiR=phi*Math.PI/180,decR=eq.dec*Math.PI/180;
+      var cosH=-Math.tan(phiR)*Math.tan(decR);
+      if(cosH<-1||cosH>1)continue;
+      var H=Math.acos(cosH)*180/Math.PI;
+      var lstAsc=eq.ra+H,lstDsc=eq.ra-H;
+      var lonAsc=lstAsc-gmstDeg,lonDsc=lstDsc-gmstDeg;
+      while(lonAsc>180)lonAsc-=360;while(lonAsc<-180)lonAsc+=360;
+      while(lonDsc>180)lonDsc-=360;while(lonDsc<-180)lonDsc+=360;
+      ascPoints.push({lat:phi,lon:lonAsc});
+      dscPoints.push({lat:phi,lon:lonDsc});
+    }
+    lines.push({planet:pl.name,symbol:pl.symbol,color:pl.color,type:"MC",lon:mcLon});
+    lines.push({planet:pl.name,symbol:pl.symbol,color:pl.color,type:"IC",lon:icLon});
+    lines.push({planet:pl.name,symbol:pl.symbol,color:pl.color,type:"ASC",points:ascPoints});
+    lines.push({planet:pl.name,symbol:pl.symbol,color:pl.color,type:"DSC",points:dscPoints});
+  });
+  return{type:"astrocartography",lines:lines,planets:planets};
+}
+
 function setupLocationSearch(iI,rI,laI,lnI,sI){
   var inp=document.getElementById(iI),res=document.getElementById(rI),laInp=document.getElementById(laI),lnInp=document.getElementById(lnI),sel=document.getElementById(sI),t;
   function tryGeocode(q){
@@ -1075,6 +1214,7 @@ function setupLocationSearch(iI,rI,laI,lnI,sI){
             inp.value=this.dataset.name;
             sel.textContent="\u2713 "+this.dataset.name;
             res.innerHTML="";
+            saveState();
           });
         });
       });
@@ -1089,9 +1229,6 @@ function getTimezoneOffset(y,m,d,la,ln){
   return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(tz.hasDayLightSaving){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
 }
 
-/* ============================================================
-   MODAL SYSTEM
-   ============================================================ */
 var modalBackdrop=document.getElementById("modal-backdrop");
 var modalClose=document.getElementById("modal-close");
 var modalEyebrow=document.getElementById("modal-eyebrow");
@@ -1105,13 +1242,13 @@ function showModal(eyebrow,title,subtitle,bodyHtml){
   modalBody.innerHTML=bodyHtml||"";
   modalBackdrop.classList.add("open");
   modalBackdrop.scrollTop=0;
+  document.body.style.overflow="hidden";
 }
-function hideModal(){modalBackdrop.classList.remove("open");}
+function hideModal(){modalBackdrop.classList.remove("open");document.body.style.overflow="";}
 modalClose.addEventListener("click",hideModal);
 modalBackdrop.addEventListener("click",function(e){if(e.target===modalBackdrop)hideModal();});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")hideModal();});
 
-function fmtPos(p){return p.degreesInSign+"\u00B0 "+String(p.minutes).padStart(2,"0")+"\u2032 "+(p.seconds!==undefined?String(p.seconds).padStart(2,"0")+"\u2033 ":"")+(p.signSymbol||"")+" "+(p.sign||"");}
 function rowsHtml(rows){return rows.map(function(r){return '<div class="field-row"><span class="lbl">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>';}).join("");}
 
 function showPlanetInterp(p){
@@ -1126,48 +1263,23 @@ function showPlanetInterp(p){
   if(p.house&&INTERP_HOUSES[p.house]){var h=INTERP_HOUSES[p.house];body+='<p><strong>In your '+h.name+' ('+h.domain+'):</strong> '+h.text+'</p>';}
   showModal(p.name,p.name+" in "+p.sign,p.degreesInSign+"\u00B0 "+p.sign+(p.house?" \u00B7 House "+p.house:""),body);
 }
-function showSignInterp(signName){
-  var s=INTERP_SIGNS[signName];if(!s)return;
-  var body='<p>'+s.text+'</p><div style="margin-top:14px;">'+rowsHtml([["Element",s.element],["Modality",s.modality],["Ruler",s.ruler]])+'</div>';
-  showModal("Zodiac Sign",signName,s.element+" \u00B7 "+s.modality,body);
-}
-function showHouseInterp(num){
-  var h=INTERP_HOUSES[num];if(!h)return;
-  showModal("House "+num,h.name,h.domain,'<p>'+h.text+'</p>');
-}
-function showAspectInterp(asp){
-  var a=INTERP_ASPECTS[asp.type];
-  var body='<p>'+(a?a.text:"")+'</p><div style="margin-top:14px;">'+rowsHtml([["From",asp.point1],["To",asp.point2],["Aspect",asp.type],["Orb",parseFloat(asp.orb).toFixed(2)+"\u00B0"]])+'</div>';
-  showModal("Aspect",asp.point1+" "+asp.type+" "+asp.point2,a?a.text.split(":")[0]:"",body);
-}
-function showGateInterp(gateNum,line,planetName,activation){
-  var g=INTERP_HD_GATES[gateNum];if(!g)return;
-  var center=HD_GATE_CENTERS[gateNum]||"";
-  var subtitle='Gate '+gateNum+(line?'.'+line:'')+(center?' \u00B7 '+center+' Center':'');
-  var body='<p>'+g.text+'</p>';
-  body+='<div style="margin:14px 0;">'+rowsHtml([["Gate",gateNum+(line?'.'+line:'')],["Theme",g.hex],["Center",center||"\u2014"],["Activation",activation||"\u2014"],planetName?["Body",planetName]:null].filter(Boolean))+'</div>';
-  showModal("Gate "+gateNum,g.name,subtitle,body);
-}
-function showCenterInterp(name,defined){
-  var c=INTERP_HD_CENTERS[name];if(!c)return;
-  showModal("Center",name+" Center",defined?"Defined":"Undefined / Open",'<p>'+c.text+'</p>');
-}
-function showChannelInterp(g1,g2){
-  var key=g1<g2?g1+"-"+g2:g2+"-"+g1;
-  var ch=INTERP_HD_CHANNELS[key];if(!ch)return;
-  var c1=HD_GATE_CENTERS[g1],c2=HD_GATE_CENTERS[g2];
-  showModal("Channel",ch.name,"Channel "+key+" \u00B7 "+c1+" \u2194 "+c2,'<p>'+ch.text+'</p>');
-}
+function showSignInterp(signName){var s=INTERP_SIGNS[signName];if(!s)return;var body='<p>'+s.text+'</p><div style="margin-top:14px;">'+rowsHtml([["Element",s.element],["Modality",s.modality],["Ruler",s.ruler]])+'</div>';showModal("Zodiac Sign",signName,s.element+" \u00B7 "+s.modality,body);}
+function showHouseInterp(num){var h=INTERP_HOUSES[num];if(!h)return;showModal("House "+num,h.name,h.domain,'<p>'+h.text+'</p>');}
+function showAspectInterp(asp){var a=INTERP_ASPECTS[asp.type];var body='<p>'+(a?a.text:"")+'</p><div style="margin-top:14px;">'+rowsHtml([["From",asp.point1],["To",asp.point2],["Aspect",asp.type],["Orb",parseFloat(asp.orb).toFixed(2)+"\u00B0"]])+'</div>';showModal("Aspect",asp.point1+" "+asp.type+" "+asp.point2,a?a.text.split(":")[0]:"",body);}
+function showGateInterp(gateNum,line,planetName,activation){var g=INTERP_HD_GATES[gateNum];if(!g)return;var center=HD_GATE_CENTERS[gateNum]||"";var subtitle='Gate '+gateNum+(line?'.'+line:'')+(center?' \u00B7 '+center+' Center':'');var body='<p>'+g.text+'</p>';body+='<div style="margin:14px 0;">'+rowsHtml([["Gate",gateNum+(line?'.'+line:'')],["Theme",g.hex],["Center",center||"\u2014"],["Activation",activation||"\u2014"],planetName?["Body",planetName]:null].filter(Boolean))+'</div>';showModal("Gate "+gateNum,g.name,subtitle,body);}
+function showCenterInterp(name,defined){var c=INTERP_HD_CENTERS[name];if(!c)return;showModal("Center",name+" Center",defined?"Defined":"Undefined / Open",'<p>'+c.text+'</p>');}
+function showChannelInterp(g1,g2){var key=g1<g2?g1+"-"+g2:g2+"-"+g1;var ch=INTERP_HD_CHANNELS[key];if(!ch)return;var c1=HD_GATE_CENTERS[g1],c2=HD_GATE_CENTERS[g2];showModal("Channel",ch.name,"Channel "+key+" \u00B7 "+c1+" \u2194 "+c2,'<p>'+ch.text+'</p>');}
 function showTypeInterp(type){var t=INTERP_HD_TYPE[type];if(!t)return;showModal("Type",type,"Strategy: "+t.strategy,'<p>'+t.text+'</p>');}
 function showAuthorityInterp(auth){var a=INTERP_HD_AUTHORITY[auth];if(!a)return;showModal("Authority",auth,"Inner Decision-Making",'<p>'+a.text+'</p>');}
 function showProfileInterp(prof){var p=INTERP_HD_PROFILE[prof];if(!p)return;showModal("Profile",prof,"Life Theme",'<p>'+p.text+'</p>');}
 function showDefinitionInterp(def){var d=INTERP_HD_DEFINITION[def];if(!d)return;showModal("Definition",def,"How Your Energy Flows",'<p>'+d.text+'</p>');}
+function showAstroLineInterp(planet,lineType){var pInfo=INTERP_PLANETS[planet],lInfo=INTERP_ASTRO_LINES[lineType];var body='';if(lInfo)body+='<p>'+lInfo.text+'</p>';if(pInfo)body+='<p><strong>About '+planet+':</strong> '+pInfo.text+'</p>';showModal("Astrocartography Line",planet+" "+lineType+" Line",lineType+" Line of "+planet,body);}
 
-window._mami={showPlanetInterp:showPlanetInterp,showSignInterp:showSignInterp,showHouseInterp:showHouseInterp,showAspectInterp:showAspectInterp,showGateInterp:showGateInterp,showCenterInterp:showCenterInterp,showChannelInterp:showChannelInterp,showTypeInterp:showTypeInterp,showAuthorityInterp:showAuthorityInterp,showProfileInterp:showProfileInterp,showDefinitionInterp:showDefinitionInterp};
+window._mami={showPlanetInterp:showPlanetInterp,showSignInterp:showSignInterp,showHouseInterp:showHouseInterp,showAspectInterp:showAspectInterp,showGateInterp:showGateInterp,showCenterInterp:showCenterInterp,showChannelInterp:showChannelInterp,showTypeInterp:showTypeInterp,showAuthorityInterp:showAuthorityInterp,showProfileInterp:showProfileInterp,showDefinitionInterp:showDefinitionInterp,showAstroLineInterp:showAstroLineInterp};
 
-/* ============================================================
-   FORM HANDLER
-   ============================================================ */
+function getName(){var n=document.getElementById('person-name').value.trim();return n?n+"'s":"Your";}
+function getName2(){var n=document.getElementById('person-name-2').value.trim();return n||"Partner";}
+
 var resultDiv=document.getElementById("result");
 btn.addEventListener("click",function(){
   if(!sweReady){resultDiv.innerHTML='<div class="error">Engine still loading.</div>';return;}
@@ -1180,15 +1292,16 @@ btn.addEventListener("click",function(){
   resultDiv.innerHTML='<div class="loading">Casting your chart \u2026</div>';
   getTimezoneOffset(y,m,d,la,ln).then(function(tz){
     try{
-      if(ct==="natal"){renderNatalChart(generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz));}
-      else if(ct==="human-design"){renderHumanDesign(generateHumanDesignChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),tz));}
+      if(ct==="natal"){renderNatalChart(generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz));saveState();}
+      else if(ct==="human-design"){renderHumanDesign(generateHumanDesignChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),tz));saveState();}
+      else if(ct==="astrocartography"){var natal=generateNatalChart(y,m,d,h,mn,parseFloat(la),parseFloat(ln),hs,tz);renderAstrocartography(generateAstrocartography(natal),natal);saveState();}
       else if(ct==="transit"){
         var tD=document.getElementById("transit-date").value,tT=document.getElementById("transit-time").value||"12:00";
         var tLa=document.getElementById("transit-latitude").value||la,tLn=document.getElementById("transit-longitude").value||ln;
         if(!tD){var n=new Date();tD=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");}
         var tdp=tD.split("-"),ttp=tT.split(":");
         getTimezoneOffset(parseInt(tdp[0]),parseInt(tdp[1]),parseInt(tdp[2]),tLa,tLn).then(function(tT2){
-          renderTransitChart(generateTransitChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:parseInt(tdp[0]),month:parseInt(tdp[1]),day:parseInt(tdp[2]),hour:parseInt(ttp[0]),minute:parseInt(ttp[1]),tzOffsetHours:tT2}));
+          renderTransitChart(generateTransitChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:parseInt(tdp[0]),month:parseInt(tdp[1]),day:parseInt(tdp[2]),hour:parseInt(ttp[0]),minute:parseInt(ttp[1]),tzOffsetHours:tT2}));saveState();
         });
       }
       else if(ct==="synastry"){
@@ -1197,17 +1310,14 @@ btn.addEventListener("click",function(){
         if(!d2||!t2||!la2||!ln2){resultDiv.innerHTML='<div class="error">Please complete the partner\u2019s birth information too.</div>';return;}
         var dp2=d2.split("-"),tp2=t2.split(":"),y2=parseInt(dp2[0]),m2=parseInt(dp2[1]),day2=parseInt(dp2[2]),h2=parseInt(tp2[0]),mn2=parseInt(tp2[1]);
         getTimezoneOffset(y2,m2,day2,la2,ln2).then(function(tz2){
-          renderSynastryChart(generateSynastryChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:y2,month:m2,day:day2,hour:h2,minute:mn2,lat:parseFloat(la2),lng:parseFloat(ln2),houseSystem:hs,tzOffsetHours:tz2}));
+          renderSynastryChart(generateSynastryChart({year:y,month:m,day:d,hour:h,minute:mn,lat:parseFloat(la),lng:parseFloat(ln),houseSystem:hs,tzOffsetHours:tz},{year:y2,month:m2,day:day2,hour:h2,minute:mn2,lat:parseFloat(la2),lng:parseFloat(ln2),houseSystem:hs,tzOffsetHours:tz2}));saveState();
         });
       }
     }catch(e){console.error(e);resultDiv.innerHTML='<div class="error">Error: '+e.message+'</div>';}
   });
 });
 
-/* ============================================================
-   WHEEL RENDERING (clickable)
-   ============================================================ */
-function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt,wheelData){
+function buildWheelSVG(planets,houses,ascLon,mcLon,aspects,opt){
   opt=opt||{};
   function eclToSvg(lon){return 180+(lon-ascLon);}
   function polar(cx,cy,r,deg){var rad=(deg*Math.PI)/180;return{x:cx+r*Math.cos(rad),y:cy-r*Math.sin(rad)};}
@@ -1257,11 +1367,9 @@ function tableOfAspects(t,a,clickKey){
 
 function renderNatalChart(d){
   var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects,{planetsKey:"_natalP"});
-  var html='<div class="chart-wrapper"><h2>Your Natal Chart</h2><div class="chart-meta">'+d.engine+'</div>'+svg;
+  var html='<div class="chart-wrapper"><h2>'+getName()+' Natal Chart</h2><div class="chart-meta">'+d.engine+'</div>'+svg;
   html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
   html+='<div class="section-title">Angles</div>';
-  window._ascData={name:"Ascendant",sign:d.angles.ascendant.sign,signSymbol:d.angles.ascendant.signSymbol,degreesInSign:d.angles.ascendant.degreesInSign,minutes:d.angles.ascendant.minutes};
-  window._mcData={name:"Midheaven",sign:d.angles.midheaven.sign,signSymbol:d.angles.midheaven.signSymbol,degreesInSign:d.angles.midheaven.degreesInSign,minutes:d.angles.midheaven.minutes};
   html+='<table class="data-table"><tbody>';
   html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.ascendant.sign+'\')"><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"\u2032</td></tr>";
   html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.midheaven.sign+'\')"><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"\u2032</td></tr>";
@@ -1272,7 +1380,9 @@ function renderNatalChart(d){
 function renderTransitChart(d){
   var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
   var svg=buildWheelSVG(d.natal.planets,d.natal.houses,d.natal.angles.ascendant.eclipticLongitude,d.natal.angles.midheaven.eclipticLongitude,d.natal.aspects,{overlayPlanets:ov,overlayColor:"#4a6b8e",ringRadius:215,overlayRingRadius:240,planetsKey:"_transitNatal",overlayKey:"_transitOverlay"});
-  var html='<div class="chart-wrapper"><h2>Transit Chart</h2><div class="chart-meta">Transits for '+d.transitDate+' \u00B7 '+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Natal &nbsp; <span class="swatch" style="background:#4a6b8e;"></span>Outer: Transits</div>'+svg;
+  var html='<div class="chart-wrapper">';
+  html+='<div class="transit-banner"><a href="'+TRANSIT_LIBRARY_URL+'" target="_top">Read the Transit Library to understand what these transits mean <span class="arrow">\u2192</span></a></div>';
+  html+='<h2>'+getName()+' Transit Chart</h2><div class="chart-meta">Transits for '+d.transitDate+' \u00B7 '+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Natal &nbsp; <span class="swatch" style="background:#4a6b8e;"></span>Outer: Transits</div>'+svg;
   html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
   html+=tableOfPlanets("Natal Planets",d.natal.planets,true,"_tNatal")+tableOfPlanets("Transiting Planets",d.transitPlanets,true,"_tTransit")+tableOfAspects("Transit-to-Natal Aspects",d.interAspects,"_tAspects")+'</div>';
   resultDiv.innerHTML=html;
@@ -1280,16 +1390,13 @@ function renderTransitChart(d){
 function renderSynastryChart(d){
   var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
   var svg=buildWheelSVG(d.natalA.planets,d.natalA.houses,d.natalA.angles.ascendant.eclipticLongitude,d.natalA.angles.midheaven.eclipticLongitude,null,{overlayPlanets:ov,overlayColor:"#d4b675",ringRadius:215,overlayRingRadius:240,planetsKey:"_synA",overlayKey:"_synB"});
-  var html='<div class="chart-wrapper"><h2>Synastry Chart</h2><div class="chart-meta">'+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: Person A &nbsp; <span class="swatch" style="background:#d4b675;"></span>Outer: Person B</div>'+svg;
+  var nm1=document.getElementById('person-name').value.trim()||"Person A";
+  var nm2=getName2();
+  var html='<div class="chart-wrapper"><h2>'+nm1+' &amp; '+nm2+'</h2><div class="chart-meta">Synastry Chart \u00B7 '+d.engine+'</div><div class="legend"><span class="swatch" style="background:#e9cb8a;"></span>Inner: '+nm1+' &nbsp; <span class="swatch" style="background:#d4b675;"></span>Outer: '+nm2+'</div>'+svg;
   html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
-  html+=tableOfPlanets("Person A",d.natalA.planets,true,"_synAT")+tableOfPlanets("Person B",d.natalB.planets,true,"_synBT")+tableOfAspects("Inter-Chart Aspects (A to B)",d.interAspects,"_synAspects")+'</div>';
+  html+=tableOfPlanets(nm1,d.natalA.planets,true,"_synAT")+tableOfPlanets(nm2,d.natalB.planets,true,"_synBT")+tableOfAspects("Inter-Chart Aspects",d.interAspects,"_synAspects")+'</div>';
   resultDiv.innerHTML=html;
 }
-
-/* ============================================================
-   BODYGRAPH - corrected gate positions on center perimeters
-   Each gate has its own (x,y) where the channel line connects.
-   ============================================================ */
 
 var BODYGRAPH_CENTERS = {
   Head: { shape: "triangle-up", points: [[200,30],[260,120],[140,120]], cx: 200, cy: 90, color: "#f4d35e" },
@@ -1303,85 +1410,30 @@ var BODYGRAPH_CENTERS = {
   Root: { shape: "rect", points: [[155,610],[245,610],[245,700],[155,700]], cx: 200, cy: 655, color: "#8b4f3f" }
 };
 
-// Each gate's (x,y) on the perimeter of its center, positioned where the channel line enters
 var BODYGRAPH_GATE_POSITIONS = {
-  // HEAD
-  64: { x: 165, y: 110 },  // bottom-left
-  61: { x: 200, y: 122 },  // bottom-center
-  63: { x: 235, y: 110 },  // bottom-right
-  // AJNA
-  47: { x: 152, y: 152 },  // top-left
-  24: { x: 200, y: 142 },  // top-center
-  4:  { x: 248, y: 152 },  // top-right
-  17: { x: 168, y: 215 },  // bottom-left
-  43: { x: 200, y: 228 },  // bottom-center
-  11: { x: 232, y: 215 },  // bottom-right
-  // THROAT
-  62: { x: 158, y: 260 },  // top-left
-  23: { x: 158, y: 285 },  // mid-left
-  56: { x: 158, y: 310 },  // bottom-left
-  16: { x: 158, y: 332 },  // bottom-bottom-left
-  20: { x: 200, y: 252 },  // top-center
-  31: { x: 242, y: 260 },  // top-right
-  8:  { x: 242, y: 285 },  // mid-right
-  33: { x: 242, y: 310 },  // bottom-right
-  35: { x: 242, y: 332 },  // bottom-bottom-right
-  12: { x: 175, y: 338 },  // bottom-left
-  45: { x: 225, y: 338 },  // bottom-right
-  // G
-  1:  { x: 200, y: 365 },  // top
-  13: { x: 245, y: 405 },  // top-right
-  25: { x: 245, y: 435 },  // bottom-right
-  46: { x: 200, y: 475 },  // bottom
-  2:  { x: 155, y: 435 },  // bottom-left
-  15: { x: 155, y: 405 },  // top-left
-  10: { x: 175, y: 388 },  // top-left-inner
-  7:  { x: 225, y: 388 },  // top-right-inner
-  // HEART
-  21: { x: 285, y: 410 },  // top
-  40: { x: 312, y: 422 },  // right
-  26: { x: 312, y: 442 },  // right-bottom
-  51: { x: 285, y: 455 },  // bottom-left
-  // SPLEEN
-  48: { x: 60, y: 475 },   // top
-  57: { x: 60, y: 495 },   // mid
-  44: { x: 60, y: 515 },   // bottom
-  50: { x: 92, y: 478 },   // top-right
-  32: { x: 100, y: 490 },  // mid-right
-  28: { x: 92, y: 502 },   // bottom-right
-  18: { x: 78, y: 512 },   // bottom-mid
-  // SACRAL
-  34: { x: 158, y: 510 },  // top-left
-  5:  { x: 200, y: 503 },  // top-center
-  14: { x: 242, y: 510 },  // top-right
-  29: { x: 158, y: 545 },  // mid-left
-  59: { x: 200, y: 545 },  // mid-center
-  9:  { x: 242, y: 545 },  // mid-right
-  3:  { x: 158, y: 580 },  // bottom-left
-  42: { x: 200, y: 587 },  // bottom-center
-  27: { x: 242, y: 580 },  // bottom-right
-  // SOLAR
-  6:  { x: 295, y: 510 },  // top
-  37: { x: 320, y: 525 },  // right-top
-  22: { x: 340, y: 533 },  // far-right
-  36: { x: 320, y: 550 },  // right-bottom
-  30: { x: 295, y: 555 },  // bottom-left
-  55: { x: 308, y: 535 },  // mid
-  49: { x: 305, y: 545 },  // mid-bottom
-  // ROOT
-  53: { x: 158, y: 620 },  // top-left
-  60: { x: 200, y: 612 },  // top-center
-  52: { x: 242, y: 620 },  // top-right
-  19: { x: 158, y: 655 },  // mid-left
-  39: { x: 200, y: 655 },  // mid-center
-  41: { x: 242, y: 655 },  // mid-right
-  58: { x: 158, y: 690 },  // bottom-left
-  38: { x: 200, y: 697 },  // bottom-center
-  54: { x: 242, y: 690 }   // bottom-right
+  64:{x:165,y:110},61:{x:200,y:122},63:{x:235,y:110},
+  47:{x:152,y:152},24:{x:200,y:142},4:{x:248,y:152},
+  17:{x:168,y:215},43:{x:200,y:228},11:{x:232,y:215},
+  62:{x:158,y:260},23:{x:158,y:285},56:{x:158,y:310},16:{x:158,y:332},
+  20:{x:200,y:252},31:{x:242,y:260},8:{x:242,y:285},33:{x:242,y:310},35:{x:242,y:332},
+  12:{x:175,y:338},45:{x:225,y:338},
+  1:{x:200,y:365},13:{x:245,y:405},25:{x:245,y:435},46:{x:200,y:475},
+  2:{x:155,y:435},15:{x:155,y:405},10:{x:175,y:388},7:{x:225,y:388},
+  21:{x:285,y:410},40:{x:312,y:422},26:{x:312,y:442},51:{x:285,y:455},
+  48:{x:60,y:475},57:{x:60,y:495},44:{x:60,y:515},
+  50:{x:92,y:478},32:{x:100,y:490},28:{x:92,y:502},18:{x:78,y:512},
+  34:{x:158,y:510},5:{x:200,y:503},14:{x:242,y:510},
+  29:{x:158,y:545},59:{x:200,y:545},9:{x:242,y:545},
+  3:{x:158,y:580},42:{x:200,y:587},27:{x:242,y:580},
+  6:{x:295,y:510},37:{x:320,y:525},22:{x:340,y:533},36:{x:320,y:550},
+  30:{x:295,y:555},55:{x:308,y:535},49:{x:305,y:545},
+  53:{x:158,y:620},60:{x:200,y:612},52:{x:242,y:620},
+  19:{x:158,y:655},39:{x:200,y:655},41:{x:242,y:655},
+  58:{x:158,y:690},38:{x:200,y:697},54:{x:242,y:690}
 };
 
 function renderHumanDesign(d){
-  var html='<div class="chart-wrapper"><h2>Human Design Bodygraph</h2><div class="chart-meta">'+d.engine+'</div>';
+  var html='<div class="chart-wrapper"><h2>'+getName()+' Human Design</h2><div class="chart-meta">'+d.engine+'</div>';
   html+='<div class="hd-summary">';
   html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Type</div><div class="value">'+d.hdType+'</div></div>';
   html+='<div class="hd-summary-item" onclick="window._mami.showTypeInterp(\''+d.hdType+'\')"><div class="label">Strategy</div><div class="value">'+d.strategy+'</div></div>';
@@ -1392,24 +1444,18 @@ function renderHumanDesign(d){
   html+='<div class="hd-summary-item"><div class="label">Not-Self</div><div class="value">'+d.notSelf+'</div></div>';
   html+='</div>';
   html+='<div class="tap-hint">Tap any element of the chart to read its meaning</div>';
-
-  // Build SVG
   var svg='<svg class="bodygraph" viewBox="0 0 400 740" xmlns="http://www.w3.org/2000/svg">';
-
-  // Draw channels FIRST (under centers)
   function gp(g){return BODYGRAPH_GATE_POSITIONS[g];}
   d.definedChannels.forEach(function(ch){
     var p1=gp(ch[0]),p2=gp(ch[1]);if(!p1||!p2)return;
     var bP=d.personalityGates[ch[0]]&&d.personalityGates[ch[1]];
     var bD=d.designGates[ch[0]]&&d.designGates[ch[1]];
     var lc;
-    if(bP&&bD)lc="#e9cb8a";       // both = gold (defined fully)
-    else if(bP)lc="#0a1028";       // personality only = dark/black
-    else lc="#c44536";             // design only = red
+    if(bP&&bD)lc="#e9cb8a";
+    else if(bP)lc="#0a1028";
+    else lc="#c44536";
     svg+='<g class="interactive" onclick="window._mami.showChannelInterp('+ch[0]+','+ch[1]+')"><line x1="'+p1.x+'" y1="'+p1.y+'" x2="'+p2.x+'" y2="'+p2.y+'" stroke="'+lc+'" stroke-width="6" opacity="0.95" stroke-linecap="round"/></g>';
   });
-
-  // Draw centers
   Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){
     var c=BODYGRAPH_CENTERS[cn];
     var defined=d.definedCenters[cn];
@@ -1421,12 +1467,9 @@ function renderHumanDesign(d){
     } else {
       svg+='<g class="interactive" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><polygon points="'+pts+'" fill="'+fl+'" stroke="#d4b675" stroke-width="1.5"/></g>';
     }
-    // Center name
     var labelColor=defined?"#0a0a0a":"#b8b09a";
     svg+='<text x="'+c.cx+'" y="'+c.cy+'" text-anchor="middle" dominant-baseline="central" fill="'+labelColor+'" font-size="10" font-family="Cinzel, serif" font-style="italic" pointer-events="none" letter-spacing="1">'+cn+'</text>';
   });
-
-  // Draw gate numbers ON the centers, at proper positions
   Object.keys(BODYGRAPH_GATE_POSITIONS).forEach(function(gateStr){
     var g=parseInt(gateStr);
     var pos=BODYGRAPH_GATE_POSITIONS[g];
@@ -1434,66 +1477,115 @@ function renderHumanDesign(d){
     var centerDefined=d.definedCenters[center];
     var bP=d.personalityGates[g],bD=d.designGates[g];
     var activated=d.activatedGates[g];
-
-    // Background circle for readability
     var bgFill,textColor;
     if(activated){
-      if(bP&&bD){ bgFill="#e9cb8a"; textColor="#0a0a0a"; }
-      else if(bP){ bgFill="#0a0a0a"; textColor="#e9cb8a"; }
-      else { bgFill="#c44536"; textColor="#ffffff"; }
-    } else {
+      if(bP&&bD){bgFill="#e9cb8a";textColor="#0a0a0a";}
+      else if(bP){bgFill="#0a0a0a";textColor="#e9cb8a";}
+      else{bgFill="#c44536";textColor="#ffffff";}
+    }else{
       bgFill=centerDefined?"rgba(0,0,0,0.15)":"transparent";
       textColor=centerDefined?"#3a3a3a":"#6b6451";
     }
-
     if(activated){
       svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\''+(bP&&bD?"Both Personality & Design":bP?"Personality (Conscious)":"Design (Unconscious)")+'\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="9" fill="'+bgFill+'" stroke="#d4b675" stroke-width="0.8"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="9" font-weight="bold" font-family="Cinzel, serif" pointer-events="none">'+g+'</text></g>';
-    } else {
+    }else{
       svg+='<g class="interactive" onclick="window._mami.showGateInterp('+g+',null,null,\'Not activated\')"><circle cx="'+pos.x+'" cy="'+pos.y+'" r="8" fill="'+bgFill+'" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/><text x="'+pos.x+'" y="'+pos.y+'" text-anchor="middle" dominant-baseline="central" fill="'+textColor+'" font-size="8" font-family="Cinzel, serif" pointer-events="none" opacity="0.7">'+g+'</text></g>';
     }
   });
-
   svg+='</svg>';
   html+=svg;
-
-  // Legend
   html+='<div class="legend" style="margin-top:8px;"><span class="swatch" style="background:#e9cb8a;"></span>Both &nbsp; <span class="swatch" style="background:#0a0a0a;border:1px solid #d4b675;"></span>Personality &nbsp; <span class="swatch" style="background:#c44536;"></span>Design</div>';
-
   html+='<div class="ornament-divider">\u2756 \u272A \u2756</div>';
-
-  // Personality activations table
-  window._hdPers=d.personalityPlanets;
   html+='<div class="section-title">Personality (Conscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
   d.personalityPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Personality (Conscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
   html+='</tbody></table>';
-
-  // Design activations table
-  window._hdDes=d.designPlanets;
   html+='<div class="section-title">Design (Unconscious) Activations</div><div class="tap-hint">Tap any gate to read its meaning</div><table class="data-table"><thead><tr><th>Body</th><th>Gate.Line</th><th>Position</th></tr></thead><tbody>';
   d.designPlanets.forEach(function(pl,i){var dms=splitDMS(pl.longitude);html+='<tr class="clickable" onclick="window._mami.showGateInterp('+pl.gate+','+pl.line+',\''+pl.name+'\',\'Design (Unconscious)\')"><td>'+pl.symbol+' '+pl.name+'</td><td><span class="deg" style="color:#c44536;">'+pl.gate+'.'+pl.line+'</span></td><td>'+SIGN_SYMBOLS[dms.sign]+' '+dms.deg+'\u00B0'+String(dms.min).padStart(2,"0")+"\u2032</td></tr>";});
   html+='</tbody></table>';
-
-  // Channels table
   html+='<div class="section-title">Defined Channels</div><div class="tap-hint">Tap any channel to read its meaning</div>';
-  if(d.definedChannels.length===0){
-    html+='<p style="color:#b8b09a;font-style:italic;text-align:center;padding:14px;">No defined channels.</p>';
-  } else {
-    html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';
-    d.definedChannels.forEach(function(c){html+='<tr class="clickable" onclick="window._mami.showChannelInterp('+c[0]+','+c[1]+')"><td><span class="deg">'+c[0]+'\u2014'+c[1]+'</span></td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});
-    html+='</tbody></table>';
-  }
-
-  // Centers table
+  if(d.definedChannels.length===0){html+='<p style="color:#b8b09a;font-style:italic;text-align:center;padding:14px;">No defined channels.</p>';}else{html+='<table class="data-table"><thead><tr><th>Channel</th><th>Name</th><th>Centers</th></tr></thead><tbody>';d.definedChannels.forEach(function(c){html+='<tr class="clickable" onclick="window._mami.showChannelInterp('+c[0]+','+c[1]+')"><td><span class="deg">'+c[0]+'\u2014'+c[1]+'</span></td><td>'+c[2]+'</td><td>'+HD_GATE_CENTERS[c[0]]+' \u2194 '+HD_GATE_CENTERS[c[1]]+'</td></tr>';});html+='</tbody></table>';}
   html+='<div class="section-title">Centers</div><div class="tap-hint">Tap any center to read its meaning</div><table class="data-table"><thead><tr><th>Center</th><th>State</th></tr></thead><tbody>';
   Object.keys(BODYGRAPH_CENTERS).forEach(function(cn){var defined=d.definedCenters[cn];html+='<tr class="clickable" onclick="window._mami.showCenterInterp(\''+cn+'\','+(defined?'true':'false')+')"><td>'+cn+'</td><td>'+(defined?'<span style="color:#e9cb8a;">Defined</span>':'<span style="color:#b8b09a;">Open</span>')+'</td></tr>';});
   html+='</tbody></table>';
-
   html+='<div class="section-title">Incarnation Cross</div><p style="color:#e9cb8a;font-style:italic;text-align:center;padding:14px 0;font-size:17px;">'+d.incarnationCross+'</p>';
-
   html+='</div>';
   resultDiv.innerHTML=html;
 }
-</script>
 
+function renderAstrocartography(d,natal){
+  var W=720,H=380;
+  var TOP=24;
+  function lonToX(lon){return (lon+180)*W/360;}
+  function latToY(lat){return TOP+(85-lat)*(H-TOP)/170;}
+  var html='<div class="chart-wrapper"><h2>'+getName()+' Astrocartography</h2><div class="chart-meta">Planetary lines on the world map \u00B7 '+(natal.engine||'')+'</div>';
+  html+='<p style="text-align:center;color:var(--ink-soft);font-style:italic;margin-bottom:16px;font-size:14px;">Each line shows where a planet\u2019s energy is strongest. Living, traveling, or working near these lines amplifies that planet\u2019s themes in your life.</p>';
+  var svg='<svg class="astromap" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="background:rgba(13,18,38,0.6);border:1px solid var(--line);">';
+  svg+='<path d="M 130 100 Q 200 80 280 105 L 290 150 Q 250 190 200 200 L 160 180 Q 130 150 130 100 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  svg+='<path d="M 240 220 Q 280 220 300 270 L 285 330 Q 260 340 250 310 L 240 220 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  svg+='<path d="M 360 90 Q 410 80 450 90 L 460 120 Q 430 135 380 130 L 360 90 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  svg+='<path d="M 370 140 Q 430 135 470 165 L 475 220 Q 440 240 400 235 L 370 200 Q 360 170 370 140 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  svg+='<path d="M 470 100 Q 580 85 620 115 Q 640 150 600 180 L 540 185 Q 490 165 470 130 L 470 100 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  svg+='<path d="M 560 240 Q 615 230 625 270 L 600 285 Q 570 280 560 260 L 560 240 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
+  for(var glon=-150;glon<=150;glon+=30){svg+='<line x1="'+lonToX(glon)+'" y1="'+TOP+'" x2="'+lonToX(glon)+'" y2="'+H+'" stroke="rgba(212,182,117,0.08)" stroke-width="0.3"/>';}
+  for(var glat=-60;glat<=60;glat+=30){svg+='<line x1="0" y1="'+latToY(glat)+'" x2="'+W+'" y2="'+latToY(glat)+'" stroke="rgba(212,182,117,0.08)" stroke-width="0.3"/>';}
+  svg+='<line x1="0" y1="'+latToY(0)+'" x2="'+W+'" y2="'+latToY(0)+'" stroke="rgba(212,182,117,0.2)" stroke-width="0.5" stroke-dasharray="3,3"/>';
+  var mcLineGroups={};
+  d.lines.forEach(function(line){
+    var col=line.color;
+    if(line.type==="MC"||line.type==="IC"){
+      var x=lonToX(line.lon);
+      var dash=line.type==="IC"?'stroke-dasharray="4,3"':'';
+      svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><line x1="'+x+'" y1="'+TOP+'" x2="'+x+'" y2="'+H+'" stroke="'+col+'" stroke-width="1.5" opacity="0.8" '+dash+'/></g>';
+      if(line.type==="MC"){
+        var bucket=Math.round(x/24);
+        if(!mcLineGroups[bucket])mcLineGroups[bucket]=[];
+        mcLineGroups[bucket].push({x:x,symbol:line.symbol,color:line.color,planet:line.planet});
+      }
+    }else{
+      if(!line.points||line.points.length<2)return;
+      var dash=line.type==="DSC"?'stroke-dasharray="4,3"':'';
+      var pts=line.points.slice().sort(function(a,b){return a.lat-b.lat;});
+      var segments=[[]],lastLon=null;
+      pts.forEach(function(p){
+        if(lastLon!==null&&Math.abs(p.lon-lastLon)>180){segments.push([]);}
+        segments[segments.length-1].push(p);
+        lastLon=p.lon;
+      });
+      segments.forEach(function(seg){
+        if(seg.length<2)return;
+        var path='M ';
+        seg.forEach(function(p,i){path+=(i?' L ':'')+lonToX(p.lon)+' '+latToY(p.lat);});
+        svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="1.5" opacity="0.8" '+dash+'/></g>';
+      });
+    }
+  });
+  Object.keys(mcLineGroups).forEach(function(b){
+    var group=mcLineGroups[b];
+    group.forEach(function(g,i){
+      var stagger=i%2===0?TOP-8:TOP-2;
+      svg+='<text x="'+g.x+'" y="'+stagger+'" text-anchor="middle" fill="'+g.color+'" font-size="12" font-family="Cinzel, serif" font-weight="bold">'+g.symbol+'</text>';
+    });
+  });
+  svg+='</svg>';
+  html+=svg;
+  html+='<p style="text-align:center;color:var(--ink-faint);font-style:italic;margin-top:10px;font-size:12px;">Symbols at top show planets on their MC line. Use the table below to explore each line\u2019s meaning.</p>';
+  html+='<div class="section-title">Planet Lines</div><div class="tap-hint">Tap any cell below to read its meaning</div>';
+  html+='<table class="data-table"><thead><tr><th>Planet</th><th>MC</th><th>IC</th><th>ASC</th><th>DSC</th></tr></thead><tbody>';
+  d.planets.forEach(function(pl){
+    html+='<tr><td style="color:'+pl.color+';">'+pl.symbol+' '+pl.name+'</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'MC\')" style="cursor:pointer;color:var(--gold-bright);">MC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'IC\')" style="cursor:pointer;color:var(--gold-bright);">IC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'ASC\')" style="cursor:pointer;color:var(--gold-bright);">ASC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'DSC\')" style="cursor:pointer;color:var(--gold-bright);">DSC</td>';
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  html+='<p style="text-align:center;color:var(--ink-faint);font-style:italic;margin-top:18px;font-size:13px;">Solid lines = MC and ASC. Dashed lines = IC and DSC.</p>';
+  html+='</div>';
+  resultDiv.innerHTML=html;
+}
+
+window.addEventListener('load',restoreState);
+</script>
 </body>
 </html>
