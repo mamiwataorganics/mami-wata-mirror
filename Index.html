@@ -15,9 +15,9 @@
     --ink: #f4ecd8;
     --ink-soft: #b8b09a;
     --ink-faint: #6b6451;
-    --gold: #d4b675;
-    --gold-bright: #e9cb8a;
-    --gold-deep: #9a7d3f;
+    --gold: #e8e1cc;
+    --gold-bright: #f4ecd8;
+    --gold-deep: #b8b09a;
     --pearl: #e8e1cc;
     --accent-rose: #c44536;
     --accent-sage: #6b8e4e;
@@ -230,19 +230,19 @@
     width: 100%;
     margin-top: 24px;
     padding: 16px;
-    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-deep) 100%);
-    color: var(--bg-deep);
-    border: none;
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.9);
     font-family: 'Cinzel', serif;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 8px 24px -8px rgba(212,182,117,0.4);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.5);
   }
-  button.primary:hover { transform: translateY(-1px); box-shadow: 0 12px 32px -10px rgba(212,182,117,0.5); }
+  button.primary:hover { transform: translateY(-1px); background: #f4ecd8; box-shadow: 0 12px 32px -10px rgba(0,0,0,0.6); }
   button.primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
   .clear-link {
     display: block;
@@ -740,6 +740,90 @@ var INTERP_ASTRO_LINES = {
   IC: { text: "The IC line is opposite the Midheaven, where this planet was directly beneath you at birth. Living or traveling here brings the planet's themes into your home life, foundations, family, and deepest inner work. It is the most private expression of that planet's energy." },
   ASC: { text: "The Ascendant line is where this planet was rising on the eastern horizon at your birth. Living or traveling here brings the planet's qualities into your personality, body, and the way you first show up to others. It is how you embody that planet." },
   DSC: { text: "The Descendant line is where this planet was setting on the western horizon at your birth. Living or traveling here brings the planet's themes into your relationships, partnerships, and how others meet you. It is what you attract and project." }
+};
+
+var INTERP_ASTRO_COMBOS = {
+
+"Sun_MC": "Living, working, or even visiting near your Sun MC line amplifies your visibility, career, and public reputation in this place. Bosses, opportunities, and audiences find you here, and you may be drawn into leadership without seeking it. This is where the world reflects you back at full strength, which can be intoxicating and exposing in equal measure. The shadow is becoming the role rather than inhabiting it — ego inflation, burnout, or being known for something that isn't quite the real you. Choose this line for chapters where you need to be seen for what you actually do, not chapters where you need to rest. Travel here when you want to be witnessed, when you want a project to land, when you want the part of yourself you've kept private to become the part the world responds to. Under this sun, you are not hidden. The mirror is held up wide enough for the whole sky to see you in it.",
+
+"Sun_IC": "Near your Sun IC line, your private life, home, and inner sense of self come into focus, often more than your public role. Family dynamics intensify here, ancestral patterns surface, and the relationship to your father or to authority itself can be reworked. This is excellent territory for healing roots, raising children, building a home that feels like the marrow of who you are. The shadow is over-identifying with private life and disappearing from public view, or rehearsing old family wounds instead of resolving them. Choose this line for chapters of rebuilding, of going deeper into self-knowledge, of becoming who you were before the world told you who to be. Travel here when you need to remember. This is the still pool, the night sea, the place where the soul sets down its lantern and looks at its own face.",
+
+"Sun_ASC": "Living near your Sun ASC line makes you more vivid, more confident, more visibly yourself — your personality, body, and way of moving in the world all amplify here. People notice you, often before they know why, and physical vitality tends to run higher. This is a powerful line for reinvention, for stepping into a new chapter as a more fully-claimed version of yourself. The shadow is over-shining and burning out, or becoming so identified with how you appear that you lose track of how you feel. Choose this line when you need to be the protagonist of your own life, when you've been small for too long and it's time to take up space again. Travel here when you want to feel like a person and not a function. Here, the water you walk on does not part — it polishes. You will see yourself everywhere you go.",
+
+"Sun_DSC": "Near your Sun DSC line, your closest relationships and partnerships take center stage, often defining the chapter of life you live here. Significant others appear here, business partners arrive, and you learn yourself through whom you choose to stand across from. This is rich territory for marriage, for collaborations, for the kind of love that teaches you who you are by showing you who you are not. The shadow is losing yourself in the other, mirroring instead of being, or attracting partners who shine while you dim. Choose this line for chapters where union is the lesson — not solitude, not crowd, but the steady weight of one chosen other. Travel here when you want to be met. The mirror is held by someone else's hand on this line. What you see is real, and what they see is also real.",
+
+"Moon_MC": "Your Moon MC line brings emotional life, intuition, and nurturing capacity into your public role here. Careers in care, hospitality, art, food, motherhood-as-vocation, or anything that asks you to feel publicly flourish on this line. The general public tends to respond to you with warmth, and your reputation softens — people remember how you made them feel. The shadow is moodiness becoming public, or career success that drains you because every workday asks for emotional labor. Choose this line for chapters where being soft is the strength, where you build something the world receives like a meal. Travel here when you want to be loved by strangers. Under this moon, the tide of your inner life becomes the rhythm of your work. The crowd hums to it without knowing why.",
+
+"Moon_IC": "Your Moon IC line is one of the most deeply nurturing places on your map. Home here feels like home in the marrow, family becomes a real source of belonging, and the inner emotional life finds room to breathe and heal. This is exceptional territory for raising children, for tending grief, for living close to women, water, mothers, or ancestors. The shadow is regression — getting so soft you forget you have edges, or merging with family in ways that erase the self. Choose this line for chapters of deep restoration, for healing the relationship to the feminine, for putting down roots in soil that finally feels yours. Travel here when you need to be held. Here the womb is the world, and the world is your mother's lullaby. You can finally close your eyes.",
+
+"Moon_ASC": "Near your Moon ASC line, your face, body, and immediate presence carry a noticeable softness, sensitivity, and emotional fluency. People feel comforted by you, share their feelings with you unprompted, and your intuition runs high about whoever stands in front of you. This is wonderful territory for healing work, for motherhood, for any role that asks you to receive other people fully. The shadow is absorbing others' emotions and losing the seal of your own skin, or shape-shifting to make those around you comfortable at your own cost. Choose this line for chapters where you want to be permeable on purpose, where feeling is the gift you give. Travel here when you've grown a hard shell and want it dissolved. The moon walks at your side here. She lights everyone you meet, and they look at you the way one looks at calm water.",
+
+"Moon_DSC": "Your Moon DSC line draws nurturing, emotionally fluent, or maternal partners into your life and shapes your relationships around feeling. You meet people here who soothe you, mother you, or whose emotional weather becomes intertwined with yours. Marriage, motherhood through partnership, and chosen family thrive on this line. The shadow is partners who are emotionally enmeshing, who depend on you to manage their feelings, or whom you depend on to manage yours. Choose this line for chapters where you want to be loved in a way that feels like coming home, where intimacy is wet and warm and known. Travel here when you are tired of being self-contained. Here the partner is also the tide — they come back, they come back, they come back. Let yourself be reached.",
+
+"Mercury_MC": "Your Mercury MC line amplifies your voice, your writing, your teaching, and your capacity to be heard in your work. Careers in communication, education, publishing, media, sales, or anything that asks you to translate ideas into form take off near this line. Your name circulates here — people quote you, share your words, remember what you said in meetings. The shadow is overthinking the work, becoming a talking head, or letting your reputation outpace your actual depth. Choose this line for chapters where the message is the work, where you need to be quoted, where what comes out of your mouth must reach far. Travel here when you have something to say. The Hermes of this line moves quickly. He has already delivered your name to all the right doorsteps before you arrived.",
+
+"Mercury_IC": "Your Mercury IC line brings the life of the mind into your private world — study, writing, reading, learning, and intimate conversation flourish at home here. This is exceptional territory for writers, scholars, and anyone whose deepest work happens in solitude with words. Siblings, neighbors, and your sense of mental rootedness intensify on this line. The shadow is a noisy interior, insomnia, ruminating in private, or a home that becomes more office than refuge. Choose this line for chapters of writing the book, finishing the degree, working through old thoughts to find new ones. Travel here when your mind needs to come home to itself. Here, the quiet is a teacher. Every walk you take is a sentence. Every meal is a paragraph. The book is already being written, even when you are not at the desk.",
+
+"Mercury_ASC": "Near your Mercury ASC line, you become noticeably quicker, wittier, more verbal, and more curious. People perceive you as clever and articulate before you've even spoken much, and conversations open easily around you. Networking, short trips, learning languages, and adapting to new environments come naturally on this line. The shadow is restlessness, scattered focus, talking more than listening, or being seen as cleverer than you feel. Choose this line for chapters where you need to think on your feet, when you want to be quick, when a new language or a new mind needs to live in your body. Travel here when you have been silent too long. The wind is on your tongue on this line. Sentences arrive before you have planned them. Listen and let them through.",
+
+"Mercury_DSC": "Your Mercury DSC line brings communicative, intellectual, witty partners into your life and shapes your relationships around conversation. You meet your best collaborators here, business partners who finish your sentences, lovers who text you all day. Long debates, shared reading, and minds that ignite each other characterize this line. The shadow is partners who talk a great game but don't follow through, or relationships built on cleverness with no body underneath them. Choose this line for chapters where you want to be partnered in thinking, where the right brain across from yours is the gift. Travel here when you need a witness with vocabulary. The other you meet here will be a mirror that talks back. Make sure you actually like what they say.",
+
+"Venus_MC": "Your Venus MC line brings beauty, charm, and aesthetic intelligence into your public role. Careers in art, design, fashion, beauty, hospitality, music, or any field that asks for taste and grace bloom near this line. You attract benefactors and admirers, and your reputation acquires a glow that other people instinctively want to be near. The shadow is being valued more for how you look than what you make, or letting charm substitute for substance. Choose this line for chapters when the work itself needs to be beautiful, when relationships and career braid together, when grace is the currency you must spend. Travel here when you want to be adored for what you create. Venus rises with you on this line. Every door you knock on is already half open, and the world has set the table with flowers.",
+
+"Venus_IC": "Your Venus IC line is exquisite territory for home, for love that lives in private rooms, for a daily life made beautiful by your own hand. Home here becomes a sanctuary you genuinely want to be in. Romance, family harmony, and the cultivation of pleasure flourish on this line. The shadow is sliding into indulgence, choosing comfort over growth, or making your home so lovely you stop leaving it. Choose this line for chapters of love, of slow weekends, of finally letting yourself live in a space that reflects what you actually find beautiful. Travel here when you need to remember that pleasure is not optional. The bath is drawn here. The bed is made. The candle has been lit for you specifically. Stay as long as you like.",
+
+"Venus_ASC": "Near your Venus ASC line, you become more attractive — physically, energetically, magnetically. People are drawn to you, find you charming, want to be in your light, sometimes before you have even spoken. This is one of the most beautiful lines on any map for romance, for finding a partner, for entering a new chapter where being yourself happens to also be irresistible. The shadow is over-reliance on charm, performing beauty, or attracting attention you didn't ask for and can't always manage. Choose this line for chapters when you have been invisible and want to be wanted, when you need beauty in your body to remind you that you are alive. Travel here when you have forgotten what your reflection feels like. Venus walks with you on this line. She is not flattering you. She is reminding you of what you actually look like.",
+
+"Venus_DSC": "Your Venus DSC line is the classical line of love, marriage, and beautiful partnership. You meet attractive, loving, harmonious partners here, and existing relationships often flower. Business partnerships and creative collaborations also thrive — anything where two are better than one. The shadow is over-relying on the partner, choosing pretty over true, or attracting beautiful people whose surfaces don't match their depths. Choose this line for chapters when you are ready to be loved well and to love well in return, when the lesson is the daily practice of two. Travel here when you are tired of being alone. The other is already on their way. The light on this line is the kind that makes everyone look like the person you needed.",
+
+"Mars_MC": "Your Mars MC line amplifies your drive, ambition, and capacity for hard, decisive work in your career. You move faster here, take risks more readily, and the world tends to back the bold. Careers in athletics, military, surgery, entrepreneurship, activism, or any field that rewards courage and physical stamina spike on this line. The shadow is workaholism, public conflict, burnout, or making enemies you didn't intend to make. Choose this line for chapters when you need to fight for what you want, when the work requires real war, when you have a goal that won't yield to politeness. Travel here when you have been too patient. The red planet is at your shoulder on this line. You will move. You will not apologize for the speed.",
+
+"Mars_IC": "Your Mars IC line brings energy, drive, and sometimes friction into home and family life. Renovations, building projects, sports practiced from home, or running a business out of your own kitchen all flourish here. There is genuine fuel in the foundations on this line, though the shadow is family conflict, domestic anger, or a home that becomes a battleground rather than a refuge. Choose this line for chapters when you need to reclaim something at the root — fight for your home, your land, your boundaries with relatives. Travel here when something deep in you needs to defend itself. Here, the fire is in the hearth. Tend it. The same flame that warms the room can burn the house down, depending on whose hand is on it.",
+
+"Mars_ASC": "Near your Mars ASC line, you walk with more force, more athletic vitality, more directness, and more visible courage. People perceive you as bold, sometimes intimidating, often sexy in a sharp-edged way. This is exceptional territory for athletes, for soldiers, for anyone needing to claim space and refuse to apologize for it. The shadow is appearing more aggressive than you feel, drawing conflict toward yourself without trying, or running so hot you exhaust your body. Choose this line for chapters when you have been told to make yourself smaller and you are finished with that. Travel here when you need to remember you have teeth. Mars stands behind you on this line. He is not a threat. He is your willingness to be the first one to move.",
+
+"Mars_DSC": "Your Mars DSC line draws fiery, ambitious, sometimes combative partners into your life. Sex is strong here, attraction is fast, and partnerships have the heat of either passion or argument — sometimes both in the same week. Business adversaries, lawyers, and worthy rivals also appear on this line, sharpening you by friction. The shadow is partners who fight you, dominate, or burn through you, or attracting volatile relationships that exhaust more than they grow you. Choose this line for chapters when you need a partner who can hold their own against you, when you want to be challenged, when you have been alone or under-stimulated too long. Travel here when you want the kind of love that is also a sparring match. The other you meet here will not be soft. Their hardness, if you are lucky, will reveal yours.",
+
+"Jupiter_MC": "Your Jupiter MC line is one of the luckiest lines on any map for career, reputation, and public success. Promotions land here, businesses scale, audiences grow, and you are widely seen as a teacher, expert, or someone worth following. Careers in higher education, publishing, travel, religion, law, or any field that asks you to expand and bless other people thrive on this line. The shadow is overpromising, growing too fast, becoming arrogant in your own glow, or believing your own press. Choose this line for chapters when you need to grow, when the work needs more sky, when something inside you is ready to be witnessed at scale. Travel here when you have outgrown the room. Jupiter walks in front of you on this line, clearing the path. Walk with him. Do not run past him.",
+
+"Jupiter_IC": "Your Jupiter IC line blesses home, family, and the foundations of your life with abundance, optimism, and meaning. Real estate often does well here, family expands, and the home itself becomes a place of teaching, hosting, and celebration. This is wonderful territory for raising children with a generous worldview, for opening your house to community, for putting roots in soil that genuinely feeds you. The shadow is over-extending, taking on more home than you can hold, or family dynamics where someone (often you) becomes the eternal benefactor. Choose this line for chapters of building a real life, of buying the house, of hosting the table that everyone you love will remember. Travel here when you need to expand at the root. Here, the well is deep. Drink. Invite others to drink. It refills behind you.",
+
+"Jupiter_ASC": "Near your Jupiter ASC line, you become more visibly confident, generous, optimistic, and luckier than you have any right to be. People perceive you as a teacher, a wise one, someone whose presence makes the room bigger. Travel, study, faith, and meaning all expand on this line, and your body often gains vitality and weight in a healthy way. The shadow is overconfidence, indulgence, taking up more space than you've earned, or becoming preachy. Choose this line for chapters when you need to remember that the universe is friendly, when you have been small and small and small and it is time to be big. Travel here when faith is required. Jupiter is the deity who throws the doors open. You will walk through them. You will not look back.",
+
+"Jupiter_DSC": "Your Jupiter DSC line draws generous, wise, expansive partners into your life and blesses your closest relationships. Marriage often goes well here, business partnerships scale, and you find collaborators who bring opportunity and meaning to your life. Foreign partners, teachers, mentors, and people who change your worldview show up on this line. The shadow is partners who promise more than they deliver, or relationships that grow so fast they swallow your own life. Choose this line for chapters when you want a partner who is a teacher, a co-conspirator, a sky-opener. Travel here when you are ready to be expanded by someone else's vision. The other you meet here will hand you a map of a country you didn't know existed. Go.",
+
+"Saturn_MC": "Your Saturn MC line builds career through discipline, time, and earned authority. Careers in government, law, structure, engineering, real estate, executive leadership, and elder fields thrive here, and the reputation you build on this line tends to last. The shadow is workaholism, isolation at the top, cold ambition, or feeling unrecognized despite all your effort. Choose this line for chapters when you are ready to take on real responsibility, when you want a legacy and not just a career, when the long climb is finally yours to make. Travel here when you have been adrift and need a structure. Saturn is the slow planet. He does not bless overnight. But what he hands you on this line, you will keep for the rest of your life.",
+
+"Saturn_IC": "Your Saturn IC line is the most challenging line for home and family on the map, though it can also be profoundly stabilizing for the right chapter. You may build a serious home here, take on long-term family responsibilities, or work through difficult ancestral material. The shadow is loneliness in the home, family burdens that feel heavy, or living in a house that feels more like a fortress than a sanctuary. Choose this line for chapters of doing the hard inner work — therapy, ancestral healing, the slow rebuild of your relationship to belonging itself. Travel here when you are ready to stop running from the past. Here, the foundations are stone. They were laid by people you may not have met. Touch them anyway. They are also yours.",
+
+"Saturn_ASC": "Near your Saturn ASC line, you appear more serious, mature, authoritative, and disciplined. People perceive you as older or more weighted than you actually are, and you may find yourself in positions of authority sooner than expected. This is challenging territory for a young person and powerful territory for someone who has done the work. The shadow is feeling burdened, aging visibly, depression, or being read as cold when you are simply contained. Choose this line for chapters when you need to be taken seriously, when frivolity has cost you, when the work of becoming a real adult is finally the work in front of you. Travel here when childhood needs to end. Saturn shapes you on this line. He is not cruel. He is the wave that wears the stone smooth — slow, persistent, and eventually beautiful.",
+
+"Saturn_DSC": "Your Saturn DSC line draws older, more responsible, or more committed partners into your life. Long marriages often anchor here, and business partnerships have real teeth and longevity. The shadow is partners who feel like obligations, age-gap relationships that read as authority struggles, or commitments that outlast their warmth. Choose this line for chapters when you are ready for the partner who shows up, who keeps showing up, who is not pretty but is true. Travel here when you have been with too many people who do not stay. The other you meet here will be made of stone, in the best sense. They will outlast every storm. So will you, with them.",
+
+"Uranus_MC": "Your Uranus MC line brings sudden change, innovation, and visibility through being unconventional in your career. Tech, science, activism, alternative healing, or any field that rewards genius and originality spikes on this line. Your reputation here is the reputation of someone unusual, unpredictable, and ahead of the curve. The shadow is volatility, sudden public disruptions, getting fired or quitting suddenly, or being known for being weird without being known for the substance underneath the weirdness. Choose this line for chapters when you need to break the form you've been working inside, when convention is killing you, when your career needs the lightning bolt. Travel here when you are ready to be electric. Uranus does not knock. He arrives. You will know him by the way the light flickers right before he speaks.",
+
+"Uranus_IC": "Your Uranus IC line brings disruption, sudden change, and unconventionality into home and family life. You may live in unusual housing, with chosen family, off-grid, or in arrangements that other people don't understand. The shadow is instability at the root, frequent moves, family rupture, or never quite landing anywhere. Choose this line for chapters when you need to break the old family pattern, when you want home to be radically different from how you grew up, when freedom in private life matters more than the conventional version. Travel here when the old room is suffocating. Here, the walls move. The kitchen rearranges itself. That is not a haunting. That is your soul making the house finally yours.",
+
+"Uranus_ASC": "Near your Uranus ASC line, you appear more eccentric, original, electric, and unmistakably yourself. People perceive you as unusual in a way that is magnetic, and you find it easier to break out of who you were before. This is excellent territory for radical reinvention, for becoming the version of yourself that everyone back home wouldn't recognize. The shadow is rebellion for its own sake, restlessness, instability in identity, or appearing so different that you can't be received by anyone. Choose this line for chapters when conformity has cost you, when you have been pretending for too long, when the genuine weirdness in you is the genius that needs out. Travel here when you are ready to stop apologizing. The lightning is in your hands on this line. Touch what needs to wake.",
+
+"Uranus_DSC": "Your Uranus DSC line draws unusual, brilliant, freedom-loving partners into your life — and sometimes draws sudden ruptures in existing partnerships. Open relationships, long-distance loves, partners from radically different backgrounds, and friendships that feel like fate often happen on this line. The shadow is partners who can't or won't stay, unpredictable breakups, or relationships that feel exciting but never stable. Choose this line for chapters when conventional relationship structures have failed you, when you want a love that doesn't look like anyone else's. Travel here when you want to be surprised. The other you meet here will not be the one you imagined. They will be the one you didn't know you were free enough to want.",
+
+"Neptune_MC": "Your Neptune MC line brings dreams, imagination, mysticism, and artistic vision into your public role. Careers in art, music, film, photography, spirituality, healing, addiction recovery work, or anything that asks you to channel the unseen flourish here. Your reputation acquires an ethereal quality — people sense something they can't quite name about you. The shadow is glamour without substance, public confusion, scandal, or being misread because you are a mirror others project onto. Choose this line for chapters when the work is mystical, when you are making art, when you need to dissolve into the larger field and let it speak through you. Travel here when you are tired of being literal. Here, the boundary between you and the work disappears. So does the boundary between you and the ocean. You will not drown. You will return with pearls.",
+
+"Neptune_IC": "Your Neptune IC line is profoundly imaginative, spiritual, and dreamlike at the level of home and family. This is wonderful territory for meditation retreats, monastic living, spiritual community, or simply a private life soaked in art and mystery. The shadow is escapism, addiction, unclear family roles, or a home that feels more like a fog than a foundation. Choose this line for chapters of mystical retreat, of healing addiction at the root, of becoming a person whose inner life is the real life. Travel here when you need to dissolve and re-form. Here, the house is on water. You will not always know what is real. Let that be okay. The dream is also teaching you.",
+
+"Neptune_ASC": "Near your Neptune ASC line, you appear more ethereal, mystical, dreamy, artistic, and magnetic in a hard-to-pin-down way. People project onto you here — they see what they want to see, and sometimes that is beautiful and sometimes it is a problem. This is rich territory for artists, healers, performers, and anyone whose work asks them to be a mirror. The shadow is being misread, attracting confusion, slipping into addictive or dissociative states, or losing your edges entirely. Choose this line for chapters when you want to be a vessel, when imagination must lead, when the literal version of yourself has gotten too tight. Travel here when you have forgotten the dream. Neptune is the sea god of this line. Step into the water. You will surface changed.",
+
+"Neptune_DSC": "Your Neptune DSC line draws spiritual, artistic, dreamy, sometimes elusive partners into your life. Soulmate experiences, romantic idealization, and creative partnerships of unusual depth happen here. The shadow is illusion in love, partners who don't show up the way you imagined them, addictive relationships, or co-dependence dressed up as union. Choose this line for chapters when you want to be loved in a way that feels otherworldly, when art and romance braid together, when you need a partner whose imagination matches yours. Travel here when ordinary love has bored you. The other you meet here will look exactly like the dream. Be sure they are also a person. Both can be true. Often, they are.",
+
+"Pluto_MC": "Your Pluto MC line is the line of power, transformation, and reinvention at the level of public role. Careers in psychology, surgery, investigation, finance, regeneration, taboo subjects, or any field that asks you to handle real power can rise dramatically here. The shadow is power struggles, public crises, being torn down to be rebuilt, or wielding influence in ways you regret. Choose this line for chapters when you are ready to become someone you currently are not, when the old version of your career must die so the next can be born. Travel here when surface no longer satisfies you. Pluto rules the underworld. On this line, he hands you the keys. The kingdom is yours, but you will have to descend to claim it.",
+
+"Pluto_IC": "Your Pluto IC line is one of the most intense lines for home and family on the map. Deep family healing, generational pattern-breaking, and complete rebuilding of your foundation happen here. The shadow is family power struggles, inherited trauma surfacing relentlessly, or living in a place where the basement holds something that demands attention. Choose this line for chapters when you are finally ready to face what you came from, to break the cycle, to rebuild your relationship to home from the ground up. Travel here when the work is real and you are ready. Here, the soil is rich because it composts the past. Plant what you want to feed your descendants. The dead will hold the roots steady.",
+
+"Pluto_ASC": "Near your Pluto ASC line, you appear more powerful, magnetic, intense, and harder to ignore. People perceive you as sexually charged, formidable, or unsettlingly perceptive — and you tend to see through them in return. This is challenging and transformative territory for personal reinvention; you may not leave this line the same person who arrived. The shadow is power struggles with everyone you meet, attracting obsession, becoming controlling, or being so intense you exhaust yourself. Choose this line for chapters when you are ready to be reborn, when the previous version of you must die to make room. Travel here when you have outlived yourself. Pluto stands in the doorway. He will ask you to leave something behind. Do it. The next version of you cannot fit through with that in your hands.",
+
+"Pluto_DSC": "Your Pluto DSC line draws intense, transformative, sometimes possessive partners into your life. The relationships on this line are not casual — they are crucibles, soul-level encounters, the ones that change you completely or destroy you trying. The shadow is power struggles, jealousy, control, partners who try to remake you in their image, or you doing the same to them. Choose this line for chapters when surface love has stopped feeding you, when you want the kind of partnership that breaks you open in the right way. Travel here when you are brave. The other you meet here will see all of you, including what you have hidden from yourself. Let them. The mirror they hold is dark, and the truth in it is the one that finally sets you free."
+
 };
 
 var INTERP_HD_TYPE = {
@@ -1273,7 +1357,7 @@ function showTypeInterp(type){var t=INTERP_HD_TYPE[type];if(!t)return;showModal(
 function showAuthorityInterp(auth){var a=INTERP_HD_AUTHORITY[auth];if(!a)return;showModal("Authority",auth,"Inner Decision-Making",'<p>'+a.text+'</p>');}
 function showProfileInterp(prof){var p=INTERP_HD_PROFILE[prof];if(!p)return;showModal("Profile",prof,"Life Theme",'<p>'+p.text+'</p>');}
 function showDefinitionInterp(def){var d=INTERP_HD_DEFINITION[def];if(!d)return;showModal("Definition",def,"How Your Energy Flows",'<p>'+d.text+'</p>');}
-function showAstroLineInterp(planet,lineType){var pInfo=INTERP_PLANETS[planet],lInfo=INTERP_ASTRO_LINES[lineType];var body='';if(lInfo)body+='<p>'+lInfo.text+'</p>';if(pInfo)body+='<p><strong>About '+planet+':</strong> '+pInfo.text+'</p>';showModal("Astrocartography Line",planet+" "+lineType+" Line",lineType+" Line of "+planet,body);}
+function showAstroLineInterp(planet,lineType){var key=planet+"_"+lineType;var combo=INTERP_ASTRO_COMBOS[key];var body='';if(combo){body+='<p>'+combo+'</p>';}else{var pInfo=INTERP_PLANETS[planet],lInfo=INTERP_ASTRO_LINES[lineType];if(lInfo)body+='<p>'+lInfo.text+'</p>';if(pInfo)body+='<p><strong>About '+planet+':</strong> '+pInfo.text+'</p>';}showModal("Astrocartography Line",planet+" "+lineType+" Line","Living, traveling, or working near this line",body);}
 
 window._mami={showPlanetInterp:showPlanetInterp,showSignInterp:showSignInterp,showHouseInterp:showHouseInterp,showAspectInterp:showAspectInterp,showGateInterp:showGateInterp,showCenterInterp:showCenterInterp,showChannelInterp:showChannelInterp,showTypeInterp:showTypeInterp,showAuthorityInterp:showAuthorityInterp,showProfileInterp:showProfileInterp,showDefinitionInterp:showDefinitionInterp,showAstroLineInterp:showAstroLineInterp};
 
@@ -1513,33 +1597,89 @@ function renderHumanDesign(d){
 }
 
 function renderAstrocartography(d,natal){
-  var W=720,H=380;
-  var TOP=24;
+  var W=900,H=460;
+  var TOP=28,BOT=18;
   function lonToX(lon){return (lon+180)*W/360;}
-  function latToY(lat){return TOP+(85-lat)*(H-TOP)/170;}
-  var html='<div class="chart-wrapper"><h2>'+getName()+' Astrocartography</h2><div class="chart-meta">Planetary lines on the world map \u00B7 '+(natal.engine||'')+'</div>';
-  html+='<p style="text-align:center;color:var(--ink-soft);font-style:italic;margin-bottom:16px;font-size:14px;">Each line shows where a planet\u2019s energy is strongest. Living, traveling, or working near these lines amplifies that planet\u2019s themes in your life.</p>';
-  var svg='<svg class="astromap" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="background:rgba(13,18,38,0.6);border:1px solid var(--line);">';
-  svg+='<path d="M 130 100 Q 200 80 280 105 L 290 150 Q 250 190 200 200 L 160 180 Q 130 150 130 100 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  svg+='<path d="M 240 220 Q 280 220 300 270 L 285 330 Q 260 340 250 310 L 240 220 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  svg+='<path d="M 360 90 Q 410 80 450 90 L 460 120 Q 430 135 380 130 L 360 90 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  svg+='<path d="M 370 140 Q 430 135 470 165 L 475 220 Q 440 240 400 235 L 370 200 Q 360 170 370 140 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  svg+='<path d="M 470 100 Q 580 85 620 115 Q 640 150 600 180 L 540 185 Q 490 165 470 130 L 470 100 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  svg+='<path d="M 560 240 Q 615 230 625 270 L 600 285 Q 570 280 560 260 L 560 240 Z" fill="rgba(212,182,117,0.08)" stroke="rgba(212,182,117,0.3)" stroke-width="0.5"/>';
-  for(var glon=-150;glon<=150;glon+=30){svg+='<line x1="'+lonToX(glon)+'" y1="'+TOP+'" x2="'+lonToX(glon)+'" y2="'+H+'" stroke="rgba(212,182,117,0.08)" stroke-width="0.3"/>';}
-  for(var glat=-60;glat<=60;glat+=30){svg+='<line x1="0" y1="'+latToY(glat)+'" x2="'+W+'" y2="'+latToY(glat)+'" stroke="rgba(212,182,117,0.08)" stroke-width="0.3"/>';}
-  svg+='<line x1="0" y1="'+latToY(0)+'" x2="'+W+'" y2="'+latToY(0)+'" stroke="rgba(212,182,117,0.2)" stroke-width="0.5" stroke-dasharray="3,3"/>';
-  var mcLineGroups={};
+  function latToY(lat){return TOP+(85-lat)*(H-TOP-BOT)/170;}
+
+  // Continent blobs - approximated by lat/lon control points
+  function blobPath(pts){
+    var path="M "+lonToX(pts[0][1])+" "+latToY(pts[0][0]);
+    for(var i=1;i<pts.length;i++){path+=" L "+lonToX(pts[i][1])+" "+latToY(pts[i][0]);}
+    path+=" Z";
+    return path;
+  }
+  var BLOBS=[
+    [[60,-130],[62,-110],[60,-90],[55,-75],[45,-65],[35,-70],[25,-80],[20,-100],[28,-115],[42,-125]],
+    [[22,-100],[18,-92],[12,-85],[8,-78],[12,-82],[16,-88],[20,-95]],
+    [[10,-75],[5,-55],[-5,-45],[-15,-40],[-25,-45],[-35,-55],[-45,-65],[-55,-70],[-45,-75],[-30,-72],[-15,-75],[0,-78]],
+    [[75,-50],[78,-30],[72,-25],[65,-35],[68,-50]],
+    [[60,-5],[62,10],[60,25],[55,35],[50,40],[42,25],[38,10],[42,0],[50,-8]],
+    [[58,-8],[60,-2],[55,0],[50,-5],[52,-10]],
+    [[35,-10],[38,10],[35,30],[25,40],[15,45],[0,42],[-15,35],[-30,25],[-35,18],[-30,12],[-15,10],[0,5],[15,-5],[28,-15]],
+    [[-12,45],[-15,50],[-22,50],[-25,47],[-22,43],[-15,43]],
+    [[70,30],[72,60],[70,90],[65,120],[60,140],[50,145],[40,140],[30,130],[25,110],[20,90],[15,75],[25,60],[30,45],[40,35],[55,30]],
+    [[28,70],[25,78],[18,80],[10,78],[8,75],[15,70],[22,68]],
+    [[10,95],[8,105],[5,115],[-5,120],[-8,130],[-2,125],[5,115],[10,105]],
+    [[45,138],[42,145],[35,140],[32,132],[38,130],[43,132]],
+    [[-12,130],[-15,145],[-25,155],[-35,150],[-38,140],[-35,125],[-25,115],[-15,120]]
+  ];
+
+  var CITIES=[
+    ["New York",40.71,-74.01],
+    ["Los Angeles",34.05,-118.24],
+    ["Houston",29.76,-95.37],
+    ["Toronto",43.65,-79.38],
+    ["Miami",25.77,-80.19],
+    ["Mexico City",19.43,-99.13],
+    ["São Paulo",-23.55,-46.63],
+    ["Buenos Aires",-34.6,-58.4],
+    ["London",51.51,-0.13],
+    ["Paris",48.86,2.35],
+    ["Lagos",6.52,3.38],
+    ["Cairo",30.04,31.24],
+    ["Cape Town",-33.92,18.42],
+    ["Mumbai",19.08,72.88],
+    ["Tokyo",35.68,139.65],
+    ["Sydney",-33.87,151.21],
+    ["Honolulu",21.31,-157.86]
+  ];
+
+  var html='<div class="chart-wrapper"><h2>'+getName()+' Astrocartography</h2><div class="chart-meta">Planetary lines on the world map · '+(natal.engine||'')+'</div>';
+  html+='<p style="text-align:center;color:var(--ink-soft);font-style:italic;margin-bottom:16px;font-size:14px;">Each line shows where a planet’s energy is strongest. Living, traveling, or working near these lines amplifies that planet’s themes in your life.</p>';
+
+  var svg='<svg class="astromap" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" style="background:#0a1326;border:1px solid rgba(232,225,204,0.2);">';
+  svg+='<rect x="0" y="'+TOP+'" width="'+W+'" height="'+(H-TOP-BOT)+'" fill="#0d1830"/>';
+
+  // Grid
+  for(var glon=-150;glon<=150;glon+=30){
+    svg+='<line x1="'+lonToX(glon)+'" y1="'+TOP+'" x2="'+lonToX(glon)+'" y2="'+(H-BOT)+'" stroke="rgba(232,225,204,0.05)" stroke-width="0.3"/>';
+  }
+  for(var glat=-60;glat<=60;glat+=30){
+    svg+='<line x1="0" y1="'+latToY(glat)+'" x2="'+W+'" y2="'+latToY(glat)+'" stroke="rgba(232,225,204,0.05)" stroke-width="0.3"/>';
+  }
+  svg+='<line x1="0" y1="'+latToY(0)+'" x2="'+W+'" y2="'+latToY(0)+'" stroke="rgba(232,225,204,0.12)" stroke-width="0.5" stroke-dasharray="3,3"/>';
+
+  // Continent blobs
+  BLOBS.forEach(function(b){
+    svg+='<path d="'+blobPath(b)+'" fill="rgba(184,176,154,0.13)" stroke="rgba(232,225,204,0.3)" stroke-width="0.6"/>';
+  });
+
+  // Planet lines (collect MC/IC for staggered labels)
+  var mcTopGroups={},icBotGroups={};
   d.lines.forEach(function(line){
     var col=line.color;
     if(line.type==="MC"||line.type==="IC"){
       var x=lonToX(line.lon);
       var dash=line.type==="IC"?'stroke-dasharray="4,3"':'';
-      svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><line x1="'+x+'" y1="'+TOP+'" x2="'+x+'" y2="'+H+'" stroke="'+col+'" stroke-width="1.5" opacity="0.8" '+dash+'/></g>';
+      svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><line x1="'+x+'" y1="'+TOP+'" x2="'+x+'" y2="'+(H-BOT)+'" stroke="'+col+'" stroke-width="1.4" opacity="0.9" '+dash+'/></g>';
+      var bucket=Math.round(x/22);
       if(line.type==="MC"){
-        var bucket=Math.round(x/24);
-        if(!mcLineGroups[bucket])mcLineGroups[bucket]=[];
-        mcLineGroups[bucket].push({x:x,symbol:line.symbol,color:line.color,planet:line.planet});
+        if(!mcTopGroups[bucket])mcTopGroups[bucket]=[];
+        mcTopGroups[bucket].push({x:x,symbol:line.symbol,color:line.color,planet:line.planet});
+      }else{
+        if(!icBotGroups[bucket])icBotGroups[bucket]=[];
+        icBotGroups[bucket].push({x:x,symbol:line.symbol,color:line.color,planet:line.planet});
       }
     }else{
       if(!line.points||line.points.length<2)return;
@@ -1555,28 +1695,54 @@ function renderAstrocartography(d,natal){
         if(seg.length<2)return;
         var path='M ';
         seg.forEach(function(p,i){path+=(i?' L ':'')+lonToX(p.lon)+' '+latToY(p.lat);});
-        svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="1.5" opacity="0.8" '+dash+'/></g>';
+        svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><path d="'+path+'" fill="none" stroke="'+col+'" stroke-width="1.4" opacity="0.9" '+dash+'/></g>';
+        if(seg.length>3){
+          var mid=seg[Math.floor(seg.length/2)];
+          var mx=lonToX(mid.lon),my=latToY(mid.lat);
+          svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+line.planet+'\',\''+line.type+'\')"><circle cx="'+mx+'" cy="'+my+'" r="9" fill="#0a1326" stroke="'+col+'" stroke-width="0.8"/><text x="'+mx+'" y="'+my+'" text-anchor="middle" dominant-baseline="central" fill="'+col+'" font-size="10" font-weight="bold" font-family="Cinzel, serif">'+line.symbol+'</text></g>';
+        }
       });
     }
   });
-  Object.keys(mcLineGroups).forEach(function(b){
-    var group=mcLineGroups[b];
+
+  // Cities (drawn AFTER continents/lines so they sit on top)
+  CITIES.forEach(function(c){
+    var cx=lonToX(c[2]),cy=latToY(c[1]);
+    svg+='<circle cx="'+cx+'" cy="'+cy+'" r="2.5" fill="#f4ecd8" opacity="1"/>';
+    svg+='<text x="'+(cx+5)+'" y="'+(cy+3)+'" fill="#f4ecd8" font-size="10" font-family="Cormorant Garamond, serif" font-style="italic" opacity="0.95">'+c[0]+'</text>';
+  });
+
+  // MC labels at top, staggered by planet's own color
+  Object.keys(mcTopGroups).forEach(function(b){
+    var group=mcTopGroups[b];
     group.forEach(function(g,i){
-      var stagger=i%2===0?TOP-8:TOP-2;
-      svg+='<text x="'+g.x+'" y="'+stagger+'" text-anchor="middle" fill="'+g.color+'" font-size="12" font-family="Cinzel, serif" font-weight="bold">'+g.symbol+'</text>';
+      var staggerY=i%2===0?14:24;
+      svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+g.planet+'\',\'MC\')"><text x="'+g.x+'" y="'+staggerY+'" text-anchor="middle" fill="'+g.color+'" font-size="13" font-family="Cinzel, serif" font-weight="bold">'+g.symbol+'</text></g>';
     });
   });
+
+  // IC labels at bottom, staggered
+  Object.keys(icBotGroups).forEach(function(b){
+    var group=icBotGroups[b];
+    group.forEach(function(g,i){
+      var staggerY=H-6-(i%2===0?0:10);
+      svg+='<g class="interactive" onclick="window._mami.showAstroLineInterp(\''+g.planet+'\',\'IC\')"><text x="'+g.x+'" y="'+staggerY+'" text-anchor="middle" fill="'+g.color+'" font-size="13" font-family="Cinzel, serif" font-weight="bold" font-style="italic">'+g.symbol+'</text></g>';
+    });
+  });
+
   svg+='</svg>';
   html+=svg;
-  html+='<p style="text-align:center;color:var(--ink-faint);font-style:italic;margin-top:10px;font-size:12px;">Symbols at top show planets on their MC line. Use the table below to explore each line\u2019s meaning.</p>';
-  html+='<div class="section-title">Planet Lines</div><div class="tap-hint">Tap any cell below to read its meaning</div>';
+
+  html+='<p style="text-align:center;color:var(--ink-faint);font-style:italic;margin-top:10px;font-size:12px;">Planet symbols at the <strong style="color:var(--ink-soft);">top</strong> mark MC lines (solid, vertical). Symbols at the <strong style="color:var(--ink-soft);">bottom</strong> mark IC lines (dashed, vertical). Symbols <strong style="color:var(--ink-soft);">on curves</strong> mark ASC (solid) and DSC (dashed) lines.</p>';
+
+  html+='<div class="section-title">Planet Lines</div><div class="tap-hint">Tap any line on the map or any cell below for its full reading</div>';
   html+='<table class="data-table"><thead><tr><th>Planet</th><th>MC</th><th>IC</th><th>ASC</th><th>DSC</th></tr></thead><tbody>';
   d.planets.forEach(function(pl){
     html+='<tr><td style="color:'+pl.color+';">'+pl.symbol+' '+pl.name+'</td>';
-    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'MC\')" style="cursor:pointer;color:var(--gold-bright);">MC</td>';
-    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'IC\')" style="cursor:pointer;color:var(--gold-bright);">IC</td>';
-    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'ASC\')" style="cursor:pointer;color:var(--gold-bright);">ASC</td>';
-    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'DSC\')" style="cursor:pointer;color:var(--gold-bright);">DSC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'MC\')" style="cursor:pointer;">MC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'IC\')" style="cursor:pointer;">IC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'ASC\')" style="cursor:pointer;">ASC</td>';
+    html+='<td class="clickable" onclick="window._mami.showAstroLineInterp(\''+pl.name+'\',\'DSC\')" style="cursor:pointer;">DSC</td>';
     html+='</tr>';
   });
   html+='</tbody></table>';
