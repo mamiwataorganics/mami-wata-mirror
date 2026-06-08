@@ -1310,7 +1310,7 @@ setupLocationSearch("location-search-2","location-results-2","latitude-2","longi
 setupLocationSearch("transit-location-search","transit-location-results","transit-latitude","transit-longitude","transit-selected-location");
 
 function getTimezoneOffset(y,m,d,la,ln){
-  return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(tz.hasDayLightSaving){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
+  return fetch("https://timeapi.io/api/timezone/coordinate?latitude="+la+"&longitude="+ln).then(function(r){return r.json();}).then(function(tz){var os=tz.standardUtcOffset?tz.standardUtcOffset.seconds:0,iD=false;if(false){if(y>=2007){if(m>=4&&m<=10)iD=true;if(m===3&&d>=8)iD=true;if(m===11&&d<=7)iD=true;}else if(y>=1987){if(m>=5&&m<=9)iD=true;if(m===4&&d>=1)iD=true;if(m===10)iD=true;}else{if(m>=5&&m<=9)iD=true;if(m===4&&d>=24)iD=true;if(m===10)iD=true;}}if(iD&&tz.daylightSavings)os=tz.daylightSavings.utcOffset?tz.daylightSavings.utcOffset.seconds:os+3600;return os/3600;}).catch(function(){return Math.round(parseFloat(ln)/15);});
 }
 
 var modalBackdrop=document.getElementById("modal-backdrop");
