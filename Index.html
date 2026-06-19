@@ -175,6 +175,7 @@
   label:first-child { margin-top: 0; }
   input, select {
     width: 100%;
+    min-width: 0;
     padding: 12px 14px;
     font-size: 16px;
     background: #ffffff !important;
@@ -211,7 +212,7 @@
     background-size: 10px;
     padding-right: 36px;
   }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
   @media (max-width: 540px) { .row { grid-template-columns: 1fr; } }
   .helper {
     font-size: 13px;
@@ -319,6 +320,8 @@
     max-width: 100%;
     height: auto;
   }
+  svg.wheel { width: 100%; max-width: 480px; }
+  svg.bodygraph { width: 100%; max-width: 420px; }
   svg.wheel .interactive, svg.bodygraph .interactive, svg.astromap .interactive { cursor: pointer; }
   svg.wheel .interactive:hover, svg.bodygraph .interactive:hover, svg.astromap .interactive:hover { filter: brightness(1.3); }
   .data-table {
@@ -1825,6 +1828,13 @@ var MW_SIGN_ELEMENT={Aries:"fire",Leo:"fire",Sagittarius:"fire",Taurus:"earth",V
 function mwNormPlanet(n){ if(!n)return null; n=String(n); if(/node/i.test(n))return "Node"; if(/lilith/i.test(n))return "Lilith"; if(/chiron/i.test(n))return "Chiron"; var k=["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune","Pluto"]; for(var i=0;i<k.length;i++)if(n.indexOf(k[i])!==-1)return k[i]; return null; }
 function mwAspectTone(t){ if(t==="trine"||t==="sextile")return "YES"; if(t==="square"||t==="opposition")return "NO"; return null; }
 
+/* ---- iframe auto-height + scroll-to-chart for Shopify embed ---- */
+function mwPostHeight(){try{var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight);parent.postMessage({mwMirror:true,type:"height",height:h},"*");}catch(e){}}
+function mwScrollToChart(){try{var r=document.getElementById("result");if(!r)return;var y=r.getBoundingClientRect().top+window.scrollY;parent.postMessage({mwMirror:true,type:"scrollToResult",y:y},"*");}catch(e){}}
+if(window.ResizeObserver){try{new ResizeObserver(function(){mwPostHeight();}).observe(document.body);}catch(e){}}
+window.addEventListener("load",mwPostHeight);
+window.addEventListener("resize",mwPostHeight);
+
 var mwTarot=(function(){
   var current={sig:null,type:""};
 
@@ -1941,6 +1951,7 @@ var mwTarot=(function(){
     function go(){ stage.style.display="none"; drawBtn.style.display="none"; if(mode==="one")drawOne(out); else drawThree(out); requestAnimationFrame(function(){ requestAnimationFrame(function(){ out.classList.add("show"); }); }); }
     drawBtn.addEventListener("click",go);
     sec.querySelector("#mwTback").addEventListener("click",go);
+    mwPostHeight();setTimeout(function(){mwPostHeight();mwScrollToChart();},150);
   }
 
   return {mount:mount};
