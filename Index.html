@@ -1505,6 +1505,7 @@ function renderNatalChart(d){
   html+=tableOfPlanets("Planets and Points",d.planets,true,"_natalTable")+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects,"_natalAspects")+'</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("natal",d);
+  if(window.mwAfterCast)window.mwAfterCast();
 }
 function renderTransitChart(d){
   var ov=d.transitPlanets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
@@ -1516,6 +1517,7 @@ function renderTransitChart(d){
   html+=tableOfPlanets("Natal Planets",d.natal.planets,true,"_tNatal")+tableOfPlanets("Transiting Planets",d.transitPlanets,true,"_tTransit")+tableOfAspects("Transit-to-Natal Aspects",d.interAspects,"_tAspects")+'</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("transit",d);
+  if(window.mwAfterCast)window.mwAfterCast();
 }
 function renderSynastryChart(d){
   var ov=d.natalB.planets.map(function(p){return{name:p.name,symbol:p.symbol,eclipticLongitude:p.eclipticLongitude,sign:p.sign,signSymbol:p.signSymbol,degreesInSign:p.degreesInSign,minutes:p.minutes,seconds:p.seconds,retrograde:p.retrograde,house:p.house};});
@@ -1527,6 +1529,7 @@ function renderSynastryChart(d){
   html+=tableOfPlanets(nm1,d.natalA.planets,true,"_synAT")+tableOfPlanets(nm2,d.natalB.planets,true,"_synBT")+tableOfAspects("Inter-Chart Aspects",d.interAspects,"_synAspects")+'</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("synastry",d);
+  if(window.mwAfterCast)window.mwAfterCast();
 }
 
 var BODYGRAPH_CENTERS = {
@@ -1642,6 +1645,7 @@ function renderHumanDesign(d){
   html+='</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("human-design",d);
+  if(window.mwAfterCast)window.mwAfterCast();
 }
 
 function renderAstrocartography(d,natal){
@@ -1801,6 +1805,7 @@ function renderAstrocartography(d,natal){
   html+='</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("astrocartography",natal);
+  if(window.mwAfterCast)window.mwAfterCast();
 }
 
 /* ===== Manifest 22 Oracle integration (engine + UI) ===== */
@@ -1945,6 +1950,34 @@ var mwTarot=(function(){
 })();
 
 
+/* ---- iframe auto-height + scroll-to-chart for the Shopify embed ---- */
+(function(){
+  function mwPostHeight(){
+    try{
+      var h=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight,document.body.offsetHeight);
+      parent.postMessage({mwMirror:true,type:"height",height:h},"*");
+    }catch(e){}
+  }
+  function mwScrollToResult(){
+    try{
+      var r=document.getElementById("result");
+      if(!r)return;
+      var y=r.getBoundingClientRect().top+(window.scrollY||window.pageYOffset||0);
+      parent.postMessage({mwMirror:true,type:"scrollToResult",y:y},"*");
+    }catch(e){}
+  }
+  function mwAfterCast(){
+    mwPostHeight();
+    setTimeout(function(){mwPostHeight();mwScrollToResult();},120);
+    setTimeout(mwPostHeight,500);
+  }
+  window.mwPostHeight=mwPostHeight;
+  window.mwScrollToResult=mwScrollToResult;
+  window.mwAfterCast=mwAfterCast;
+  if(window.ResizeObserver){try{new ResizeObserver(function(){mwPostHeight();}).observe(document.body);}catch(e){}}
+  window.addEventListener("load",mwPostHeight);
+  window.addEventListener("resize",mwPostHeight);
+})();
 window.addEventListener('load',restoreState);
 </script>
 </body>
