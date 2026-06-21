@@ -605,6 +605,19 @@
 .mw-poslbl{display:block;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#b5874a;margin-bottom:8px;}
 @media (max-width:520px){ .mw-ttitle{font-size:27px;} .mw-tmeaning{font-size:18px;} }
 
+/* ===== Numerology module (natal only) - scoped under .mw-num ===== */
+.mw-num{margin-top:6px;}
+.mw-num .mw-num-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:14px;}
+.mw-num .mw-num-card{background:rgba(0,0,0,0.35);border:1px solid var(--line-faint);padding:18px 16px;text-align:center;}
+.mw-num .mw-num-label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);font-weight:500;}
+.mw-num .mw-num-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:var(--ink-faint);margin-top:3px;}
+.mw-num .mw-num-value{font-family:'Cinzel',serif;font-size:38px;line-height:1;color:var(--gold-bright);margin:10px 0 4px;font-weight:500;}
+.mw-num .mw-num-value .master{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;letter-spacing:0.15em;color:var(--gold);margin-top:4px;}
+.mw-num .mw-num-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--ink);margin-bottom:9px;}
+.mw-num .mw-num-text{font-family:'Cormorant Garamond',serif;font-size:15px;line-height:1.55;color:var(--ink-soft);}
+.mw-num .mw-num-note{text-align:center;color:var(--ink-faint);font-style:italic;font-size:13px;margin-top:14px;line-height:1.5;}
+@media (max-width:520px){.mw-num .mw-num-grid{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -634,6 +647,7 @@
         <h3>Birth Information</h3>
         <label>Name (optional)</label>
         <input type="text" id="person-name" placeholder="Your name" autocomplete="off">
+        <div class="helper">Optional, but add your full birth name for a complete numerology reading.</div>
         <div class="row">
           <div>
             <label>Birth Date</label>
@@ -1493,6 +1507,112 @@ function tableOfAspects(t,a,clickKey){
   h+='</tbody></table>';return h;
 }
 
+/* ===== Numerology module (natal only) - pure date and letter math, no WASM ===== */
+var NUM_LETTERS={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+var NUM_VOWELS="AEIOU"; /* Y is treated as a consonant */
+var NUM_NAME={
+  1:"The Pioneer",2:"The Peacemaker",3:"The Creative",4:"The Builder",5:"The Free Spirit",
+  6:"The Nurturer",7:"The Seeker",8:"The Powerhouse",9:"The Humanitarian",
+  11:"The Illuminator",22:"The Master Builder",33:"The Master Teacher"
+};
+var NUM_MEANING={
+  1:"Independent, driven, and original. Born to lead, initiate, and trust your own two feet.",
+  2:"Sensitive, diplomatic, and cooperative. You bring harmony and do your best work in partnership.",
+  3:"Expressive, joyful, and creative. You uplift others through words, art, and play.",
+  4:"Grounded, disciplined, and loyal. You build lasting foundations through steady, honest work.",
+  5:"Adventurous, curious, and free. You grow through change, movement, and the full range of the senses.",
+  6:"Loving, responsible, and devoted. You heal and harmonize home, family, and community.",
+  7:"Introspective, wise, and mystical. You seek truth in solitude and trust the inner voice.",
+  8:"Ambitious, capable, and abundant. You master the material world and learn the right use of power.",
+  9:"Compassionate, idealistic, and giving. You serve the whole and gracefully release what is complete.",
+  11:"A master number of intuition and vision. Heightened sensitivity and spiritual insight, here to inspire.",
+  22:"A master number of grand, practical vision. The power to turn the biggest dreams into structures that serve many.",
+  33:"A master number of devoted, healing love. Selfless service and teaching offered for the good of all."
+};
+var NUM_PY_NAME={
+  1:"A Year of Beginnings",2:"A Year of Patience",3:"A Year of Expression",4:"A Year of Foundations",
+  5:"A Year of Change",6:"A Year of Home and Love",7:"A Year of Reflection",8:"A Year of Achievement",9:"A Year of Completion"
+};
+var NUM_PY_MEANING={
+  1:"Fresh starts and new seeds. What you begin now sets the tone for the next nine years, so initiate boldly.",
+  2:"Patience, partnership, and slow growth. Nurture connections and let things ripen in their own time.",
+  3:"Creativity, joy, and social connection. Share your voice and let lightness back into your life.",
+  4:"Work, structure, and laying foundations. The discipline you invest now builds what you rely on later.",
+  5:"Change, freedom, and the unexpected. Stay flexible and say yes to new experiences.",
+  6:"Love, home, and responsibility. Family, care, and commitment move to the center of your year.",
+  7:"Reflection, study, and inner work. Step back, go deep, and trust the quiet.",
+  8:"Power, reward, and accomplishment. Step into leadership and claim your material goals.",
+  9:"Endings, release, and letting go. Complete what is finishing to make space for the cycle ahead."
+};
+function nReduceKeep(n){while(n>9&&n!==11&&n!==22&&n!==33){var s=0,str=String(n);for(var i=0;i<str.length;i++){s+=parseInt(str.charAt(i),10);}n=s;}return n;}
+function nReduceFull(n){while(n>9){var s=0,str=String(n);for(var i=0;i<str.length;i++){s+=parseInt(str.charAt(i),10);}n=s;}return n;}
+function nCleanName(raw){if(!raw)return "";var s=String(raw).toUpperCase();if(s.normalize){s=s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");}return s.replace(/[^A-Z]/g,"");}
+function nSumName(name,mode){var total=0;for(var i=0;i<name.length;i++){var ch=name.charAt(i),isV=NUM_VOWELS.indexOf(ch)!==-1;if(mode==="vowel"&&!isV)continue;if(mode==="consonant"&&isV)continue;total+=(NUM_LETTERS[ch]||0);}return total;}
+function nCompute(){
+  var dEl=document.getElementById("birth-date"),nEl=document.getElementById("person-name");
+  var dV=dEl?dEl.value:"",nameRaw=nEl?nEl.value:"";
+  var name=nCleanName(nameRaw);
+  var out={hasDate:false,hasName:name.length>0};
+  var parts=String(dV).split("-");
+  if(parts.length===3){
+    var y=parseInt(parts[0],10),m=parseInt(parts[1],10),d=parseInt(parts[2],10);
+    if(!isNaN(y)&&!isNaN(m)&&!isNaN(d)&&m>=1&&m<=12&&d>=1&&d<=31){
+      out.hasDate=true;
+      out.lifePath=nReduceKeep(nReduceKeep(m)+nReduceKeep(d)+nReduceKeep(y));
+      out.birthday=nReduceKeep(d);
+      var cy=new Date().getFullYear();
+      out.currentYear=cy;
+      out.personalYear=nReduceFull(nReduceFull(m)+nReduceFull(d)+nReduceFull(cy));
+    }
+  }
+  if(out.hasName){
+    out.expression=nReduceKeep(nSumName(name,"all"));
+    out.soulUrge=nReduceKeep(nSumName(name,"vowel"));
+    out.personality=nReduceKeep(nSumName(name,"consonant"));
+  }
+  return out;
+}
+function nMasterTag(v){return (v===11||v===22||v===33)?'<span class="master">Master Number</span>':'';}
+function nCardCore(label,sub,value){
+  if(!value||!NUM_MEANING[value])return '';
+  return '<div class="mw-num-card"><div class="mw-num-label">'+label+'</div><div class="mw-num-sub">'+sub+'</div>'+
+    '<div class="mw-num-value">'+value+nMasterTag(value)+'</div>'+
+    '<div class="mw-num-name">'+NUM_NAME[value]+'</div>'+
+    '<div class="mw-num-text">'+NUM_MEANING[value]+'</div></div>';
+}
+function nCardYear(label,sub,value){
+  if(!value||!NUM_PY_MEANING[value])return '';
+  return '<div class="mw-num-card"><div class="mw-num-label">'+label+'</div><div class="mw-num-sub">'+sub+'</div>'+
+    '<div class="mw-num-value">'+value+'</div>'+
+    '<div class="mw-num-name">'+NUM_PY_NAME[value]+'</div>'+
+    '<div class="mw-num-text">'+NUM_PY_MEANING[value]+'</div></div>';
+}
+function buildNumerologyHTML(){
+  var r=nCompute();
+  if(!r.hasDate&&!r.hasName)return '';
+  var html='<div class="section-title">Numerology</div>';
+  html+='<div class="section-sub">The hidden math of your name and birth date</div>';
+  html+='<section class="mw-num"><div class="mw-num-grid">';
+  if(r.hasDate){
+    html+=nCardCore("Life Path","Your lifetime road",r.lifePath);
+    html+=nCardCore("Birthday","A gift you were born with",r.birthday);
+  }
+  if(r.hasName){
+    html+=nCardCore("Expression","Talents in your full name",r.expression);
+    html+=nCardCore("Soul Urge","Your heart's deepest desire",r.soulUrge);
+    html+=nCardCore("Personality","How others first see you",r.personality);
+  }
+  if(r.hasDate){
+    html+=nCardYear("Personal Year "+r.currentYear,"The theme of your current year",r.personalYear);
+  }
+  html+='</div>';
+  if(!r.hasName){
+    html+='<div class="mw-num-note">Add your full birth name in the field above and cast again to reveal your Expression, Soul Urge, and Personality numbers.</div>';
+  }
+  html+='</section>';
+  return html;
+}
+
 function renderNatalChart(d){
   var svg=buildWheelSVG(d.planets,d.houses,d.angles.ascendant.eclipticLongitude,d.angles.midheaven.eclipticLongitude,d.aspects,{planetsKey:"_natalP"});
   var html='<div class="chart-wrapper"><h2>'+getName()+' Natal Chart</h2><div class="chart-meta">'+d.engine+'</div>'+svg;
@@ -1502,7 +1622,9 @@ function renderNatalChart(d){
   html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.ascendant.sign+'\')"><td>Ascendant</td><td>'+d.angles.ascendant.signSymbol+' '+d.angles.ascendant.sign+'</td><td><span class="deg">'+d.angles.ascendant.degreesInSign+'\u00B0</span> '+String(d.angles.ascendant.minutes).padStart(2,"0")+"\u2032</td></tr>";
   html+='<tr class="clickable" onclick="window._mami.showSignInterp(\''+d.angles.midheaven.sign+'\')"><td>Midheaven</td><td>'+d.angles.midheaven.signSymbol+' '+d.angles.midheaven.sign+'</td><td><span class="deg">'+d.angles.midheaven.degreesInSign+'\u00B0</span> '+String(d.angles.midheaven.minutes).padStart(2,"0")+"\u2032</td></tr>";
   html+='</tbody></table>';
-  html+=tableOfPlanets("Planets and Points",d.planets,true,"_natalTable")+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects,"_natalAspects")+'</div>';
+  html+=tableOfPlanets("Planets and Points",d.planets,true,"_natalTable")+tableOfHouses(d.houses)+tableOfAspects("Aspects",d.aspects,"_natalAspects");
+  html+=buildNumerologyHTML();
+  html+='</div>';
   resultDiv.innerHTML=html;
   mwTarot.mount("natal",d);
   if(window.mwAfterCast)window.mwAfterCast();
